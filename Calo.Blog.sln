@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calo.Blog.Host", "Calo.Blog.Host\Calo.Blog.Host.csproj", "{5C096843-A3A2-40F3-915C-E4BC9A4C0C00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calo.Blog.Host", "Calo.Blog.Host\Calo.Blog.Host.csproj", "{5C096843-A3A2-40F3-915C-E4BC9A4C0C00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calo.Blog.Application", "Calo.Blog.Application\Calo.Blog.Application.csproj", "{F6B4818C-60CD-4990-A068-ACD546DBD2DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calo.Blog.Domain", "Calo.Blog.Core\Calo.Blog.Domain.csproj", "{ECC833CB-50D7-437D-9660-25EB69399F3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calo.Blog.Domain", "Calo.Blog.Core\Calo.Blog.Domain.csproj", "{ECC833CB-50D7-437D-9660-25EB69399F3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calo.Blog.EntityCore", "Calo.Blog.EntityCore\Calo.Blog.EntityCore.csproj", "{DE51A27E-4D1D-42CC-99E5-6C1687F8470D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calo.Blog.EntityCore", "Calo.Blog.EntityCore\Calo.Blog.EntityCore.csproj", "{DE51A27E-4D1D-42CC-99E5-6C1687F8470D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calo.Blog.Extenions", "Calo.Blog.Extenions\Calo.Blog.Extenions.csproj", "{BB21B697-CB97-48FA-9DF9-440ADE36857F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calo.Blog.Extenions", "Calo.Blog.Extenions\Calo.Blog.Extenions.csproj", "{BB21B697-CB97-48FA-9DF9-440ADE36857F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calo.Blog.Application", "Calo.Blog.Application\Calo.Blog.Application.csproj", "{C661E04E-1E70-41B9-A8E7-44F559F80449}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,6 @@ Global
 		{5C096843-A3A2-40F3-915C-E4BC9A4C0C00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C096843-A3A2-40F3-915C-E4BC9A4C0C00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C096843-A3A2-40F3-915C-E4BC9A4C0C00}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F6B4818C-60CD-4990-A068-ACD546DBD2DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F6B4818C-60CD-4990-A068-ACD546DBD2DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F6B4818C-60CD-4990-A068-ACD546DBD2DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F6B4818C-60CD-4990-A068-ACD546DBD2DF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ECC833CB-50D7-437D-9660-25EB69399F3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ECC833CB-50D7-437D-9660-25EB69399F3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECC833CB-50D7-437D-9660-25EB69399F3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{BB21B697-CB97-48FA-9DF9-440ADE36857F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB21B697-CB97-48FA-9DF9-440ADE36857F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB21B697-CB97-48FA-9DF9-440ADE36857F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C661E04E-1E70-41B9-A8E7-44F559F80449}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C661E04E-1E70-41B9-A8E7-44F559F80449}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C661E04E-1E70-41B9-A8E7-44F559F80449}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C661E04E-1E70-41B9-A8E7-44F559F80449}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

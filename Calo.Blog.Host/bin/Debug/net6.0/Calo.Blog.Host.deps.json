@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "Calo.Blog.Host/1.0.0": {
+        "runtime": {
+          "Calo.Blog.Host.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Calo.Blog.Host/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

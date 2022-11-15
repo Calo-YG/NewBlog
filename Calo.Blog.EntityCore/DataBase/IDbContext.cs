@@ -9,8 +9,8 @@ namespace Calo.Blog.EntityCore.DataBase
 {
     public class IDbContext 
     {
-        public ISqlSugarClient DbContext;
+        public ISqlSugarClient? DbContext;
 
-        public ConnectionConfig ConnectionConfig;
+        public ConnectionConfig? ConnectionConfig;
     }
 }

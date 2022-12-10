@@ -36,7 +36,7 @@ namespace Calo.Blog.EntityCore.DataBase.Extensions
 
             entityTypes.ForEach(p =>
             {
-                paraExpression = Expression.Parameter(p);
+                paraExpression = Expression.Parameter(p,"p");
                 fieldExpression = Expression.Property(paraExpression, "IsDelete");
                 binaryExpression = Expression.Equal(fieldExpression, Expression.Constant(true));
                 expression = Expression.Lambda<Func<object, bool>>(binaryExpression, paraExpression);

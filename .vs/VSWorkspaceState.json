@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Calo.Blog.Extenions\\bin",
+    "\\Calo.Blog.Host"
   ],
-  "SelectedNode": "\\D:\\MyProject\\Calo\\Calo.Blog",
+  "SelectedNode": "\\Calo.Blog.Host\\Program.cs",
   "PreviewInSolutionExplorer": false
 }

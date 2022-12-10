@@ -12,21 +12,21 @@ namespace Calo.Blog.EntityCore.DataBase.Extensions
 {
     public static class DBExtentsions
     {
-        public static IServiceCollection AddSqlSugarDbContext<TDbContext>(this IServiceCollection services,Action<ConnectionConfig> action,ServiceLifetime lifetime=ServiceLifetime.Transient) where TDbContext:IDbContext
+        public static IServiceCollection AddSqlSugarDbContext<TDbContext>(this IServiceCollection services,Action<ConnectionConfig> action,ServiceLifetime lifetime=ServiceLifetime.Transient)
         {
             ConnectionConfig config=new ConnectionConfig();
             SqlSugarScope scope;
             action.Invoke(config);
             if (lifetime == ServiceLifetime.Scoped)
             {
-                services.AddScoped<ISqlSugarClient, SqlSugarScope>(p =>
+                services.AddScoped<ISqlSugarClient>(p =>
                 {
                     scope= new SqlSugarScope(config);
                     return scope;
                 });
             }else if(lifetime == ServiceLifetime.Singleton) 
             {
-                services.AddSingleton<ISqlSugarClient, SqlSugarScope>(p =>
+                services.AddSingleton<ISqlSugarClient>(p =>
                 {
                     scope = new SqlSugarScope(config);
                     return scope;
@@ -34,7 +34,7 @@ namespace Calo.Blog.EntityCore.DataBase.Extensions
             }
             else
             {
-                services.AddTransient<ISqlSugarClient, SqlSugarScope>(p =>
+                services.AddTransient<ISqlSugarClient>(p =>
                 {
                     scope = new SqlSugarScope(config);
                     return scope;

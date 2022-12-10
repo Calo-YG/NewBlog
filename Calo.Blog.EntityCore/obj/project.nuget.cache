@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "abwi0O4cWOqt7cHo9R7+qpJNkwRMMQRhBFgKltPOcDqInyBdoOk5i0RYKZxXLfswwqT9j1lJrl6Zj0YAeggkuA==",
+  "dgSpecHash": "WekKrf9WA8+IvnIAhic+EZERWGPTdITOIa6bFlSBWi4MOoMdIgWZbQVBwcNgcIdEssvbBjhJ8SY0NTT5Ogr9EQ==",
   "success": true,
   "projectFilePath": "D:\\MyProject\\Calo\\Calo.Blog\\Calo.Blog.EntityCore\\Calo.Blog.EntityCore.csproj",
   "expectedPackageFiles": [
@@ -10,7 +10,7 @@
     "C:\\Users\\31645\\.nuget\\packages\\k4os.compression.lz4.streams\\1.2.6\\k4os.compression.lz4.streams.1.2.6.nupkg.sha512",
     "C:\\Users\\31645\\.nuget\\packages\\k4os.hash.xxhash\\1.0.6\\k4os.hash.xxhash.1.0.6.nupkg.sha512",
     "C:\\Users\\31645\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
-    "C:\\Users\\31645\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.1\\microsoft.data.sqlclient.2.1.1.nupkg.sha512",
+    "C:\\Users\\31645\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.4\\microsoft.data.sqlclient.2.1.4.nupkg.sha512",
     "C:\\Users\\31645\\.nuget\\packages\\microsoft.data.sqlclient.sni.runtime\\2.1.1\\microsoft.data.sqlclient.sni.runtime.2.1.1.nupkg.sha512",
     "C:\\Users\\31645\\.nuget\\packages\\microsoft.data.sqlite\\5.0.5\\microsoft.data.sqlite.5.0.5.nupkg.sha512",
     "C:\\Users\\31645\\.nuget\\packages\\microsoft.data.sqlite.core\\5.0.5\\microsoft.data.sqlite.core.5.0.5.nupkg.sha512",
@@ -51,7 +51,7 @@
     "C:\\Users\\31645\\.nuget\\packages\\sqlitepclraw.core\\2.0.4\\sqlitepclraw.core.2.0.4.nupkg.sha512",
     "C:\\Users\\31645\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.0.4\\sqlitepclraw.lib.e_sqlite3.2.0.4.nupkg.sha512",
     "C:\\Users\\31645\\.nuget\\packages\\sqlitepclraw.provider.dynamic_cdecl\\2.0.4\\sqlitepclraw.provider.dynamic_cdecl.2.0.4.nupkg.sha512",
-    "C:\\Users\\31645\\.nuget\\packages\\sqlsugarcore\\5.1.3.32\\sqlsugarcore.5.1.3.32.nupkg.sha512",
+    "C:\\Users\\31645\\.nuget\\packages\\sqlsugarcore\\5.1.3.38\\sqlsugarcore.5.1.3.38.nupkg.sha512",
     "C:\\Users\\31645\\.nuget\\packages\\sqlsugarcore.dm\\1.0.0\\sqlsugarcore.dm.1.0.0.nupkg.sha512",
     "C:\\Users\\31645\\.nuget\\packages\\sqlsugarcore.kdbndp\\1.0.0\\sqlsugarcore.kdbndp.1.0.0.nupkg.sha512",
     "C:\\Users\\31645\\.nuget\\packages\\system.appcontext\\4.3.0\\system.appcontext.4.3.0.nupkg.sha512",

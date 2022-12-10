@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Calo.Blog.EntityCore.DataBase.Config
+namespace Calo.Blog.Extenions.DependencyInjection.LifeTimeMethods
 {
-    public class SqlSugarConnectConfig : ConnectConfigBase
+    public interface IDependencyInjectionTransit
     {
-
     }
 }

@@ -11,13 +11,7 @@ namespace Calo.Blog.EntityCore.DataBase.EntityBase
         /// <summary>
         /// 创建人id
         /// </summary>
-        public T? CreatorUserId { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string? CreateorUserName { get; set; }
-
-        public string? UpdaterUserId { get; set; }
+        public T? UpdaterUserId { get; set; }
 
         public T? UpdateUserId { get; set; }
     }

@@ -9,6 +9,9 @@ namespace Calo.Blog.EntityCore.DataBase.EntityBase
 {
     public class FullAutiedEntity<T> : AutiedEntity<T>, IConcurrentToken 
     {
+        public bool IsDeleted { get; set; }
+
+        public T? DeleteUserId { get; set; }
         [ConcurrentToken]
         public Guid ConcurrentToken { get; set; }
     }

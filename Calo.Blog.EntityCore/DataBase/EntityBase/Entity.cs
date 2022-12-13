@@ -13,10 +13,10 @@ namespace Calo.Blog.EntityCore.DataBase.EntityBase
     {
         [KeyWithIncrement]
         public T Id { get; set; }
+        public T? CreatorUserId { get; set; }
+        public string? CreateorUserName { get; set; }
 
-        public bool IsDeleted { get; set; }
-
-        public T? DeleteUserId { get; set; }
+        public DateTime? CreattionTime { get; set; }
 
         [ConcurrentToken]
         public Guid ConcurrentToken { get; set; }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Calo.Blog.EntityCore.DataBase.EntityBase
 {
-    public class FullAutiedEntity<T> : AutiedEntity<T>, IConcurrentToken where T :new()
+    public class FullAutiedEntity<T> : AutiedEntity<T>, IConcurrentToken 
     {
         [ConcurrentToken]
         public Guid ConcurrentToken { get; set; }

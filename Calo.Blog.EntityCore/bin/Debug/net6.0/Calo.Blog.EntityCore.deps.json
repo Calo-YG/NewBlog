@@ -8,12 +8,24 @@
     ".NETCoreApp,Version=v6.0": {
       "Calo.Blog.EntityCore/1.0.0": {
         "dependencies": {
+          "Calo.Blog.Domain": "1.0.0",
           "Calo.Blog.Extenions": "1.0.0",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "7.0.0",
-          "SqlSugarCore": "5.1.3.32"
+          "SqlSugarCore": "5.1.3.38"
         },
         "runtime": {
           "Calo.Blog.EntityCore.dll": {}
+        }
+      },
+      "Autofac/6.5.0": {
+        "dependencies": {
+          "System.Diagnostics.DiagnosticSource": "4.7.1"
+        },
+        "runtime": {
+          "lib/net6.0/Autofac.dll": {
+            "assemblyVersion": "6.5.0.0",
+            "fileVersion": "6.5.0.0"
+          }
         }
       },
       "BouncyCastle.NetCore/1.8.5": {
@@ -67,7 +79,7 @@
         }
       },
       "Microsoft.CSharp/4.5.0": {},
-      "Microsoft.Data.SqlClient/2.1.1": {
+      "Microsoft.Data.SqlClient/2.1.4": {
         "dependencies": {
           "Microsoft.Data.SqlClient.SNI.runtime": "2.1.1",
           "Microsoft.Identity.Client": "4.21.1",
@@ -75,7 +87,7 @@
           "Microsoft.IdentityModel.Protocols.OpenIdConnect": "6.8.0",
           "Microsoft.Win32.Registry": "4.7.0",
           "System.Configuration.ConfigurationManager": "4.7.0",
-          "System.Diagnostics.DiagnosticSource": "4.7.0",
+          "System.Diagnostics.DiagnosticSource": "4.7.1",
           "System.Runtime.Caching": "4.7.0",
           "System.Security.Principal.Windows": "4.7.0",
           "System.Text.Encoding.CodePages": "4.7.0"
@@ -519,9 +531,9 @@
           }
         }
       },
-      "SqlSugarCore/5.1.3.32": {
+      "SqlSugarCore/5.1.3.38": {
         "dependencies": {
-          "Microsoft.Data.SqlClient": "2.1.1",
+          "Microsoft.Data.SqlClient": "2.1.4",
           "Microsoft.Data.Sqlite": "5.0.5",
           "MySql.Data": "8.0.29",
           "Newtonsoft.Json": "10.0.3",
@@ -534,8 +546,8 @@
         },
         "runtime": {
           "lib/netstandard2.1/SqlSugar.dll": {
-            "assemblyVersion": "5.1.3.32",
-            "fileVersion": "5.1.3.32"
+            "assemblyVersion": "5.1.3.38",
+            "fileVersion": "5.1.3.38"
           }
         }
       },
@@ -674,7 +686,7 @@
           "System.Runtime": "4.3.0"
         }
       },
-      "System.Diagnostics.DiagnosticSource/4.7.0": {},
+      "System.Diagnostics.DiagnosticSource/4.7.1": {},
       "System.Diagnostics.PerformanceCounter/4.7.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "3.1.0",
@@ -917,7 +929,7 @@
           "Microsoft.NETCore.Platforms": "3.1.0",
           "System.Collections": "4.3.0",
           "System.Diagnostics.Debug": "4.3.0",
-          "System.Diagnostics.DiagnosticSource": "4.7.0",
+          "System.Diagnostics.DiagnosticSource": "4.7.1",
           "System.Diagnostics.Tracing": "4.3.0",
           "System.Globalization": "4.3.0",
           "System.Globalization.Extensions": "4.3.0",
@@ -1381,7 +1393,15 @@
           "System.Xml.ReaderWriter": "4.3.0"
         }
       },
+      "Calo.Blog.Domain/1.0.0": {
+        "runtime": {
+          "Calo.Blog.Domain.dll": {}
+        }
+      },
       "Calo.Blog.Extenions/1.0.0": {
+        "dependencies": {
+          "Autofac": "6.5.0"
+        },
         "runtime": {
           "Calo.Blog.Extenions.dll": {}
         }
@@ -1393,6 +1413,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Autofac/6.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-sm6HWWBDEoTPGXeyOchMygJ/7L89VxmVH72BFxakG88J34AVjA8RMi5jbv3PdpUtXI/d9ZLKOaxCmOSIo2K4aA==",
+      "path": "autofac/6.5.0",
+      "hashPath": "autofac.6.5.0.nupkg.sha512"
     },
     "BouncyCastle.NetCore/1.8.5": {
       "type": "package",
@@ -1436,12 +1463,12 @@
       "path": "microsoft.csharp/4.5.0",
       "hashPath": "microsoft.csharp.4.5.0.nupkg.sha512"
     },
-    "Microsoft.Data.SqlClient/2.1.1": {
+    "Microsoft.Data.SqlClient/2.1.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-qxPmA2q0/oqqzZiwgN2QcoFRMPPQOCOxJP9h8X/bLXkPRsIo8xy182td9Txt0WhobW1dBBSYj96/Wf9cmhpm7Q==",
-      "path": "microsoft.data.sqlclient/2.1.1",
-      "hashPath": "microsoft.data.sqlclient.2.1.1.nupkg.sha512"
+      "sha512": "sha512-cDcKBTKILdRuAzJjbgXwGcUQXzMue+SG02kD4tZTXXfoz4ALrGLpCnA5k9khw3fnAMlMnRzLIGuvRdJurqmESA==",
+      "path": "microsoft.data.sqlclient/2.1.4",
+      "hashPath": "microsoft.data.sqlclient.2.1.4.nupkg.sha512"
     },
     "Microsoft.Data.SqlClient.SNI.runtime/2.1.1": {
       "type": "package",
@@ -1723,12 +1750,12 @@
       "path": "sqlitepclraw.provider.dynamic_cdecl/2.0.4",
       "hashPath": "sqlitepclraw.provider.dynamic_cdecl.2.0.4.nupkg.sha512"
     },
-    "SqlSugarCore/5.1.3.32": {
+    "SqlSugarCore/5.1.3.38": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Rd+N9idSgHMmAZ3c93UV/h2xMDqkR+0uFXxiJMKDwOEeqIVcG207OzoXt15/D4Sk6oxwksZuqK4AMft35QPSjA==",
-      "path": "sqlsugarcore/5.1.3.32",
-      "hashPath": "sqlsugarcore.5.1.3.32.nupkg.sha512"
+      "sha512": "sha512-nQMzeExpAb/XHg9mztXnmgXyYf6nqKwYqUtvj5W0r1fVdy+8vGw33L8vg41/jcqBoR5wZxJ2TiIL9NlnTnsaaw==",
+      "path": "sqlsugarcore/5.1.3.38",
+      "hashPath": "sqlsugarcore.5.1.3.38.nupkg.sha512"
     },
     "SqlSugarCore.Dm/1.0.0": {
       "type": "package",
@@ -1835,12 +1862,12 @@
       "path": "system.diagnostics.debug/4.3.0",
       "hashPath": "system.diagnostics.debug.4.3.0.nupkg.sha512"
     },
-    "System.Diagnostics.DiagnosticSource/4.7.0": {
+    "System.Diagnostics.DiagnosticSource/4.7.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-oJjw3uFuVDJiJNbCD8HB4a2p3NYLdt1fiT5OGsPLw+WTOuG0KpP4OXelMmmVKpClueMsit6xOlzy4wNKQFiBLg==",
-      "path": "system.diagnostics.diagnosticsource/4.7.0",
-      "hashPath": "system.diagnostics.diagnosticsource.4.7.0.nupkg.sha512"
+      "sha512": "sha512-j81Lovt90PDAq8kLpaJfJKV/rWdWuEk6jfV+MBkee33vzYLEUsy4gXK8laa9V2nZlLM9VM9yA/OOQxxPEJKAMw==",
+      "path": "system.diagnostics.diagnosticsource/4.7.1",
+      "hashPath": "system.diagnostics.diagnosticsource.4.7.1.nupkg.sha512"
     },
     "System.Diagnostics.PerformanceCounter/4.7.0": {
       "type": "package",
@@ -2296,6 +2323,11 @@
       "sha512": "sha512-lJ8AxvkX7GQxpC6GFCeBj8ThYVyQczx2+f/cWHJU8tjS7YfI6Cv6bon70jVEgs2CiFbmmM8b9j1oZVx0dSI2Ww==",
       "path": "system.xml.xmldocument/4.3.0",
       "hashPath": "system.xml.xmldocument.4.3.0.nupkg.sha512"
+    },
+    "Calo.Blog.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "Calo.Blog.Extenions/1.0.0": {
       "type": "project",

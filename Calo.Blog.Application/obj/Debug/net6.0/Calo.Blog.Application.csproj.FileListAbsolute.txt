@@ -1,0 +1,12 @@
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Application\bin\Debug\net6.0\Calo.Blog.Application.deps.json
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Application\bin\Debug\net6.0\Calo.Blog.Application.dll
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Application\bin\Debug\net6.0\Calo.Blog.Application.pdb
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Application\obj\Debug\net6.0\Calo.Blog.Application.csproj.AssemblyReference.cache
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Application\obj\Debug\net6.0\Calo.Blog.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Application\obj\Debug\net6.0\Calo.Blog.Application.AssemblyInfoInputs.cache
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Application\obj\Debug\net6.0\Calo.Blog.Application.AssemblyInfo.cs
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Application\obj\Debug\net6.0\Calo.Blog.Application.csproj.CoreCompileInputs.cache
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Application\obj\Debug\net6.0\Calo.Blog.Application.dll
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Application\obj\Debug\net6.0\refint\Calo.Blog.Application.dll
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Application\obj\Debug\net6.0\Calo.Blog.Application.pdb
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Application\obj\Debug\net6.0\ref\Calo.Blog.Application.dll

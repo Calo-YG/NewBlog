@@ -28,3 +28,5 @@ D:\MyProject\Calo\Calo.Blog\Calo.Blog.EntityCore\obj\Debug\net6.0\Calo.Blog.Enti
 D:\MyProject\Calo\Calo.Blog\Calo.Blog.EntityCore\obj\Debug\net6.0\refint\Calo.Blog.EntityCore.dll
 D:\MyProject\Calo\Calo.Blog\Calo.Blog.EntityCore\obj\Debug\net6.0\Calo.Blog.EntityCore.pdb
 D:\MyProject\Calo\Calo.Blog\Calo.Blog.EntityCore\obj\Debug\net6.0\ref\Calo.Blog.EntityCore.dll
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.EntityCore\bin\Debug\net6.0\Calo.Blog.Domain.dll
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.EntityCore\bin\Debug\net6.0\Calo.Blog.Domain.pdb

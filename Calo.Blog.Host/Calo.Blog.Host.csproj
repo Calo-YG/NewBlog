@@ -6,4 +6,13 @@
 		<ImplicitUsings>unenable</ImplicitUsings>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Calo.Blog.Application\Calo.Blog.Application.csproj" />
+	  <ProjectReference Include="..\Calo.Blog.EntityCore\Calo.Blog.EntityCore.csproj" />
+	</ItemGroup>
+
 </Project>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Calo.Blog.EntityCore.DataBase.EntityBase
 {
-    public class AutiedEntity<T> :Entity<T> where T :class, new()
+    public class AutiedEntity<T> :Entity<T> where T : new()
     {
         /// <summary>
         /// 创建人id

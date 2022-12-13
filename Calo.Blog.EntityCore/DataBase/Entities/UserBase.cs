@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Calo.Blog.EntityCore.DataBase.Entities
 {
-    public class UserBase<T>:FullAutiedEntity<T> where T : new()
+    public class UserBase:FullAutiedEntity<long>
     {
     }
 }

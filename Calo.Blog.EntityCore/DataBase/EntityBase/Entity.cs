@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Calo.Blog.EntityCore.DataBase.EntityBase
 {
-    public class Entity<T> where T :class, new()
+    public class Entity<T> where T : new()
     {
         [KeyWithIncrement]
         public T Id { get; set; }

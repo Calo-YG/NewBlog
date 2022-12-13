@@ -1,5 +1,4 @@
-﻿using Calo.Blog.EntityCore.DataBase.Entities;
-using Calo.Blog.EntityCore.DataBase.Extensions;
+﻿using Calo.Blog.EntityCore.DataBase.Extensions;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -9,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace Calo.Blog.EntityCore.DataBase.DatabaseContext
 {
-    public class BlogContext :SugarUnitOfWork
+    public class BaseContext :SugarUnitOfWork
     {
-        public BlogContext()
-        { 
-          
+        public BaseContext()
+        {
+            AddIsDeleteFilter();
         }
 
         public void AddIsDeleteFilter()
         {
-            
+
             Db.QueryFilter.ConfigureFilterForEntity();
         }
     }

@@ -8,8 +8,7 @@ namespace Calo.Blog.Extenions.EnumExtenions
 {
     public enum LifeTime
     {
-        Trasient,
         Scope,
-        Sigleton
+        Singleton
     }
 }

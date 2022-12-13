@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Calo.Blog.EntityCore.DataBase.EntityBase
 {
 
-    public  class Entity<T>:IEntity<T> 
+    public  class Entity<T>:IEntity<T>,IConcurrentToken
     {
         [KeyWithIncrement]
         public T Id { get; set; }
@@ -17,5 +17,8 @@ namespace Calo.Blog.EntityCore.DataBase.EntityBase
         public bool IsDeleted { get; set; }
 
         public T? DeleteUserId { get; set; }
+
+        [ConcurrentToken]
+        public Guid ConcurrentToken { get; set; }
     }
 }

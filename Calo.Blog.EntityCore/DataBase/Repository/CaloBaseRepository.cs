@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Calo.Blog.EntityCore.DataBase.Repository
 {
     public class CaloBaseRepository<TDbcontext,TEntity,TPrimaryKey>:BaseRepository<TEntity,TPrimaryKey>
-        where TDbcontext: SugarUnitOfWork
+        where TDbcontext: SugarUnitOfWork,new()
         where TEntity: class,IEntity<TPrimaryKey>,new()
     {
         public CaloBaseRepository(ISugarUnitOfWork<TDbcontext> unitOfWork,ISqlSugarClient client = null) : base(client)

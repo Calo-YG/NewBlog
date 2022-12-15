@@ -12,9 +12,10 @@ namespace Calo.Blog.EntityCore.DataBase.Repository
         where TDbcontext: SugarUnitOfWork,new()
         where TEntity: class,IEntity<TPrimaryKey>,new()
     {
-        public CaloBaseRepository(ISugarUnitOfWork<TDbcontext> unitOfWork,ISqlSugarClient client = null) : base(client)
+        private readonly ISugarUnitOfWork<TDbcontext> _unitOfWork;
+        public CaloBaseRepository(ISugarUnitOfWork<TDbcontext> unitOfWork,IServiceProvider provider,ISqlSugarClient client = null) : base(provider,client)
         {
-
+            _unitOfWork= unitOfWork;
         }
     }
 }

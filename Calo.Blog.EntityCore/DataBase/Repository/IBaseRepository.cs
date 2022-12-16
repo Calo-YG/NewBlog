@@ -13,4 +13,10 @@ namespace Calo.Blog.EntityCore.DataBase.Repository
         where TEntity : class,IEntity<TPrimaryKey>
     {
     }
+
+    public interface IBaseRepository<TEntity> : IDependencyInjectionTransit
+        where TEntity : class
+    {
+
+    }
 }

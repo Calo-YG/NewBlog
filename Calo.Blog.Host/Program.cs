@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Calo.Blog.EntityCore;
 using Calo.Blog.Extenions.DependencyInjection.AutoFacDependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,10 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-builder.Host.ConfigureContainer<ContainerBuilder>(container =>
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
+.ConfigureContainer<ContainerBuilder>(container =>
 {
     container = IocManager.container;
+    container.RegisterModule<EntityCoreModuleRegister>();
 });
 
 var app = builder.Build();

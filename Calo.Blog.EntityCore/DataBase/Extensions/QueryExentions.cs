@@ -26,5 +26,10 @@ namespace Calo.Blog.EntityCore.DataBase.Extensions
             Items= items
             };
         }
+
+        public static ISugarQueryable<TEntity> PagedBy<TEntity>(ISugarQueryable<TEntity> queryable,PageInput input)
+        {
+            return queryable.Take(input.MaxCount).Skip(input.SkipCount);
+        }
     }
 }

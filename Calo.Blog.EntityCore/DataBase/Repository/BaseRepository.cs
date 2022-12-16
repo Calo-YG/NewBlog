@@ -22,4 +22,15 @@ namespace Calo.Blog.EntityCore.DataBase.Repository
             base.Context=_servicerProvider.GetRequiredService<ISqlSugarClient>();
         }
     }
+
+    public class BaseRepository<TEntity>:SimpleClient<TEntity> ,IBaseRepository<TEntity>
+        where TEntity :class ,new()
+    {
+        private readonly IServiceProvider _servicerProvider;
+        public BaseRepository(IServiceProvider provider, ISqlSugarClient client = null) : base(client)
+        {
+            _servicerProvider = provider;
+            base.Context = _servicerProvider.GetRequiredService<ISqlSugarClient>();
+        }
+    }
 }

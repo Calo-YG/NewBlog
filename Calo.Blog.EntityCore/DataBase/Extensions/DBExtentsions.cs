@@ -1,4 +1,6 @@
-﻿using Calo.Blog.Extenions.EnumExtenions;
+﻿using Autofac.Core;
+using Calo.Blog.EntityCore.DataBase.DatabaseContext;
+using Calo.Blog.Extenions.EnumExtenions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using SqlSugar;
@@ -14,31 +16,46 @@ namespace Calo.Blog.EntityCore.DataBase.Extensions
 {
     public static class DBExtentsions
     {
-
-        public static ConcurrentDictionary<LifeTime, Action<IServiceCollection>> dic;
-        public static IServiceCollection AddSqlSugarDbContext<TDbContext>(this IServiceCollection services,Action<ConnectionConfig> action, LifeTime lifetime = LifeTime.Scope)
+        /// <summary>
+        /// 单例注入
+        /// </summary>
+        /// <typeparam name="TDbContext"></typeparam>
+        /// <param name="services"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddSqlSugarDbContextAsSignleton<TDbContext>(this IServiceCollection services,Action<ConnectionConfig> action)
+            where TDbContext : SugarUnitOfWork, new()
         {
             
             ConnectionConfig config=new ConnectionConfig();
             config.ConfigureExternalServices = TableAttributeConfig.AddContextColumsConfiure();
             action.Invoke(config);
-            LiftTimeDicInit(config);
-            dic[lifetime].Invoke(services);
+            ISqlSugarClient sugar = new SqlSugarScope(config);
+            services.AddSingleton<ISqlSugarClient>(sugar);
+            sugar.QueryFilter.ConfigureFilterForEntity();
+            config.ConfigureExternalServices=TableAttributeConfig.AddContextColumsConfiure();
+            ISugarUnitOfWork<TDbContext> context = new SugarUnitOfWork<TDbContext>(sugar);
+            services.AddSingleton<ISugarUnitOfWork<TDbContext>>(context);
             return services;
         }
-
-        private static void LiftTimeDicInit(ConnectionConfig connection)
+        /// <summary>
+        /// 作用域注入
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddSqlSugarClientAsCleint(this IServiceCollection services, Action<ConnectionConfig> action)
         {
-            dic = new ConcurrentDictionary<LifeTime, Action<IServiceCollection>>();         
-            dic.TryAdd(LifeTime.Singleton, (service) =>
-            {
-                ISqlSugarClient sugar = new SqlSugarScope(connection);
-                service.AddSingleton<ISqlSugarClient>(sugar);
-            });
-            dic.TryAdd(LifeTime.Singleton, (service) =>
-            {
-                service.AddScoped<ISqlSugarClient>(p=>new SqlSugarClient(connection));
-            });
+
+            ConnectionConfig config = new ConnectionConfig();
+            config.ConfigureExternalServices = TableAttributeConfig.AddContextColumsConfiure();
+            action.Invoke(config);
+            ISqlSugarClient sugar = new SqlSugarScope(config);
+            services.AddSingleton<ISqlSugarClient>(sugar);
+            sugar.QueryFilter.ConfigureFilterForEntity();
+            config.ConfigureExternalServices = TableAttributeConfig.AddContextColumsConfiure();
+            services.AddScoped<ISqlSugarClient>(p => new SqlSugarClient(config));
+            return services;
         }
     }
 }

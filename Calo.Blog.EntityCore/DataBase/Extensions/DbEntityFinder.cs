@@ -14,6 +14,10 @@ namespace Calo.Blog.EntityCore.DataBase.Extensions
         {
             return
     from property in dbContextType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+    where
+    (EntityHelper.IsAssignableToGenericType(property.PropertyType, typeof(ISugarDbSet<>)) ||
+                 EntityHelper.IsAssignableToGenericType(property.PropertyType, typeof(SugarDbSet<>))) &&
+                EntityHelper.IsAssignableToGenericType(property.PropertyType.GenericTypeArguments[0], typeof(IEntity<>))
     select new EntityTypeInfo(property.PropertyType.GenericTypeArguments[0], property?.DeclaringType);
         }
     }

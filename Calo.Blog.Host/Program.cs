@@ -14,7 +14,7 @@ builder.Services.AddControllersWithViews();
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
 .ConfigureContainer<ContainerBuilder>(container =>
 {
-    container = IocManager.container;
+    container = IocManager.containerBuilder; ;
     container.RegisterModule<EntityCoreModuleRegister>();
 });
 

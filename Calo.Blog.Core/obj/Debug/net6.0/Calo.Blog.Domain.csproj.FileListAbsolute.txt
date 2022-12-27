@@ -22,3 +22,15 @@ D:\MyProject\Calo\Calo.Blog\Calo.Blog.Core\obj\Debug\net6.0\Calo.Blog.Domain.dll
 D:\MyProject\Calo\Calo.Blog\Calo.Blog.Core\obj\Debug\net6.0\refint\Calo.Blog.Domain.dll
 D:\MyProject\Calo\Calo.Blog\Calo.Blog.Core\obj\Debug\net6.0\Calo.Blog.Domain.pdb
 D:\MyProject\Calo\Calo.Blog\Calo.Blog.Core\obj\Debug\net6.0\ref\Calo.Blog.Domain.dll
+D:\Project\Colo.Blog\Calo.Blog.Core\bin\Debug\net6.0\Calo.Blog.Domain.deps.json
+D:\Project\Colo.Blog\Calo.Blog.Core\bin\Debug\net6.0\Calo.Blog.Domain.dll
+D:\Project\Colo.Blog\Calo.Blog.Core\bin\Debug\net6.0\Calo.Blog.Domain.pdb
+D:\Project\Colo.Blog\Calo.Blog.Core\obj\Debug\net6.0\Calo.Blog.Domain.csproj.AssemblyReference.cache
+D:\Project\Colo.Blog\Calo.Blog.Core\obj\Debug\net6.0\Calo.Blog.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project\Colo.Blog\Calo.Blog.Core\obj\Debug\net6.0\Calo.Blog.Domain.AssemblyInfoInputs.cache
+D:\Project\Colo.Blog\Calo.Blog.Core\obj\Debug\net6.0\Calo.Blog.Domain.AssemblyInfo.cs
+D:\Project\Colo.Blog\Calo.Blog.Core\obj\Debug\net6.0\Calo.Blog.Domain.csproj.CoreCompileInputs.cache
+D:\Project\Colo.Blog\Calo.Blog.Core\obj\Debug\net6.0\Calo.Blog.Domain.dll
+D:\Project\Colo.Blog\Calo.Blog.Core\obj\Debug\net6.0\refint\Calo.Blog.Domain.dll
+D:\Project\Colo.Blog\Calo.Blog.Core\obj\Debug\net6.0\Calo.Blog.Domain.pdb
+D:\Project\Colo.Blog\Calo.Blog.Core\obj\Debug\net6.0\ref\Calo.Blog.Domain.dll

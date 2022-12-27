@@ -18,7 +18,7 @@ namespace Calo.Blog.EntityCore.DataBase.Extensions
         public static Type ContextFinder()
         {
             var assemnblies = Assembly.GetExecutingAssembly().GetTypes();
-            var contextType = assemnblies.Where(p => p.GetType().BaseType == typeof(BaseContext))
+            var contextType = assemnblies.Where(p => p.BaseType == typeof(BaseContext))
                 .FirstOrDefault();
             if (contextType is null)
             {
@@ -45,27 +45,18 @@ namespace Calo.Blog.EntityCore.DataBase.Extensions
             var repositoryTypeWithKey = defaultType.RepositoryInterfaceWithPrimaryKey;
             var repositoryTypeWithKeyImpl = defaultType.RepositoryImplementationWithPrimaryKey;
             var entities = GetEntityTypeInfo(dbContext);
-            using (var scope = builder.Build().BeginLifetimeScope())
+            foreach (var entity in entities)
             {
-                foreach (var entity in entities)
+                var primaryKeyType = entity.EntityType;
+                var genericRepoType = repositoryType.MakeGenericType(entity.EntityType);
+                var gerericRepoTypeImpl = repositoryImpl.MakeGenericType(entity.EntityType);
+                builder.RegisterType(gerericRepoTypeImpl).As(genericRepoType).InstancePerLifetimeScope();
+                if (repositoryTypeWithKey.IsGenericType && repositoryTypeWithKey.GetGenericArguments().Length == 2)
                 {
-                    var primaryKeyType = entity.EntityType;
-                    var genericRepoType = repositoryType.MakeGenericType(entity.EntityType);
-                    var gerericRepoTypeImpl = repositoryImpl.MakeGenericType(entity.EntityType);
-                    if (scope.Resolve(genericRepoType) is null)
-                    {
-                        builder.RegisterType(gerericRepoTypeImpl).As(genericRepoType).InstancePerLifetimeScope();
-                    }
-                    if (repositoryTypeWithKey.IsGenericType && repositoryTypeWithKey.GenericTypeArguments.Length == 2)
-                    {
-                        var primaryKey = GetPrimaryKeyType(entity.EntityType);
-                        var genericeRepoKeyType = repositoryTypeWithKey.MakeGenericType(entity.EntityType, primaryKey);
-                        var genericeRepoKeyTypeImpl = repositoryTypeWithKeyImpl.MakeGenericType(entity.EntityType, primaryKey);
-                        if (scope.Resolve(genericeRepoKeyType) is null)
-                        {
-                            builder.RegisterType(genericeRepoKeyTypeImpl).As(genericeRepoKeyType).InstancePerLifetimeScope();
-                        }
-                    }
+                    var primaryKey = GetPrimaryKeyType(entity.EntityType);
+                    var genericeRepoKeyType = repositoryTypeWithKey.MakeGenericType(entity.EntityType, primaryKey);
+                    var genericeRepoKeyTypeImpl = repositoryTypeWithKeyImpl.MakeGenericType(entity.EntityType, primaryKey);
+                    builder.RegisterType(genericeRepoKeyTypeImpl).As(genericeRepoKeyType).InstancePerLifetimeScope();
                 }
             }
         }

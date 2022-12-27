@@ -50,11 +50,29 @@ namespace Calo.Blog.EntityCore.DataBase.Extensions
             ConnectionConfig config = new ConnectionConfig();
             config.ConfigureExternalServices = TableAttributeConfig.AddContextColumsConfiure();
             action.Invoke(config);
-            ISqlSugarClient sugar = new SqlSugarScope(config);
-            services.AddSingleton<ISqlSugarClient>(sugar);
-            sugar.QueryFilter.ConfigureFilterForEntity();
-            config.ConfigureExternalServices = TableAttributeConfig.AddContextColumsConfiure();
             services.AddScoped<ISqlSugarClient>(p => new SqlSugarClient(config));
+            return services;
+        }
+
+        public static IServiceCollection AddSqlSugarClentAsClientWithContext<TDbContext>(this IServiceCollection services, Action<ConnectionConfig> action)
+            where TDbContext : SugarUnitOfWork, new()
+        {
+            ConnectionConfig config = new ConnectionConfig();
+            config.ConfigureExternalServices = TableAttributeConfig.AddContextColumsConfiure();
+            action.Invoke(config);
+            ISqlSugarClient sugar = null;
+            services.AddScoped<ISqlSugarClient>(p =>
+            {
+                sugar = new SqlSugarClient(config);
+                sugar.QueryFilter.ConfigureFilterForEntity();
+                return sugar;
+            });
+            if(sugar == null)
+            {
+                throw new ApplicationException("please init sqlsugarclient context");
+            }
+            ISugarUnitOfWork<TDbContext> context = new SugarUnitOfWork<TDbContext>(sugar);
+            services.AddSingleton<ISugarUnitOfWork<TDbContext>>(context);
             return services;
         }
     }

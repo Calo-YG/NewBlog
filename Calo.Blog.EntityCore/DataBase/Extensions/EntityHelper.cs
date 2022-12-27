@@ -45,17 +45,27 @@ namespace Calo.Blog.EntityCore.DataBase.Extensions
             var repositoryTypeWithKey = defaultType.RepositoryInterfaceWithPrimaryKey;
             var repositoryTypeWithKeyImpl = defaultType.RepositoryImplementationWithPrimaryKey;
             var entities = GetEntityTypeInfo(dbContext);
-            foreach (var entity in entities)
+            using (var scope = builder.Build().BeginLifetimeScope())
             {
-                var primaryKeyType = entity.EntityType;
-                var genericRepoType = repositoryType.MakeGenericType(entity.EntityType);
-                var gerericRepoTypeImpl = repositoryImpl.MakeGenericType(entity.EntityType);
-                builder.RegisterType(gerericRepoTypeImpl).As(genericRepoType).InstancePerLifetimeScope();
-                if (repositoryTypeWithKey.IsGenericType && repositoryTypeWithKey.GenericTypeArguments.Length == 2)
+                foreach (var entity in entities)
                 {
-                    var primaryKey = GetPrimaryKeyType(entity.EntityType);
-                    var genericeRepoKeyType = repositoryTypeWithKey.MakeGenericType(entity.EntityType, primaryKey);
-                    var genericeRepoKeyTypeImpl = repositoryTypeWithKeyImpl.MakeGenericType(entity.EntityType, primaryKey);
+                    var primaryKeyType = entity.EntityType;
+                    var genericRepoType = repositoryType.MakeGenericType(entity.EntityType);
+                    var gerericRepoTypeImpl = repositoryImpl.MakeGenericType(entity.EntityType);
+                    if (scope.Resolve(genericRepoType) is null)
+                    {
+                        builder.RegisterType(gerericRepoTypeImpl).As(genericRepoType).InstancePerLifetimeScope();
+                    }
+                    if (repositoryTypeWithKey.IsGenericType && repositoryTypeWithKey.GenericTypeArguments.Length == 2)
+                    {
+                        var primaryKey = GetPrimaryKeyType(entity.EntityType);
+                        var genericeRepoKeyType = repositoryTypeWithKey.MakeGenericType(entity.EntityType, primaryKey);
+                        var genericeRepoKeyTypeImpl = repositoryTypeWithKeyImpl.MakeGenericType(entity.EntityType, primaryKey);
+                        if (scope.Resolve(genericeRepoKeyType) is null)
+                        {
+                            builder.RegisterType(genericeRepoKeyTypeImpl).As(genericeRepoKeyType).InstancePerLifetimeScope();
+                        }
+                    }
                 }
             }
         }

@@ -1,20 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "D:\\MyProject\\Calo\\Calo.Blog\\Calo.Blog.EntityCore\\Calo.Blog.EntityCore.csproj": {}
+    "D:\\Project\\Colo.Blog\\Calo.Blog.EntityCore\\Calo.Blog.EntityCore.csproj": {}
   },
   "projects": {
-    "D:\\MyProject\\Calo\\Calo.Blog\\Calo.Blog.Core\\Calo.Blog.Domain.csproj": {
+    "D:\\Project\\Colo.Blog\\Calo.Blog.Core\\Calo.Blog.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MyProject\\Calo\\Calo.Blog\\Calo.Blog.Core\\Calo.Blog.Domain.csproj",
+        "projectUniqueName": "D:\\Project\\Colo.Blog\\Calo.Blog.Core\\Calo.Blog.Domain.csproj",
         "projectName": "Calo.Blog.Domain",
-        "projectPath": "D:\\MyProject\\Calo\\Calo.Blog\\Calo.Blog.Core\\Calo.Blog.Domain.csproj",
-        "packagesPath": "C:\\Users\\31645\\.nuget\\packages\\",
-        "outputPath": "D:\\MyProject\\Calo\\Calo.Blog\\Calo.Blog.Core\\obj\\",
+        "projectPath": "D:\\Project\\Colo.Blog\\Calo.Blog.Core\\Calo.Blog.Domain.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "D:\\Project\\Colo.Blog\\Calo.Blog.Core\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\VS 2022\\ComponentShared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\31645\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +27,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -55,21 +61,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\MyProject\\Calo\\Calo.Blog\\Calo.Blog.EntityCore\\Calo.Blog.EntityCore.csproj": {
+    "D:\\Project\\Colo.Blog\\Calo.Blog.EntityCore\\Calo.Blog.EntityCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MyProject\\Calo\\Calo.Blog\\Calo.Blog.EntityCore\\Calo.Blog.EntityCore.csproj",
+        "projectUniqueName": "D:\\Project\\Colo.Blog\\Calo.Blog.EntityCore\\Calo.Blog.EntityCore.csproj",
         "projectName": "Calo.Blog.EntityCore",
-        "projectPath": "D:\\MyProject\\Calo\\Calo.Blog\\Calo.Blog.EntityCore\\Calo.Blog.EntityCore.csproj",
-        "packagesPath": "C:\\Users\\31645\\.nuget\\packages\\",
-        "outputPath": "D:\\MyProject\\Calo\\Calo.Blog\\Calo.Blog.EntityCore\\obj\\",
+        "projectPath": "D:\\Project\\Colo.Blog\\Calo.Blog.EntityCore\\Calo.Blog.EntityCore.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "D:\\Project\\Colo.Blog\\Calo.Blog.EntityCore\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\VS 2022\\ComponentShared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\31645\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -77,17 +88,18 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\MyProject\\Calo\\Calo.Blog\\Calo.Blog.Core\\Calo.Blog.Domain.csproj": {
-                "projectPath": "D:\\MyProject\\Calo\\Calo.Blog\\Calo.Blog.Core\\Calo.Blog.Domain.csproj"
+              "D:\\Project\\Colo.Blog\\Calo.Blog.Core\\Calo.Blog.Domain.csproj": {
+                "projectPath": "D:\\Project\\Colo.Blog\\Calo.Blog.Core\\Calo.Blog.Domain.csproj"
               },
-              "D:\\MyProject\\Calo\\Calo.Blog\\Calo.Blog.Extenions\\Calo.Blog.Extenions.csproj": {
-                "projectPath": "D:\\MyProject\\Calo\\Calo.Blog\\Calo.Blog.Extenions\\Calo.Blog.Extenions.csproj"
+              "D:\\Project\\Colo.Blog\\Calo.Blog.Extenions\\Calo.Blog.Extenions.csproj": {
+                "projectPath": "D:\\Project\\Colo.Blog\\Calo.Blog.Extenions\\Calo.Blog.Extenions.csproj"
               }
             }
           }
@@ -127,21 +139,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\MyProject\\Calo\\Calo.Blog\\Calo.Blog.Extenions\\Calo.Blog.Extenions.csproj": {
+    "D:\\Project\\Colo.Blog\\Calo.Blog.Extenions\\Calo.Blog.Extenions.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MyProject\\Calo\\Calo.Blog\\Calo.Blog.Extenions\\Calo.Blog.Extenions.csproj",
+        "projectUniqueName": "D:\\Project\\Colo.Blog\\Calo.Blog.Extenions\\Calo.Blog.Extenions.csproj",
         "projectName": "Calo.Blog.Extenions",
-        "projectPath": "D:\\MyProject\\Calo\\Calo.Blog\\Calo.Blog.Extenions\\Calo.Blog.Extenions.csproj",
-        "packagesPath": "C:\\Users\\31645\\.nuget\\packages\\",
-        "outputPath": "D:\\MyProject\\Calo\\Calo.Blog\\Calo.Blog.Extenions\\obj\\",
+        "projectPath": "D:\\Project\\Colo.Blog\\Calo.Blog.Extenions\\Calo.Blog.Extenions.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "D:\\Project\\Colo.Blog\\Calo.Blog.Extenions\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\VS 2022\\ComponentShared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\31645\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -149,6 +166,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -188,7 +206,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

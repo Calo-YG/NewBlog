@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "51DrKy9ci4UxqRGtJcE1p8txBtWQ6sU/Bvn9q4rg/7uC6evXbs9tCFsmvP70crFxrsUvP3q33PNuWtTsBEoFtQ==",
+  "dgSpecHash": "Xll++fKQqWrMHXUOZlqTb7MIfQpKpcuy+RkV7MubIM8zAWctJw0cqSfHokBhwcdCvck7Q0hiQTTHCHz/HxvSzw==",
   "success": true,
-  "projectFilePath": "D:\\MyProject\\Calo\\Calo.Blog\\Calo.Blog.Extenions\\Calo.Blog.Extenions.csproj",
+  "projectFilePath": "D:\\Project\\Colo.Blog\\Calo.Blog.Extenions\\Calo.Blog.Extenions.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\31645\\.nuget\\packages\\autofac\\6.5.0\\autofac.6.5.0.nupkg.sha512",
-    "C:\\Users\\31645\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.7.1\\system.diagnostics.diagnosticsource.4.7.1.nupkg.sha512"
+    "C:\\Users\\Administrator\\.nuget\\packages\\autofac\\6.5.0\\autofac.6.5.0.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.7.1\\system.diagnostics.diagnosticsource.4.7.1.nupkg.sha512"
   ],
   "logs": []
 }

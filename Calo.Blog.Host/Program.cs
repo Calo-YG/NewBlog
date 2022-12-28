@@ -18,20 +18,15 @@ builder.Services.AddControllersWithViews();
 
 //builder.Services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 //builder.Services.AddTransient(typeof(IBaseRepository<,>), typeof(BaseRepository<,>));
-builder.Services.AddSqlSugarClentAsClientWithContext<BlogContext>(p =>
+builder.Services.AddSqlSugarClientAsCleint(p =>
 {
-    p.ConnectionString=builder.Configuration.GetSection("").Value;
+    p.ConnectionString = builder.Configuration.GetSection("").Value;
     p.DbType = SqlSugar.DbType.SqlServer;
     p.IsAutoCloseConnection = true;
 });
 
 
-Action<ContainerBuilder> action = (p) =>
-{
-    //p = IocManager.containerBuilder;
-    // p.AutoRegisterRepositoy();
-};
-builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory(action))
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
 .ConfigureContainer<ContainerBuilder>(container =>
 {
     container.RegisterModule<EntityCoreModuleRegister>();

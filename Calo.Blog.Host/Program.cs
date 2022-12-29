@@ -8,6 +8,7 @@ using Calo.Blog.Extenions.DependencyInjection.AutoFacDependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Org.BouncyCastle.Asn1.X509.Qualified;
 using System;
 
@@ -16,15 +17,22 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-//builder.Services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-//builder.Services.AddTransient(typeof(IBaseRepository<,>), typeof(BaseRepository<,>));
 builder.Services.AddSqlSugarClientAsCleint(p =>
 {
     p.ConnectionString = builder.Configuration.GetSection("").Value;
     p.DbType = SqlSugar.DbType.SqlServer;
     p.IsAutoCloseConnection = true;
-});
+}).AddSuagarDbContextAsScoped<BlogContext>();
 
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "1.0",
+        Title = "CaloApi",
+        Description = "CalaAPI"
+    });
+});
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
 .ConfigureContainer<ContainerBuilder>(container =>
@@ -42,6 +50,13 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSwagger();
+
+app.UseSwaggerUI(p =>
+{
+
+});
 
 app.UseAuthorization();
 

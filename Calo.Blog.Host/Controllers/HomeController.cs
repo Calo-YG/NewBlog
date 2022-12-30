@@ -1,4 +1,6 @@
-﻿using Calo.Blog.Host.Models;
+﻿using Calo.Blog.EntityCore.DataBase.Entities;
+using Calo.Blog.EntityCore.DataBase.Repository;
+using Calo.Blog.Host.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,10 +11,12 @@ namespace Calo.Blog.Host.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IBaseRepository<User, long> userRespo;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,IBaseRepository<User,long> baseRepository)
         {
             _logger = logger;
+            userRespo = baseRepository;   
         }
 
         public IActionResult Index()

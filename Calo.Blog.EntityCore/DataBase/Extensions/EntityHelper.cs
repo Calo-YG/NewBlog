@@ -1,7 +1,9 @@
 ﻿using Autofac;
+using Autofac.Builder;
 using Calo.Blog.EntityCore.DataBase.DatabaseContext;
 using Calo.Blog.EntityCore.DataBase.EntityBase;
 using Calo.Blog.EntityCore.DataBase.Repository;
+using Calo.Blog.Extenions.DependencyInjection.AutoFacDependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,32 +18,46 @@ namespace Calo.Blog.EntityCore.DataBase.Extensions
         public static Type ContextFinder()
         {
             var assemnblies = Assembly.GetExecutingAssembly().GetTypes();
-            var contextType = assemnblies.Where(p=>p.GetType().BaseType == typeof(BaseContext))
+            var contextType = assemnblies.Where(p => p.BaseType == typeof(BaseContext))
                 .FirstOrDefault();
-            if(contextType is null)
+            if (contextType is null)
             {
                 throw new ApplicationException("please add a data context");
             }
             return contextType;
         }
-        
+
         public static void AutoRegisterRepositoy(this ContainerBuilder builder)
         {
+            if (builder is null)
+            {
+                throw new ApplicationException("this container is null");
+            }
             var context = ContextFinder();
             var defaultType = AutoRegisterRepository.Default;
-            RegisterRepositoyTypeWithPrimaryKey(context, defaultType.RepositoryInterface, defaultType.RepositoryInterfaceWithPrimaryKey);
+            RegisterRepositoyTypeWithPrimaryKey(context, defaultType, builder);
         }
 
-        public static void RegisterRepositoyTypeWithPrimaryKey(Type dbContext,Type repositoryType , Type repositoryTypeWithKey)
+        public static void RegisterRepositoyTypeWithPrimaryKey(Type dbContext, RepositoryDependencyInjection defaultType, ContainerBuilder builder)
         {
-            var implrepository = typeof(BaseRepository<>);//不包含主键仓储的实现
-            var implrepositoryWithKey = typeof(BaseRepository<,>);//包含仓储主键的实现
+            var repositoryType = defaultType.RepositoryInterface;
+            var repositoryImpl = defaultType.RepositoryImplementation;
+            var repositoryTypeWithKey = defaultType.RepositoryInterfaceWithPrimaryKey;
+            var repositoryTypeWithKeyImpl = defaultType.RepositoryImplementationWithPrimaryKey;
             var entities = GetEntityTypeInfo(dbContext);
-            foreach(var entity in entities)
+            foreach (var entity in entities)
             {
                 var primaryKeyType = entity.EntityType;
                 var genericRepoType = repositoryType.MakeGenericType(entity.EntityType);
-
+                var gerericRepoTypeImpl = repositoryImpl.MakeGenericType(entity.EntityType);
+                builder.RegisterType(gerericRepoTypeImpl).As(genericRepoType).InstancePerLifetimeScope();
+                if (repositoryTypeWithKey.IsGenericType && repositoryTypeWithKey.GetGenericArguments().Length == 2)
+                {
+                    var primaryKey = GetPrimaryKeyType(entity.EntityType);
+                    var genericeRepoKeyType = repositoryTypeWithKey.MakeGenericType(entity.EntityType, primaryKey);
+                    var genericeRepoKeyTypeImpl = repositoryTypeWithKeyImpl.MakeGenericType(entity.EntityType, primaryKey);
+                    builder.RegisterType(genericeRepoKeyTypeImpl).As(genericeRepoKeyType).InstancePerLifetimeScope();
+                }
             }
         }
 
@@ -94,12 +110,12 @@ namespace Calo.Blog.EntityCore.DataBase.Extensions
         /// <returns></returns>
         public static IEnumerable<EntityTypeInfo> GetEntityTypeInfo(Type dbType)
         {
-           return from property in dbType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-            where
-            (IsAssignableToGenericType(property.PropertyType, typeof(ISugarDbSet<>)) ||
-             IsAssignableToGenericType(property.PropertyType, typeof(SugarDbSet<>))) &&
-             IsAssignableToGenericType(property.PropertyType.GenericTypeArguments[0], typeof(IEntity<>))
-            select new EntityTypeInfo(property.PropertyType.GenericTypeArguments[0], property?.DeclaringType);
+            return from property in dbType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                   where
+                   (IsAssignableToGenericType(property.PropertyType, typeof(ISugarDbSet<>)) ||
+                    IsAssignableToGenericType(property.PropertyType, typeof(SugarDbSet<>))) &&
+                    IsAssignableToGenericType(property.PropertyType.GenericTypeArguments[0], typeof(IEntity<>))
+                   select new EntityTypeInfo(property.PropertyType.GenericTypeArguments[0], property?.DeclaringType);
         }
     }
 }

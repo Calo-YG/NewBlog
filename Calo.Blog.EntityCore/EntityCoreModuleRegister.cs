@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Calo.Blog.EntityCore.DataBase.Extensions;
 using Calo.Blog.Extenions.DependencyInjection.AutoFacDependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,8 @@ namespace Calo.Blog.EntityCore
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<IocManager>().As<IIocManager>().SingleInstance();
-
+            //注入泛型仓储
+            builder.AutoRegisterRepositoy();
         }
     }
 }

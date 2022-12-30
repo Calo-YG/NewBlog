@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calo.Blog.EntityCore", "Cal
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calo.Blog.Extenions", "Calo.Blog.Extenions\Calo.Blog.Extenions.csproj", "{BB21B697-CB97-48FA-9DF9-440ADE36857F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calo.Blog.Application", "Calo.Blog.Application\Calo.Blog.Application.csproj", "{C661E04E-1E70-41B9-A8E7-44F559F80449}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calo.Blog.Application", "Calo.Blog.Application\Calo.Blog.Application.csproj", "{C661E04E-1E70-41B9-A8E7-44F559F80449}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

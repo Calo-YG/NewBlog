@@ -27,7 +27,11 @@
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "D:\\MyProject\\Calo\\Calo.Blog\\Calo.Blog.EntityCore\\Calo.Blog.EntityCore.csproj": {
+                "projectPath": "D:\\MyProject\\Calo\\Calo.Blog\\Calo.Blog.EntityCore\\Calo.Blog.EntityCore.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -293,6 +297,18 @@
             "Autofac.Extensions.DependencyInjection": {
               "target": "Package",
               "version": "[8.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.2, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.4.0, )"
+            },
+            "Swashbuckle.AspNetCore.Swagger": {
+              "target": "Package",
+              "version": "[6.4.0, )"
             }
           },
           "imports": [

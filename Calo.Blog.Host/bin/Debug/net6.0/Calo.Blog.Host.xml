@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Calo.Blog.Host</name>
+    </assembly>
+    <members>
+        <member name="M:Calo.Blog.Host.Controllers.TestController.SetNotOP">
+            <summary>
+            justTestApi
+            </summary>
+        </member>
+    </members>
+</doc>

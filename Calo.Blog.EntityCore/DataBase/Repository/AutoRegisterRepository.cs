@@ -11,7 +11,7 @@ namespace Calo.Blog.EntityCore.DataBase.Repository
         public static RepositoryDependencyInjection Default { get; }
         static AutoRegisterRepository()
         {
-            Default = new RepositoryDependencyInjection(typeof(IBaseRepository<>),typeof(IBaseRepository<,>));
+            Default = new RepositoryDependencyInjection(typeof(IBaseRepository<>), typeof(IBaseRepository<,>), typeof(BaseRepository<>), typeof(BaseRepository<,>));
         }
     }
 }

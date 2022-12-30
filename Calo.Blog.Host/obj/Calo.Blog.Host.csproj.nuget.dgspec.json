@@ -33,7 +33,11 @@
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "D:\\Project\\Colo.Blog\\Calo.Blog.EntityCore\\Calo.Blog.EntityCore.csproj": {
+                "projectPath": "D:\\Project\\Colo.Blog\\Calo.Blog.EntityCore\\Calo.Blog.EntityCore.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -323,6 +327,10 @@
             "Autofac.Extensions.DependencyInjection": {
               "target": "Package",
               "version": "[8.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.2, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

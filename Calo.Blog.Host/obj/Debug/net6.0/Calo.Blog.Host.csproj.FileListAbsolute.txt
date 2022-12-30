@@ -235,3 +235,10 @@ D:\Project\Colo.Blog\Calo.Blog.Host\obj\Debug\net6.0\scopedcss\projectbundle\Cal
 D:\Project\Colo.Blog\Calo.Blog.Host\obj\Debug\net6.0\Calo.Blog.Host.csproj.CopyComplete
 D:\Project\Colo.Blog\Calo.Blog.Host\obj\Debug\net6.0\Calo.Blog.Host.genruntimeconfig.cache
 D:\Project\Colo.Blog\Calo.Blog.Host\obj\Debug\net6.0\ref\Calo.Blog.Host.dll
+D:\Project\Colo.Blog\Calo.Blog.Host\bin\Debug\net6.0\Microsoft.OpenApi.dll
+D:\Project\Colo.Blog\Calo.Blog.Host\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\Project\Colo.Blog\Calo.Blog.Host\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\Project\Colo.Blog\Calo.Blog.Host\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\Project\Colo.Blog\Calo.Blog.Host\obj\Debug\net6.0\Calo.Blog.Host.MvcApplicationPartsAssemblyInfo.cs
+D:\Project\Colo.Blog\Calo.Blog.Host\bin\Debug\net6.0\Calo.Blog.Host.xml
+D:\Project\Colo.Blog\Calo.Blog.Host\obj\Debug\net6.0\Calo.Blog.Host.xml

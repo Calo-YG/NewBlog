@@ -29,3 +29,10 @@ D:\Project\Colo.Blog\Calo.Blog.Application\bin\Debug\net6.0\Calo.Blog.EntityCore
 D:\Project\Colo.Blog\Calo.Blog.Application\bin\Debug\net6.0\Calo.Blog.Domain.pdb
 D:\Project\Colo.Blog\Calo.Blog.Application\bin\Debug\net6.0\Calo.Blog.Extenions.pdb
 D:\Project\Colo.Blog\Calo.Blog.Application\obj\Debug\net6.0\Calo.Blog.Application.csproj.CopyComplete
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Application\bin\Debug\net6.0\Calo.Blog.Domain.dll
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Application\bin\Debug\net6.0\Calo.Blog.EntityCore.dll
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Application\bin\Debug\net6.0\Calo.Blog.Extenions.dll
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Application\bin\Debug\net6.0\Calo.Blog.EntityCore.pdb
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Application\bin\Debug\net6.0\Calo.Blog.Domain.pdb
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Application\bin\Debug\net6.0\Calo.Blog.Extenions.pdb
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Application\obj\Debug\net6.0\Calo.Blog.Application.csproj.CopyComplete

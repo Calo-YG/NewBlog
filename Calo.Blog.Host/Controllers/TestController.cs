@@ -1,6 +1,8 @@
-﻿using Calo.Blog.Extenions.Attributes;
+﻿using Calo.Blog.EntityCore.DataBase.Entities;
+using Calo.Blog.Extenions.Attributes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace Calo.Blog.Host.Controllers
@@ -25,5 +27,10 @@ namespace Calo.Blog.Host.Controllers
             await Task.CompletedTask;
             return 1;
         }
-    }
+        [HttpGet("GetUser")]
+        public User GetUser(Guid id)
+        {
+            return new User { Id = 1, };
+        }
+   }
 }

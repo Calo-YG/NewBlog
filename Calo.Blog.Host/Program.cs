@@ -4,6 +4,7 @@ using Calo.Blog.EntityCore;
 using Calo.Blog.EntityCore.DataBase;
 using Calo.Blog.EntityCore.DataBase.Extensions;
 using Calo.Blog.EntityCore.DataBase.Repository;
+using Calo.Blog.Extenions.AjaxResponse;
 using Calo.Blog.Extenions.DependencyInjection.AutoFacDependencyInjection;
 using Calo.Blog.Host.Filters;
 using Microsoft.AspNetCore.Builder;
@@ -34,6 +35,8 @@ builder.Services.AddSqlSugarClientAsCleint(p =>
     p.DbType = SqlSugar.DbType.SqlServer;
     p.IsAutoCloseConnection = true;
 }).AddSuagarDbContextAsScoped<BlogContext>();
+
+builder.Services.AddTransient<IActionResultWrapFactory, FilterResultWrapFactory>();
 
 builder.Services.AddSwaggerGen(options =>
 {

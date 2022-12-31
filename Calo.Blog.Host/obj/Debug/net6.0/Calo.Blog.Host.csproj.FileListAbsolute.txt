@@ -242,3 +242,13 @@ D:\Project\Colo.Blog\Calo.Blog.Host\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swag
 D:\Project\Colo.Blog\Calo.Blog.Host\obj\Debug\net6.0\Calo.Blog.Host.MvcApplicationPartsAssemblyInfo.cs
 D:\Project\Colo.Blog\Calo.Blog.Host\bin\Debug\net6.0\Calo.Blog.Host.xml
 D:\Project\Colo.Blog\Calo.Blog.Host\obj\Debug\net6.0\Calo.Blog.Host.xml
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Host\bin\Debug\net6.0\Calo.Blog.Host.xml
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Host\bin\Debug\net6.0\Microsoft.DotNet.PlatformAbstractions.dll
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Host\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Host\bin\Debug\net6.0\Microsoft.OpenApi.dll
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Host\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Host\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Host\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Host\obj\Debug\net6.0\Calo.Blog.Host.MvcApplicationPartsAssemblyInfo.cs
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Host\obj\Debug\net6.0\Calo.Blog.Host.xml
+D:\MyProject\Calo\Calo.Blog\Calo.Blog.Host\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll

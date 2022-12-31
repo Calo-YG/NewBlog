@@ -1,4 +1,5 @@
 ﻿using Calo.Blog.EntityCore.DataBase.Entities;
+using Calo.Blog.Extenions.AjaxResponse;
 using Calo.Blog.Extenions.Attributes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,13 +17,13 @@ namespace Calo.Blog.Host.Filters
 {
     public class ResultFilter : IResultFilter
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger _logger;
+        private readonly IActionResultWrapFactory _actionResultWrapFactory;
 
-        public ResultFilter(IHttpContextAccessor httpContextAccessor, ILogger<ResultFilter> logger)
+        public ResultFilter(ILogger<ResultFilter> logger, IActionResultWrapFactory actionResultWrapFactory)
         {
-            _httpContextAccessor = httpContextAccessor;
             _logger = logger;
+            _actionResultWrapFactory = actionResultWrapFactory;
         }
         public void OnResultExecuted(ResultExecutedContext context)
         {
@@ -31,21 +32,13 @@ namespace Calo.Blog.Host.Filters
 
         public void OnResultExecuting(ResultExecutingContext context)
         {
-            var httpContext = _httpContextAccessor.HttpContext;
             var action = context.ActionDescriptor as ControllerActionDescriptor;
             var method = action?.MethodInfo;
             var nonResult = method?.CustomAttributes?.Where(p => p.AttributeType == typeof(NoResultAttribute));
             if (nonResult is null || !nonResult.Any())
             {
-                var result = (ObjectResult)context.Result;
-                if (result is null)
-                {
-                    throw new ArgumentException("Action Result should be JsonResult!");
-                }
-                result.Value = new User()
-                {
 
-                };
+                _actionResultWrapFactory.CreateContext(context).Wrap(context);
             }
         }
     }

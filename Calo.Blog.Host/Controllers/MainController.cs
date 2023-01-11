@@ -9,28 +9,25 @@ using System.Diagnostics;
 
 namespace Calo.Blog.Host.Controllers
 {
-
-    public class HomeController : Controller
+    [NoResult]
+    public class MainController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<MainController> _logger;
         private readonly IBaseRepository<User, long> userRespo;
 
-        public HomeController(ILogger<HomeController> logger, IBaseRepository<User, long> baseRepository)
+        public MainController(ILogger<MainController> logger, IBaseRepository<User, long> baseRepository)
         {
             _logger = logger;
             userRespo = baseRepository;
         }
-        [NoResult]
         public IActionResult Index()
         {
             return RedirectToAction("Index", "Master");
         }
-        [NoResult]
         public IActionResult Privacy()
         {
             return View();
         }
-        [NoResult]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

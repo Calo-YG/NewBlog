@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "/Ml9x8PU583E0j0V7Al8lLStCfO6p65Pkm+TDMNiJcc=",
+  "Hash": "VJaHHdmmvn7nAkMIDigiLVGsqH+BjSa/k71G1VjEhq4=",
   "Source": "Calo.Blog.Host",
   "BasePath": "_content/Calo.Blog.Host",
   "Mode": "Default",
@@ -83,6 +83,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "D:\\Projects\\Colo.Blog\\Calo.Blog.Host\\wwwroot\\Index.html",
+      "SourceId": "Calo.Blog.Host",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Projects\\Colo.Blog\\Calo.Blog.Host\\wwwroot\\",
+      "BasePath": "_content/Calo.Blog.Host",
+      "RelativePath": "Index.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Index.html"
     },
     {
       "Identity": "D:\\Projects\\Colo.Blog\\Calo.Blog.Host\\wwwroot\\js\\site.js",

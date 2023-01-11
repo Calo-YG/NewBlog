@@ -15,12 +15,12 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes = true
 build_property.MSBuildProjectDirectory = D:\Projects\Colo.Blog\Calo.Blog.Host
 build_property._RazorSourceGeneratorDebug = 
 
-[D:/Projects/Colo.Blog/Calo.Blog.Host/Views/Home/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+[D:/Projects/Colo.Blog/Calo.Blog.Host/Views/Main/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFpblxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Projects/Colo.Blog/Calo.Blog.Host/Views/Home/Privacy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+[D:/Projects/Colo.Blog/Calo.Blog.Host/Views/Main/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFpblxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Projects/Colo.Blog/Calo.Blog.Host/Views/Master/Index.cshtml]

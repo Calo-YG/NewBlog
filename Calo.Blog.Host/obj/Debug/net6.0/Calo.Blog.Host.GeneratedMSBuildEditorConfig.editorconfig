@@ -11,7 +11,7 @@ build_property.RootNamespace = Calo.Blog.Host
 build_property.ProjectDir = D:\Projects\Colo.Blog\Calo.Blog.Host\
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
-build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = true
 build_property.MSBuildProjectDirectory = D:\Projects\Colo.Blog\Calo.Blog.Host
 build_property._RazorSourceGeneratorDebug = 
 
@@ -21,6 +21,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/Projects/Colo.Blog/Calo.Blog.Host/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Projects/Colo.Blog/Calo.Blog.Host/Views/Master/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzdGVyXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Projects/Colo.Blog/Calo.Blog.Host/Views/Shared/Error.cshtml]

@@ -33,11 +33,20 @@ namespace Calo.Blog.Host.Filters
         public void OnResultExecuting(ResultExecutingContext context)
         {
             var action = context.ActionDescriptor as ControllerActionDescriptor;
+            var controllerAttribute = context.Controller
+                .GetType()?
+                .CustomAttributes?
+                .FirstOrDefault(p => p.AttributeType == typeof(NoResultAttribute));
+            if (controllerAttribute != null)
+            {
+                return;
+            }
             var method = action?.MethodInfo;
-            var nonResult = method?.CustomAttributes?.Where(p => p.AttributeType == typeof(NoResultAttribute));
+            var nonResult = method?
+                .CustomAttributes?
+                .Where(p => p.AttributeType == typeof(NoResultAttribute));
             if (nonResult is null || !nonResult.Any())
             {
-
                 _actionResultWrapFactory.CreateContext(context).Wrap(context);
             }
         }

@@ -1,18 +1,16 @@
 using Autofac;
+using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
 using Calo.Blog.EntityCore;
 using Calo.Blog.EntityCore.DataBase;
 using Calo.Blog.EntityCore.DataBase.Extensions;
-using Calo.Blog.EntityCore.DataBase.Repository;
 using Calo.Blog.Extenions.AjaxResponse;
-using Calo.Blog.Extenions.DependencyInjection.AutoFacDependencyInjection;
 using Calo.Blog.Host.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using Org.BouncyCastle.Asn1.X509.Qualified;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 using System.IO;
 using System.Reflection;
@@ -20,7 +18,13 @@ using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddMvc()
+    .AddRazorPagesOptions(options =>
+    {
+
+    })
+    .AddRazorRuntimeCompilation();
+
 
 builder.Services.AddHttpContextAccessor();
 
@@ -42,9 +46,9 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Version = "v1",
+        Version = "Calo API v1",
         Title = "Calo API",
-        Description = "Web API for managing By Calo-YG Gitee¸öÈËÖ÷Ò³",
+        Description = "Web API for managing By Calo-YG",
         TermsOfService = new Uri("https://gitee.com/wen-yaoguang"),
         Contact = new OpenApiContact
         {
@@ -57,9 +61,9 @@ builder.Services.AddSwaggerGen(options =>
             Url = new Uri("https://www.cnblogs.com/lonely-wen/")
         }
     });
-    // using System.Reflection;
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+    options.OrderActionsBy(o => o.RelativePath);
 });
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
@@ -69,7 +73,6 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
 });
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -83,14 +86,16 @@ app.UseSwagger();
 
 app.UseSwaggerUI(options =>
 {
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-    options.RoutePrefix = string.Empty;
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Calo API");
+    options.EnableDeepLinking();
+    options.DocExpansion(DocExpansion.None);
 });
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseEndpoints(endOptions =>
+{
+    endOptions.MapControllerRoute(name: "default", pattern: "{controller=Master}/{action=Index}");
+});
 
 app.Run();

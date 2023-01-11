@@ -34,3 +34,15 @@ D:\Project\Colo.Blog\Calo.Blog.Extenions\obj\Debug\net6.0\Calo.Blog.Extenions.dl
 D:\Project\Colo.Blog\Calo.Blog.Extenions\obj\Debug\net6.0\refint\Calo.Blog.Extenions.dll
 D:\Project\Colo.Blog\Calo.Blog.Extenions\obj\Debug\net6.0\Calo.Blog.Extenions.pdb
 D:\Project\Colo.Blog\Calo.Blog.Extenions\obj\Debug\net6.0\ref\Calo.Blog.Extenions.dll
+D:\Projects\Colo.Blog\Calo.Blog.Extenions\bin\Debug\net6.0\Calo.Blog.Extenions.deps.json
+D:\Projects\Colo.Blog\Calo.Blog.Extenions\bin\Debug\net6.0\Calo.Blog.Extenions.dll
+D:\Projects\Colo.Blog\Calo.Blog.Extenions\bin\Debug\net6.0\Calo.Blog.Extenions.pdb
+D:\Projects\Colo.Blog\Calo.Blog.Extenions\obj\Debug\net6.0\Calo.Blog.Extenions.csproj.AssemblyReference.cache
+D:\Projects\Colo.Blog\Calo.Blog.Extenions\obj\Debug\net6.0\Calo.Blog.Extenions.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects\Colo.Blog\Calo.Blog.Extenions\obj\Debug\net6.0\Calo.Blog.Extenions.AssemblyInfoInputs.cache
+D:\Projects\Colo.Blog\Calo.Blog.Extenions\obj\Debug\net6.0\Calo.Blog.Extenions.AssemblyInfo.cs
+D:\Projects\Colo.Blog\Calo.Blog.Extenions\obj\Debug\net6.0\Calo.Blog.Extenions.csproj.CoreCompileInputs.cache
+D:\Projects\Colo.Blog\Calo.Blog.Extenions\obj\Debug\net6.0\Calo.Blog.Extenions.dll
+D:\Projects\Colo.Blog\Calo.Blog.Extenions\obj\Debug\net6.0\refint\Calo.Blog.Extenions.dll
+D:\Projects\Colo.Blog\Calo.Blog.Extenions\obj\Debug\net6.0\Calo.Blog.Extenions.pdb
+D:\Projects\Colo.Blog\Calo.Blog.Extenions\obj\Debug\net6.0\ref\Calo.Blog.Extenions.dll

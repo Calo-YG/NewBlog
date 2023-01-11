@@ -12,13 +12,6 @@ namespace Calo.Blog.EntityCore.DataBase.DatabaseContext
     {
         public BaseContext()
         {
-            AddIsDeleteFilter();
-        }
-
-        public void AddIsDeleteFilter()
-        {
-
-            Db.QueryFilter.ConfigureFilterForEntity();
         }
     }
 }

@@ -86,7 +86,7 @@ app.UseSwagger();
 
 app.UseSwaggerUI(options =>
 {
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Calo API");
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Calo API V1");
     options.EnableDeepLinking();
     options.DocExpansion(DocExpansion.None);
 });

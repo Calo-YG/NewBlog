@@ -34,7 +34,6 @@ namespace Calo.Blog.EntityCore.DataBase.Extensions
             ISqlSugarClient sugar = new SqlSugarScope(config);
             services.AddSingleton<ISqlSugarClient>(sugar);
             sugar.QueryFilter.ConfigureFilterForEntity();
-            config.ConfigureExternalServices = TableAttributeConfig.AddContextColumsConfiure();
             ISugarUnitOfWork<TDbContext> context = new SugarUnitOfWork<TDbContext>(sugar);
             services.AddSingleton<ISugarUnitOfWork<TDbContext>>(context);
             return services;

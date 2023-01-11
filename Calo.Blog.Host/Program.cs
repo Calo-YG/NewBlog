@@ -44,17 +44,17 @@ builder.Services.AddSwaggerGen(options =>
     {
         Version = "v1",
         Title = "Calo API",
-        Description = "Web API for managing By Calo",
-        TermsOfService = new Uri("https://example.com/terms"),
+        Description = "Web API for managing By Calo-YG Gitee个人主页",
+        TermsOfService = new Uri("https://gitee.com/wen-yaoguang"),
         Contact = new OpenApiContact
         {
-            Name = "Example Contact",
-            Url = new Uri("https://example.com/contact")
+            Name = "Gitee 地址",
+            Url = new Uri("https://gitee.com/wen-yaoguang/Colo.Blog")
         },
         License = new OpenApiLicense
         {
-            Name = "Example License",
-            Url = new Uri("https://example.com/license")
+            Name = "个人博客",
+            Url = new Uri("https://www.cnblogs.com/lonely-wen/")
         }
     });
     // using System.Reflection;

@@ -4,11 +4,14 @@ using Autofac.Extensions.DependencyInjection;
 using Calo.Blog.EntityCore;
 using Calo.Blog.EntityCore.DataBase;
 using Calo.Blog.EntityCore.DataBase.Extensions;
+using Calo.Blog.EntityCore.DataBase.Repository;
 using Calo.Blog.Extenions.AjaxResponse;
 using Calo.Blog.Host.Filters;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
@@ -35,12 +38,23 @@ builder.Services.AddControllers(options =>
 
 builder.Services.AddSqlSugarClientAsCleint(p =>
 {
-    p.ConnectionString = builder.Configuration.GetSection("").Value;
+    p.ConnectionString = builder.Configuration.GetSection("App:ConnectionString:Default").Value;
     p.DbType = SqlSugar.DbType.SqlServer;
     p.IsAutoCloseConnection = true;
 }).AddSuagarDbContextAsScoped<BlogContext>();
 
 builder.Services.AddTransient<IActionResultWrapFactory, FilterResultWrapFactory>();
+
+builder.Services.AddScoped<IDbAopProvider, DbAopProvider>();
+//添加数据库上下文AOP配置
+builder.Services.Configure<DbConfigureOptions>(options =>
+{
+    var config = builder.Configuration
+    .GetSection("App:DbConfigureOptions")
+    .Get<DbConfigureOptions>();
+    options.EnableAopLog = config.EnableAopLog;
+    options.EnableAopError = config.EnableAopError;
+});
 
 builder.Services.AddSwaggerGen(options =>
 {

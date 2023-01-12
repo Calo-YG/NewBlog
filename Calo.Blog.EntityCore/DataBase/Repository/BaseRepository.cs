@@ -20,17 +20,30 @@ namespace Calo.Blog.EntityCore.DataBase.Repository
         where TEntity : class, IEntity<TPrimaryKey>, new()
     {
         private readonly IServiceProvider _servicerProvider;
-        private readonly IOptions<DbConfigureOptions> _dbopions;
+        private readonly IDbAopProvider _dbAopProvider;
         private readonly ILogger<BaseRepository<TEntity, TPrimaryKey>> _logger;
         public BaseRepository(IServiceProvider provider
-            , IOptions<DbConfigureOptions> dboptions
+            , IDbAopProvider dbAopProvider
             , ILogger<BaseRepository<TEntity, TPrimaryKey>> logger
             , ISqlSugarClient client = null) : base(client)
         {
             _servicerProvider = provider;
-            _dbopions = dboptions;
+            _dbAopProvider = dbAopProvider;
             _logger = logger;
             base.Context = _servicerProvider.GetRequiredService<ISqlSugarClient>();
+            InitDbAop();
+        }
+
+        private void InitDbAop()
+        {
+            if (_dbAopProvider.DbConfigureOptions.EnableAopLog)
+            {
+                base.Context.Aop.OnLogExecuting = _dbAopProvider.AopLogAction(_logger);
+            }
+            if (_dbAopProvider.DbConfigureOptions.EnableAopError)
+            {
+                base.Context.Aop.OnError = _dbAopProvider.AopErrorAction(_logger);
+            }
         }
     }
 
@@ -38,17 +51,30 @@ namespace Calo.Blog.EntityCore.DataBase.Repository
         where TEntity : class, new()
     {
         private readonly IServiceProvider _servicerProvider;
-        private readonly IOptions<DbConfigureOptions> _dbopions;
+        private readonly IDbAopProvider _dbAopProvider;
         private readonly ILogger<BaseRepository<TEntity>> _logger;
         public BaseRepository(IServiceProvider provider
-            , IOptions<DbConfigureOptions> dboptions
+            , IDbAopProvider dbAopProvider
             , ILogger<BaseRepository<TEntity>> logger
             , ISqlSugarClient client = null) : base(client)
         {
             _servicerProvider = provider;
-            _dbopions = dboptions;
+            _dbAopProvider = dbAopProvider;
             _logger = logger;
             base.Context = _servicerProvider.GetRequiredService<ISqlSugarClient>();
+            InitDbAop();
+        }
+
+        private void InitDbAop()
+        {
+            if (_dbAopProvider.DbConfigureOptions.EnableAopLog)
+            {
+                base.Context.Aop.OnLogExecuting = _dbAopProvider.AopLogAction(_logger);
+            }
+            if (_dbAopProvider.DbConfigureOptions.EnableAopError)
+            {
+                base.Context.Aop.OnError = _dbAopProvider.AopErrorAction(_logger);
+            }
         }
     }
 }

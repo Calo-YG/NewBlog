@@ -1,25 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Projects\\Colo.Blog\\Calo.Blog.Core\\Calo.Blog.Domain.csproj": {}
+    "D:\\MyProject\\Colo.Blog\\Calo.Blog.Core\\Calo.Blog.Domain.csproj": {}
   },
   "projects": {
-    "D:\\Projects\\Colo.Blog\\Calo.Blog.Core\\Calo.Blog.Domain.csproj": {
+    "D:\\MyProject\\Colo.Blog\\Calo.Blog.Core\\Calo.Blog.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects\\Colo.Blog\\Calo.Blog.Core\\Calo.Blog.Domain.csproj",
+        "projectUniqueName": "D:\\MyProject\\Colo.Blog\\Calo.Blog.Core\\Calo.Blog.Domain.csproj",
         "projectName": "Calo.Blog.Domain",
-        "projectPath": "D:\\Projects\\Colo.Blog\\Calo.Blog.Core\\Calo.Blog.Domain.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects\\Colo.Blog\\Calo.Blog.Core\\obj\\",
+        "projectPath": "D:\\MyProject\\Colo.Blog\\Calo.Blog.Core\\Calo.Blog.Domain.csproj",
+        "packagesPath": "C:\\Users\\31645\\.nuget\\packages\\",
+        "outputPath": "D:\\MyProject\\Colo.Blog\\Calo.Blog.Core\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "D:\\VS 2022\\ComponentShared\\NuGetPackages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\31645\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -27,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -61,7 +55,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -349,3 +349,5 @@ healthchecksdb
 /Calo.Blog.EntityCore/obj
 /Calo.Blog.Extenions/obj
 /Calo.Blog.Host/obj
+/.vs/Calo.Blog
+/.vs/ProjectEvaluation

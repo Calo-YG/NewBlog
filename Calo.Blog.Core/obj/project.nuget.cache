@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "h7OX5wOkqaAU9kXcKYfL8GxDd0jUzBfQmK8rS4dfpYt6bowoLJABR14nSYLAT0nB45DnBuxyVRk4HsSRsqMNyw==",
+  "dgSpecHash": "VHfkeOTB4RJmRinJRBULQvD/ROZcT7aSlMScl4rWZ0xnwt13asvpFyWkNeK6dxczCWxJ+xYo5JoX2me5lTnqXQ==",
   "success": true,
-  "projectFilePath": "D:\\MyProject\\Colo.Blog\\Calo.Blog.Core\\Calo.Blog.Domain.csproj",
+  "projectFilePath": "D:\\Projects\\Colo.Blog\\Calo.Blog.Core\\Calo.Blog.Domain.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

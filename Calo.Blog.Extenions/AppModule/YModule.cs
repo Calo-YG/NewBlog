@@ -34,16 +34,27 @@ namespace Calo.Blog.Extenions.AppModule
                 !typeInfo.IsGenericType &&
                 typeof(IYModule).GetTypeInfo().IsAssignableFrom(type);
         }
-        public static void FindModuleDependon(Type module)
+        public static List<Type> FindModuleDependon(Type module)
         {
             if (!IsModule(module))
             {
                 throw new ApplicationException($"{module.Name} base type not YModule");
             }
 
-            List<Type> types = new();
+            List<Type> list = new();
 
-            module.GetCustomAttributes();
+            if (module.GetTypeInfo().IsDefined(typeof(DependOnAttribute), true))
+            {
+                var dependsOnAttributes = module.GetTypeInfo().GetCustomAttributes(typeof(DependOnAttribute), true).Cast<DependOnAttribute>();
+                foreach (var dependsOnAttribute in dependsOnAttributes)
+                {
+                    foreach (var dependedModuleType in dependsOnAttribute.Type)
+                    {
+                        list.Add(dependedModuleType);
+                    }
+                }
+            }
+            return list;
         }
     }
 }

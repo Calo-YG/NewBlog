@@ -351,3 +351,7 @@ healthchecksdb
 /Calo.Blog.Host/obj
 /.vs/Calo.Blog
 /.vs/ProjectEvaluation
+/Calo.Blog.Application/obj
+/Calo.Blog.Application/*
+/Calo.Blog.Application
+/Calo.Blog.Host/bin

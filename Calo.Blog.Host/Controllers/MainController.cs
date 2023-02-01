@@ -4,7 +4,6 @@ using Calo.Blog.Extenions.Attributes;
 using Calo.Blog.Host.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Diagnostics;
 
 namespace Calo.Blog.Host.Controllers

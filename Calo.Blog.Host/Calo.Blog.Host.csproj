@@ -22,7 +22,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Calo.Blog.Application\Calo.Blog.Application.csproj" />
-		<ProjectReference Include="..\Calo.Blog.EntityCore\Calo.Blog.EntityCore.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -356,3 +356,4 @@ healthchecksdb
 /Calo.Blog.Application
 /Calo.Blog.Host/bin
 /Calo.Blog.Extenions/bin
+/Calo.Blog.EntityCore/bin

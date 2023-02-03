@@ -110,8 +110,11 @@ app.UseSwaggerUI(options =>
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "Calo API V1");
     options.EnableDeepLinking();
     options.DocExpansion(DocExpansion.None);
-    //options.IndexStream = () => Assembly.GetExecutingAssembly()
-    //.GetManifestResourceStream("Calo.Blog.Host.wwwroot.index.html");
+    options.IndexStream = () =>
+    {
+        var path = Path.Join(builder.Environment.WebRootPath, "pages", "swagger.html");
+        return new FileInfo(path).OpenRead();
+    };
 });
 
 app.Run();

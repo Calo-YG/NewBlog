@@ -95,6 +95,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthorization();
+
+app.UseEndpoints(endOptions =>
+{
+    endOptions.MapDefaultControllerRoute();
+    endOptions.MapRazorPages();
+});
+
 app.UseSwagger();
 
 app.UseSwaggerUI(options =>
@@ -102,13 +110,8 @@ app.UseSwaggerUI(options =>
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "Calo API V1");
     options.EnableDeepLinking();
     options.DocExpansion(DocExpansion.None);
-});
-
-app.UseAuthorization();
-
-app.UseEndpoints(endOptions =>
-{
-    endOptions.MapControllerRoute(name: "default", pattern: "{controller=Master}/{action=Index}");
+    //options.IndexStream = () => Assembly.GetExecutingAssembly()
+    //.GetManifestResourceStream("Calo.Blog.Host.wwwroot.index.html");
 });
 
 app.Run();

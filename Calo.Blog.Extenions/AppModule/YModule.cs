@@ -12,14 +12,39 @@ namespace Calo.Blog.Extenions.AppModule
 
     public abstract class YModule : IYModule, IPreApplicationInition
     {
-        public virtual void ServiceConfiguration(IServiceCollection services)
+        protected internal IServiceConfigurationContext ServiceConfigurationContext
         {
-
+            get
+            {
+                if (_ServiceConfigurationContext is null)
+                {
+                    throw new ArgumentException("_ServiceConfigurationContext is null");
+                }
+                return _ServiceConfigurationContext;
+            }
+            internal set => _ServiceConfigurationContext = value;
         }
+
+        private IServiceConfigurationContext _ServiceConfigurationContext;
+        /// <summary>
+        /// 服务注册配置
+        /// </summary>
+        /// <param name="context"></param>
+        public virtual void ServiceConfiguration(IServiceConfigurationContext context)
+        {
+        }
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="serviceProvider"></param>
         public virtual void ApplictionInit(IServiceProvider serviceProvider)
         {
 
         }
+        /// <summary>
+        /// 预初始化
+        /// </summary>
+        /// <param name="serviceProvider"></param>
         public virtual void PreApplictionInition(IServiceProvider serviceProvider)
         {
 
@@ -34,28 +59,6 @@ namespace Calo.Blog.Extenions.AppModule
                 !typeInfo.IsAbstract &&
                 !typeInfo.IsGenericType &&
                 typeof(IYModule).GetTypeInfo().IsAssignableFrom(type);
-        }
-        public static List<Type> FindModuleDependon(Type module)
-        {
-            if (!IsModule(module))
-            {
-                throw new ApplicationException($"{module.Name} base type not YModule");
-            }
-
-            List<Type> list = new();
-
-            if (module.GetTypeInfo().IsDefined(typeof(DependOnAttribute), true))
-            {
-                var dependsOnAttributes = module.GetTypeInfo().GetCustomAttributes(typeof(DependOnAttribute), true).Cast<DependOnAttribute>();
-                foreach (var dependsOnAttribute in dependsOnAttributes)
-                {
-                    foreach (var dependedModuleType in dependsOnAttribute.Type)
-                    {
-                        list.Add(dependedModuleType);
-                    }
-                }
-            }
-            return list;
         }
     }
 }

@@ -6,6 +6,8 @@ using Calo.Blog.EntityCore.DataBase;
 using Calo.Blog.EntityCore.DataBase.Extensions;
 using Calo.Blog.EntityCore.DataBase.Repository;
 using Calo.Blog.Extenions.AjaxResponse;
+using Calo.Blog.Extenions.AppModule;
+using Calo.Blog.Host;
 using Calo.Blog.Host.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -85,6 +87,8 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     container.RegisterModule<EntityCoreModuleRegister>();
 });
 
+builder.Services.LoadModule<CaloBlogHostModule>();
+
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -116,5 +120,7 @@ app.UseSwaggerUI(options =>
         return new FileInfo(path).OpenRead();
     };
 });
+
+app.InitModule<CaloBlogHostModule>();
 
 app.Run();

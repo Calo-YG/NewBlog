@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Calo.Blog.Extenions.AppModule
 {
-    public interface IYModule
+    public class ServiceConfigurationContext
     {
-        void ServiceConfiguration(IServiceConfigurationContext context);
-        void ApplictionInit(IServiceProvider serviceProvider);
+        public IServiceCollection Service { get; set; }
+        public IServiceProvider ServiceProvider { get => Service.BuildServiceProvider(); }
     }
 }

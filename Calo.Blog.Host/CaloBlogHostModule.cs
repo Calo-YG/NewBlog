@@ -4,7 +4,7 @@ namespace Calo.Blog.Host
 {
     public class CaloBlogHostModule : YModule
     {
-        public override void ServiceConfiguration(IServiceConfigurationContext context)
+        public override void ServiceConfiguration(ServiceConfigurationContext context)
         {
             var configuration = context.Configuration();
         }

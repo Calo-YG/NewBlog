@@ -9,7 +9,7 @@ namespace Calo.Blog.Extenions.AppModule
 {
     public interface IYModule
     {
-        void ServiceConfiguration(IServiceConfigurationContext context);
+        void ServiceConfiguration(ServiceConfigurationContext context);
         void ApplictionInit(IServiceProvider serviceProvider);
     }
 }

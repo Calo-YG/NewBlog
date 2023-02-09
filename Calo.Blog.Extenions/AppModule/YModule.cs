@@ -12,7 +12,7 @@ namespace Calo.Blog.Extenions.AppModule
 
     public abstract class YModule : IYModule, IPreApplicationInition
     {
-        protected internal IServiceConfigurationContext ServiceConfigurationContext
+        protected internal ServiceConfigurationContext ServiceConfigurationContext
         {
             get
             {
@@ -25,12 +25,12 @@ namespace Calo.Blog.Extenions.AppModule
             internal set => _ServiceConfigurationContext = value;
         }
 
-        private IServiceConfigurationContext _ServiceConfigurationContext;
+        private ServiceConfigurationContext _ServiceConfigurationContext;
         /// <summary>
         /// 服务注册配置
         /// </summary>
         /// <param name="context"></param>
-        public virtual void ServiceConfiguration(IServiceConfigurationContext context)
+        public virtual void ServiceConfiguration(ServiceConfigurationContext context)
         {
         }
         /// <summary>

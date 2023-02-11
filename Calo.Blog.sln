@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calo.Blog.EntityCore", "Cal
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calo.Blog.Extenions", "Calo.Blog.Extenions\Calo.Blog.Extenions.csproj", "{BB21B697-CB97-48FA-9DF9-440ADE36857F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calo.Blog.Application", "Calo.Blog.Application\Calo.Blog.Application.csproj", "{C661E04E-1E70-41B9-A8E7-44F559F80449}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{BB21B697-CB97-48FA-9DF9-440ADE36857F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB21B697-CB97-48FA-9DF9-440ADE36857F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB21B697-CB97-48FA-9DF9-440ADE36857F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C661E04E-1E70-41B9-A8E7-44F559F80449}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C661E04E-1E70-41B9-A8E7-44F559F80449}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C661E04E-1E70-41B9-A8E7-44F559F80449}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C661E04E-1E70-41B9-A8E7-44F559F80449}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

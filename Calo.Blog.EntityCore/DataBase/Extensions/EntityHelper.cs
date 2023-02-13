@@ -120,17 +120,34 @@ namespace Calo.Blog.EntityCore.DataBase.Extensions
                     IsAssignableToGenericType(property.PropertyType.GenericTypeArguments[0], typeof(IEntity<>))
                    select new EntityTypeInfo(property.PropertyType.GenericTypeArguments[0], property?.DeclaringType);
         }
-
+        
         public static IServiceCollection AddRepository<TDbContext>(this IServiceCollection services) where  TDbContext : BaseContext
         {
-            var types=typeof(TDbContext).GetProperties(BindingFlags.Public)
-                .Where(p => IsAssignableToGenericType(p.PropertyType.GenericTypeArguments[0],typeof(IEntity<>)));
+            var entities = GetEntityTypeInfo(typeof(TDbContext));
+            var defaultType = AutoRegisterRepository.Default;
+            var repositoryType = defaultType.RepositoryInterface;
+            var repositoryImpl = defaultType.RepositoryImplementation;
+            var repositoryTypeWithKey = defaultType.RepositoryInterfaceWithPrimaryKey;
+            var repositoryTypeWithKeyImpl = defaultType.RepositoryImplementationWithPrimaryKey;
             using var sp = services.BuildServiceProvider();
-            foreach(var type in types)
+            foreach(var entity in entities)
             {
-                if (sp.IsExistsInDependInjection(type.PropertyType))
+               // var primaryKeyType = entity.EntityType;
+                var genericRepoType = repositoryType.MakeGenericType(entity.EntityType);
+                var gerericRepoTypeImpl = repositoryImpl.MakeGenericType(entity.EntityType);
+                if (sp.IsExistsInDependInjection(genericRepoType))
                 {
-                    continue;
+                    services.AddScoped(genericRepoType, gerericRepoTypeImpl);
+                }
+                if (repositoryTypeWithKey.IsGenericType && repositoryTypeWithKey.GetGenericArguments().Length == 2)
+                {
+                    var primaryKey = GetPrimaryKeyType(entity.EntityType);
+                    var genericeRepoKeyType = repositoryTypeWithKey.MakeGenericType(entity.EntityType, primaryKey);
+                    var genericeRepoKeyTypeImpl = repositoryTypeWithKeyImpl.MakeGenericType(entity.EntityType, primaryKey);
+                    if (sp.IsExistsInDependInjection(genericeRepoKeyType))
+                    {
+                        services.AddScoped(genericeRepoKeyType, genericeRepoKeyTypeImpl);
+                    }
                 }
             }
             return services;

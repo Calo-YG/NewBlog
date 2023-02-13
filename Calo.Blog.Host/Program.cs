@@ -73,18 +73,19 @@ builder.Services.AddSwaggerGen(options =>
         License = new OpenApiLicense
         {
             Name = "¸öÈË²©¿Í",
-            Url = new Uri("https://www.cnblogs.com/lonely-wen/")
+            Url = new Uri("https://www.se.cnblogs.com/lonely-wen/")
         }
     });
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
     options.OrderActionsBy(o => o.RelativePath);
 });
+builder.Services.AddRepository<BlogContext>();
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
 .ConfigureContainer<ContainerBuilder>(container =>
 {
-    container.RegisterModule<EntityCoreModuleRegister>();
+   // container.RegisterModule<EntityCoreModuleRegister>();
 });
 
 builder.Services.LoadModule<CaloBlogHostModule>();

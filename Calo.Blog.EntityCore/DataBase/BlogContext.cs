@@ -13,7 +13,7 @@ namespace Calo.Blog.EntityCore.DataBase
 {
     public class BlogContext : BaseContext
     {
-
+        public Type[] Eniities = new Type[] { typeof(User) };
         public SugarDbSet<User> User { get; set; }
         public BlogContext()
         {

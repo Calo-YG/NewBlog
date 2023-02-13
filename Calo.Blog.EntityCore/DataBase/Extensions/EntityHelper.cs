@@ -4,10 +4,13 @@ using Calo.Blog.EntityCore.DataBase.DatabaseContext;
 using Calo.Blog.EntityCore.DataBase.EntityBase;
 using Calo.Blog.EntityCore.DataBase.Repository;
 using Calo.Blog.Extenions.DependencyInjection.AutoFacDependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
+using Org.BouncyCastle.Utilities.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -116,6 +119,25 @@ namespace Calo.Blog.EntityCore.DataBase.Extensions
                     IsAssignableToGenericType(property.PropertyType, typeof(SugarDbSet<>))) &&
                     IsAssignableToGenericType(property.PropertyType.GenericTypeArguments[0], typeof(IEntity<>))
                    select new EntityTypeInfo(property.PropertyType.GenericTypeArguments[0], property?.DeclaringType);
+        }
+
+        public static IServiceCollection AddRepository<TDbContext>(this IServiceCollection services) where  TDbContext : BaseContext
+        {
+            var types=typeof(TDbContext).GetProperties(BindingFlags.Public)
+                .Where(p => IsAssignableToGenericType(p.PropertyType.GenericTypeArguments[0],typeof(IEntity<>)));
+            using var sp = services.BuildServiceProvider();
+            foreach(var type in types)
+            {
+                if (sp.IsExistsInDependInjection(type.PropertyType))
+                {
+                    continue;
+                }
+            }
+            return services;
+        }
+        private static bool IsExistsInDependInjection(this IServiceProvider provider,Type repotype) {
+            var injection = provider.GetService(repotype);    
+            return injection is null;
         }
     }
 }

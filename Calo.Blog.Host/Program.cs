@@ -1,14 +1,7 @@
 using Autofac;
-using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
-using Calo.Blog.EntityCore;
-using Calo.Blog.EntityCore.DataBase;
-using Calo.Blog.EntityCore.DataBase.Extensions;
-using Calo.Blog.EntityCore.DataBase.Repository;
-using Calo.Blog.Extenions.AjaxResponse;
 using Calo.Blog.Extenions.AppModule;
 using Calo.Blog.Host;
-using Calo.Blog.Host.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

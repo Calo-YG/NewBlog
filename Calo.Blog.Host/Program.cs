@@ -22,70 +22,11 @@ using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddMvc()
-    .AddRazorPagesOptions(options =>
-    {
-
-    })
-    .AddRazorRuntimeCompilation();
-
-
-builder.Services.AddHttpContextAccessor();
-
-builder.Services.AddControllers(options =>
-{
-    options.Filters.Add<ResultFilter>();
-});
-
-builder.Services.AddSqlSugarClientAsCleint(p =>
-{
-    p.ConnectionString = builder.Configuration.GetSection("App:ConnectionString:Default").Value;
-    p.DbType = SqlSugar.DbType.SqlServer;
-    p.IsAutoCloseConnection = true;
-}).AddSuagarDbContextAsScoped<BlogContext>();
-
-builder.Services.AddTransient<IActionResultWrapFactory, FilterResultWrapFactory>();
-
-builder.Services.AddScoped<IDbAopProvider, DbAopProvider>();
-//添加数据库上下文AOP配置
-builder.Services.Configure<DbConfigureOptions>(options =>
-{
-    var config = builder.Configuration
-    .GetSection("App:DbConfigureOptions")
-    .Get<DbConfigureOptions>();
-    options.EnableAopLog = config.EnableAopLog;
-    options.EnableAopError = config.EnableAopError;
-});
-
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Version = "Calo API v1",
-        Title = "Calo API",
-        Description = "Web API for managing By Calo-YG",
-        TermsOfService = new Uri("https://gitee.com/wen-yaoguang"),
-        Contact = new OpenApiContact
-        {
-            Name = "Gitee 地址",
-            Url = new Uri("https://gitee.com/wen-yaoguang/Colo.Blog")
-        },
-        License = new OpenApiLicense
-        {
-            Name = "个人博客",
-            Url = new Uri("https://www.se.cnblogs.com/lonely-wen/")
-        }
-    });
-    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-    options.OrderActionsBy(o => o.RelativePath);
-});
-builder.Services.AddRepository<BlogContext>();
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
 .ConfigureContainer<ContainerBuilder>(container =>
 {
-   // container.RegisterModule<EntityCoreModuleRegister>();
+    // container.RegisterModule<EntityCoreModuleRegister>();
 });
 
 builder.Services.LoadModule<CaloBlogHostModule>();

@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,6 +41,19 @@ namespace Calo.Blog.Extenions.AppModule
         public static void LoadModule<TModule>(this IServiceCollection services) where TModule : YModule
         {
             if (services is null) throw new ArgumentException("IServiceCollection Is Null In Module");
+            List<Type> types = new List<Type>();
+            types = GetAllModules(typeof(TModule), types);
+            foreach (var module in types)
+            {
+                var mod = Activator.CreateInstance(module) as YModule;
+                if (mod is null) throw new ArgumentException("模块加载异常");
+                if (mod is YModule)
+                {
+                    (mod as YModule).ServiceConfiguration(new ServiceConfigurationContext(services));
+                    using var provider = services.BuildServiceProvider();
+                    (mod as YModule).PreApplictionInition(provider);
+                }
+            }
         }
         /// <summary>
         /// 初始化模块
@@ -50,6 +64,25 @@ namespace Calo.Blog.Extenions.AppModule
         public static void InitModule<TModule>(this IApplicationBuilder builder)
         {
             if (builder is null) throw new ArgumentException("IApplicationBuilder Is Null In Module");
+        }
+
+        private static List<Type> GetAllModules(Type type, List<Type> types)
+        {
+            if (type.BaseType == typeof(YModule) && types.FirstOrDefault(p => p.Name == type.Name) is null)
+            {
+                types.Add(type);
+            }
+            var attributes = type.GetCustomAttributes(false)
+                .FirstOrDefault(p => p.GetType() == typeof(DependOnAttribute));
+            if (attributes is not null && attributes is DependOnAttribute)
+            {
+                var modules = (attributes as DependOnAttribute).Type;
+                foreach (var module in modules)
+                {
+                    types.AddRange(GetAllModules(module, types));
+                }
+            }
+            return types;
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,6 +37,25 @@ namespace Y.Module.Modules
         void IYModule.InitApplication(InitApplicationContext context)
         {
             throw new NotImplementedException();
+        }
+
+        public static bool IsModule(Type type)
+        {
+            var typeInfo = type.GetTypeInfo();
+
+            return
+                typeInfo.IsClass &&
+                !typeInfo.IsAbstract &&
+                !typeInfo.IsGenericType &&
+                typeof(IYModule).GetTypeInfo().IsAssignableFrom(type);
+        }
+
+        internal static void CheckModuleType(Type type)
+        {
+            if (!IsModule(type))
+            {
+                throw new ArgumentNullException($"{type.Name}没有继承YModule");
+            }
         }
     }
 }

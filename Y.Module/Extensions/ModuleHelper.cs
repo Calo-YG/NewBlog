@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Y.Module.Modules;
@@ -11,8 +12,10 @@ namespace Y.Module.Extensions
     {
         public static List<Type> LoadModules(Type modules)
         {
+            YModule.CheckModuleType(modules);
             List<Type> types = new();
-            return GetAllModules(modules, types);
+            AddModuleFrompepend(modules, types);
+            return types;
         }
         /// <summary>
         /// 递归获取所有模块
@@ -20,26 +23,37 @@ namespace Y.Module.Extensions
         /// <param name="moduleType"></param>
         /// <param name="types"></param>
         /// <returns></returns>
-        private static List<Type> GetAllModules(Type moduleType, List<Type> types)
+        private static List<Type> GetModuleDepend(Type moduleType)
         {
-            if (moduleType.BaseType == typeof(YModule) && types.FirstOrDefault(p => p.Name == moduleType.Name) is null)
+            YModule.CheckModuleType(moduleType);
+
+            List<Type> types = new();
+
+            var depedns = moduleType.GetCustomAttributes().OfType<DependOnAttribute>();
+            
+            foreach(var depend in depedns)
             {
-                types.Add(moduleType);
-            }
-            var attributes = moduleType.GetCustomAttributes(false)
-                .FirstOrDefault(p => p.GetType() == typeof(DependenOnAttribute));
-            if (attributes is not null && attributes is DependenOnAttribute)
-            {
-                var modules = (attributes as DependenOnAttribute).Types;
-                if (modules is not null)
+                foreach(var itemType in depend.Types)
                 {
-                    foreach (var module in modules)
-                    {
-                        types.AddRange(GetAllModules(module, types));
-                    }
+                    types.Add(itemType);
                 }
-            }
+            }       
             return types;
+        }
+
+        private static void AddModuleFrompepend(Type moduleType,List<Type> types)
+        {
+            YModule.CheckModuleType(moduleType);
+
+            if (types.Contains(moduleType))
+            {
+                return;
+            }
+
+            foreach(var type in GetModuleDepend(moduleType))
+            {
+                AddModuleFrompepend(moduleType, types);
+            }
         }
     }
 }

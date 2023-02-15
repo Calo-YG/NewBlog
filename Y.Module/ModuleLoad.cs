@@ -7,9 +7,9 @@ namespace Y.Module
 {
     public class ModuleLoad : IModuleLoad
     {
-
         public List<IYModuleDescritor> GetYModuleDescritors(Type startModuleType, IServiceCollection services)
         {
+            if (services is null) throw new ArgumentException("ModuleLoad中Services为空");
             List<IYModuleDescritor> result = new();
             LoadModules(startModuleType, result, services);
             YModuleDescritor yModuleDescritor = new YModuleDescritor();
@@ -18,26 +18,26 @@ namespace Y.Module
             return result;
         }
 
-        private void LoadModules(Type type, List<IYModuleDescritor> descritors, IServiceCollection services)
+        protected virtual void LoadModules(Type type, List<IYModuleDescritor> descritors, IServiceCollection services)
         {
             foreach (var item in ModuleHelper.LoadModules(type))
             {
-                descritors.Add(CreateModuleDescritor(item, CreateAndRegistModule(item, services)));
+                descritors.Add(CreateModuleDescritor(item, services));
             }
         }
 
-        private IYModule? CreateAndRegistModule(Type type, IServiceCollection services)
+        protected virtual IYModule CreateAndRegistModule(Type type, IServiceCollection services)
         {
-            if (services is null) throw new ArgumentException("ModuleLoad中Services为空");
             var module = Activator.CreateInstance(type) as IYModule;
-            if (module is null) throw new ApplicationException("反射获取的Module为空");
             services.AddSingleton(type, module);
             return module;
         }
 
-        private IYModuleDescritor CreateModuleDescritor(Type type, IYModule module)
+
+
+        private IYModuleDescritor CreateModuleDescritor(Type type, IServiceCollection services)
         {
-            return new YModuleDescritor(type, module);
+            return new YModuleDescritor(type,CreateAndRegistModule(type ,services));
         }
 
 

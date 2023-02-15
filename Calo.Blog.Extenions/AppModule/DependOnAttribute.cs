@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Calo.Blog.Extenions.AppModule
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class DependOnAttribute:Attribute
+    public class DependOnAttribute : Attribute
     {
         private Type[] _type;
 

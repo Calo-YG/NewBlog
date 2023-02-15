@@ -24,7 +24,7 @@ namespace Y.Module
             ModuleType = moduleType;
             Incetance = module;
         }
-
+        public YModuleDescritor() { }
         public void SetMoudleDescritor(List<IYModuleDescritor> descritors)
         {
             _Descritors = descritors;

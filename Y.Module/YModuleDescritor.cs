@@ -11,14 +11,23 @@ namespace Y.Module
 {
     public class YModuleDescritor : IYModuleDescritor
     {
-        public Type TypeType { get; }
+        public Type ModuleType { get; }
 
-        public IYModule Intance { get; }
+        public IYModule Incetance { get; }
 
-        public IReadOnlyList<IYModuleDescritor> Modules { get=>_Modules.ToImmutableArray(); }
+        public IReadOnlyList<IYModuleDescritor> Descritors { get => _Descritors.ToImmutableArray(); }
 
-        List<IYModuleDescritor> _Modules { get; set; }
+        List<IYModuleDescritor> _Descritors { get; set; }
 
+        public YModuleDescritor(Type moduleType, IYModule module)
+        {
+            ModuleType = moduleType;
+            Incetance = module;
+        }
 
+        public void SetMoudleDescritor(List<IYModuleDescritor> descritors)
+        {
+            _Descritors = descritors;
+        }
     }
 }

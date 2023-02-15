@@ -9,10 +9,10 @@ namespace Y.Module.Interfaces
 {
     public interface IYModuleDescritor
     {
-        public Type TypeType { get; }
+        public Type ModuleType { get; }
 
-        public IYModule Intance { get; }
+        public IYModule Incetance { get; }
 
-        public IReadOnlyList<IYModuleDescritor> Modules { get; }
+        public IReadOnlyList<IYModuleDescritor> Descritors { get; }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Y.Module.Interfaces
 {
-    public interface IModuleApplication
+    public interface IModuleApplication : IModuleContainer
     {
         Type StartModuleType { get; }
         IServiceCollection Services { get; }    
@@ -16,6 +16,6 @@ namespace Y.Module.Interfaces
 
         void ConfigerService();
 
-        void InitApplication();
+        void InitApplication(IServiceProvider serviceProvider);
     }
 }

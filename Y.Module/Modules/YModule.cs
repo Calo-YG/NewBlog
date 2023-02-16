@@ -8,8 +8,20 @@ using System.Threading.Tasks;
 
 namespace Y.Module.Modules
 {
-    public class YModule : IYModule , IPreInitApplication
+    public class YModule : IYModule, IPreInitApplication
     {
+        protected internal ConfigerServiceContext ConfigerServiceContext {
+            get
+            {
+                if(_configserviceContext is null)
+                {
+                    throw new ArgumentException("注册服务时未对_ConfigServiceContext赋值"); 
+                }
+                return _configserviceContext;
+            }
+            internal set => _configserviceContext= value;
+        }
+        private ConfigerServiceContext _configserviceContext;
         /// <summary>
         /// 预处理程序
         /// </summary>

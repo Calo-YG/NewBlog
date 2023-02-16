@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System.Reflection.Metadata.Ecma335;
 using Y.Module.Extensions;
 using Y.Module.Interfaces;
 using Y.Module.Modules;
@@ -13,22 +14,71 @@ namespace Y.Module
 
         public IServiceProvider ServiceProvider { get; private set; }
 
+        public IReadOnlyList<IYModuleDescritor> Modules { get; private set; }
+
+        private bool isConfigService;
+
         public ModuleApplicationBase(Type startModuleType, IServiceCollection services)
         {
             YModule.CheckModuleType(startModuleType);
             services.ChcekNull();
             StartModuleType = startModuleType;
             Services = services;
+            isConfigService = false;
+
+            Services.AddSingleton<IModuleContainer>(this);
+            Services.AddSingleton<IModuleApplication>(this);
+
+            Modules = LoadModules();
+
+            ConfigerService();
         }
 
         public virtual void ConfigerService()
         {
-            throw new NotImplementedException();
+            if (isConfigService) return;
+
+            ConfigerServiceContext context = new ConfigerServiceContext(Services);
+
+            foreach(var module in Modules)
+            {
+                if(module.Incetance is YModule Module)
+                {
+                    Module.ConfigerServiceContext = context;
+                }
+            }
+            try
+            {
+                foreach(var module in Modules)
+                {
+                    module.Incetance.ConfigerService(context);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            isConfigService = true;
+        }
+        
+        protected virtual void SetServiceProvider(IServiceProvider servicrovider)
+        {
+            ServiceProvider = servicrovider;
+            Services.GetSingleton<ObjectAccessor<IServiceProvider>>().Value = servicrovider;
         }
 
-        public virtual void InitApplication()
+        public virtual void InitApplication(IServiceProvider serviceProvider)
         {
-            throw new NotImplementedException();
+            using var scope = serviceProvider.CreateScope();
+            scope.ServiceProvider
+                .GetRequiredService<IModuleManager>()
+                .IninAppliaction();
         }
-    }
+
+        protected virtual IReadOnlyList<IYModuleDescritor> LoadModules()
+        {
+            return Services.GetSingleton<IModuleLoad>().GetYModuleDescritors(StartModuleType, Services);
+        }
+    } 
 }

@@ -29,9 +29,9 @@ namespace Y.Module.Extensions
         {
             services.ChcekNull();
             services.TryAddIObjectAccessor<IApplicationBuilder>();
-            services.TryAddObjectAccessor<IServiceCollection>();
+            services.TryAddObjectAccessor<IApplicationBuilder>();
             new ModuleApplication(typeof(TMoudel), services);
             return services;
-        } 
+        }
     }
 }

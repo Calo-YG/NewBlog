@@ -1,25 +1,21 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Y.Module.Modules
 {
     public class YModule : IYModule, IPreInitApplication
     {
-        protected internal ConfigerServiceContext ConfigerServiceContext {
+        protected internal ConfigerServiceContext ConfigerServiceContext
+        {
             get
             {
-                if(_configserviceContext is null)
+                if (_configserviceContext is null)
                 {
-                    throw new ArgumentException("注册服务时未对_ConfigServiceContext赋值"); 
+                    throw new ArgumentException("注册服务时未对_ConfigServiceContext赋值");
                 }
                 return _configserviceContext;
             }
-            internal set => _configserviceContext= value;
+            internal set => _configserviceContext = value;
         }
         private ConfigerServiceContext _configserviceContext;
         /// <summary>
@@ -68,6 +64,11 @@ namespace Y.Module.Modules
             {
                 throw new ArgumentNullException($"{type.Name}没有继承YModule");
             }
+        }
+
+        private void Configure<TOptions>(Action<TOptions> action) where TOptions : class
+        {
+            ConfigerServiceContext.Services.Configure<TOptions>(action);
         }
     }
 }

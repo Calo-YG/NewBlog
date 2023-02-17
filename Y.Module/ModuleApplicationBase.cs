@@ -40,16 +40,21 @@ namespace Y.Module
 
             ConfigerServiceContext context = new ConfigerServiceContext(Services);
 
-            foreach(var module in Modules)
+            foreach (var module in Modules)
             {
-                if(module.Incetance is YModule Module)
+                if (module.Incetance is YModule Module)
                 {
                     Module.ConfigerServiceContext = context;
+                }
+
+                if (module.Incetance is IPreInitApplication application)
+                {
+                    application.PreInitApplication(context);
                 }
             }
             try
             {
-                foreach(var module in Modules)
+                foreach (var module in Modules)
                 {
                     module.Incetance.ConfigerService(context);
                 }
@@ -61,7 +66,7 @@ namespace Y.Module
             }
             isConfigService = true;
         }
-        
+
         protected virtual void SetServiceProvider(IServiceProvider servicrovider)
         {
             ServiceProvider = servicrovider;
@@ -80,5 +85,5 @@ namespace Y.Module
         {
             return Services.GetSingleton<IModuleLoad>().GetYModuleDescritors(StartModuleType, Services);
         }
-    } 
+    }
 }

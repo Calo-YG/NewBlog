@@ -22,6 +22,8 @@ namespace Y.Module
             }
         }
 
+        public object Service { get; set; }
+
         public ConfigerServiceContext(IServiceCollection services)
         {
             Services = services;

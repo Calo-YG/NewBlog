@@ -16,10 +16,16 @@ namespace Y.Module.Extensions
             if (app == null) throw new ArgumentNullException("IAppBuilder为空");
         }
 
+        public static IApplicationBuilder GetApplicationBuilder(this InitApplicationContext context)
+        {
+          return  context.ServiceProvider.GetRequiredService<IObjectAccessor<IApplicationBuilder>>().Value;
+        }
+
         public static void InitApplication(this IApplicationBuilder app)
         {
             app.CheckNull();
             app.ApplicationServices.GetRequiredService<ObjectAccessor<IApplicationBuilder>>().Value= app;
+            app.ApplicationServices.GetRequiredService<IObjectAccessor<IApplicationBuilder>>().Value= app;
             var runner = app.ApplicationServices.GetRequiredService<IModuleRunner>();
             runner.InitApplication(app.ApplicationServices);
         }

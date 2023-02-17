@@ -23,9 +23,9 @@ namespace Y.Module.Modules
         /// </summary>
         /// <param name="context"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void PreInitApplication(ConfigerServiceContext context)
+        public virtual void PreInitApplication(ConfigerServiceContext context)
         {
-            throw new NotImplementedException();
+            
         }
 
         /// <summary>
@@ -33,18 +33,18 @@ namespace Y.Module.Modules
         /// </summary>
         /// <param name="context"></param>
         /// <exception cref="NotImplementedException"></exception>
-        void IYModule.ConfigerService(ConfigerServiceContext context)
+        public virtual void  ConfigerService(ConfigerServiceContext context)
         {
-            throw new NotImplementedException();
+            
         }
         /// <summary>
         /// 配置中间件
         /// </summary>
         /// <param name="context"></param>
         /// <exception cref="NotImplementedException"></exception>
-        void IYModule.InitApplication(InitApplicationContext context)
+        public virtual void InitApplication(InitApplicationContext context)
         {
-            throw new NotImplementedException();
+            
         }
 
         public static bool IsModule(Type type)

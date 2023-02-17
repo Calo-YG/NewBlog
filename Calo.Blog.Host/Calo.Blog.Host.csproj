@@ -21,7 +21,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Calo.Blog.Application\Calo.Blog.Application.csproj" />
+	  <ProjectReference Include="..\Calo.Blog.EntityCore\Calo.Blog.EntityCore.csproj" />
+	  <ProjectReference Include="..\Y.Module\Y.Module.csproj" />
 	</ItemGroup>
 
 </Project>

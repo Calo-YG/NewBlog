@@ -11,6 +11,7 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 using System.IO;
 using System.Reflection;
+using Y.Module.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,41 +22,11 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
 {
     // container.RegisterModule<EntityCoreModuleRegister>();
 });
-
-builder.Services.LoadModule<CaloBlogHostModule>();
+builder.Services.AddApplication<CaloBlogHostModule>();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-}
-app.UseStaticFiles();
 
-app.UseRouting();
-
-app.UseAuthorization();
-
-app.UseEndpoints(endOptions =>
-{
-    endOptions.MapDefaultControllerRoute();
-    endOptions.MapRazorPages();
-});
-
-app.UseSwagger();
-
-app.UseSwaggerUI(options =>
-{
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Calo API V1");
-    options.EnableDeepLinking();
-    options.DocExpansion(DocExpansion.None);
-    options.IndexStream = () =>
-    {
-        var path = Path.Join(builder.Environment.WebRootPath, "pages", "swagger.html");
-        return new FileInfo(path).OpenRead();
-    };
-});
-
-app.InitModule<CaloBlogHostModule>();
+app.InitApplication();
 
 app.Run();

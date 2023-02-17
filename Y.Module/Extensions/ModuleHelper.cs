@@ -49,7 +49,7 @@ namespace Y.Module.Extensions
             {
                 return;
             }
-
+            types.Add(moduleType);
             foreach(var type in GetModuleDepend(moduleType))
             {
                 AddModuleFrompepend(moduleType, types);

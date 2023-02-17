@@ -26,6 +26,8 @@ namespace Y.Module
             Services = services;
             isConfigService = false;
 
+            services.TryAddIObjectAccessor<IServiceProvider>();
+            services.TryAddObjectAccessor<IServiceProvider>();
             Services.AddSingleton<IModuleContainer>(this);
             Services.AddSingleton<IModuleApplication>(this);
 
@@ -83,7 +85,7 @@ namespace Y.Module
 
         protected virtual IReadOnlyList<IYModuleDescritor> LoadModules()
         {
-            return Services.GetSingleton<IModuleLoad>().GetYModuleDescritors(StartModuleType, Services);
+            return new ModuleLoad().GetYModuleDescritors(StartModuleType, Services);
         }
     }
 }

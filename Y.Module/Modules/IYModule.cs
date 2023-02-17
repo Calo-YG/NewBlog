@@ -9,8 +9,8 @@ namespace Y.Module.Modules
 {
      public interface IYModule
     {
-         void ConfigerService(ConfigerServiceContext context);
+        public void ConfigerService(ConfigerServiceContext context);
 
-        void InitApplication(InitApplicationContext context);
+        public void InitApplication(InitApplicationContext context);
     }
 }

@@ -15,19 +15,11 @@ namespace Y.Module
 
         public IYModule Incetance { get; }
 
-        public IReadOnlyList<IYModuleDescritor> Descritors { get => _Descritors.ToImmutableArray(); }
-
-        List<IYModuleDescritor> _Descritors { get; set; }
-
         public YModuleDescritor(Type moduleType, IYModule module)
         {
             ModuleType = moduleType;
             Incetance = module;
         }
         public YModuleDescritor() { }
-        public void SetMoudleDescritor(List<IYModuleDescritor> descritors)
-        {
-            _Descritors = descritors;
-        }
     }
 }

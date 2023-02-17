@@ -12,7 +12,5 @@ namespace Y.Module.Interfaces
         public Type ModuleType { get; }
 
         public IYModule Incetance { get; }
-
-        public IReadOnlyList<IYModuleDescritor> Descritors { get; }
     }
 }

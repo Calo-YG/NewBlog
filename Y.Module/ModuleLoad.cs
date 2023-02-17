@@ -12,9 +12,6 @@ namespace Y.Module
             if (services is null) throw new ArgumentException("ModuleLoad中Services为空");
             List<IYModuleDescritor> result = new();
             LoadModules(startModuleType, result, services);
-            YModuleDescritor yModuleDescritor = new YModuleDescritor();
-            yModuleDescritor.SetMoudleDescritor(result);
-            services.AddSingleton<IYModuleDescritor>(yModuleDescritor);
             return result;
         }
 

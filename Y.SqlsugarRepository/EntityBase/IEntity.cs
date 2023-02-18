@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Calo.Blog.Extenions.AppModule
+namespace Y.SqlsugarRepository.EntityBase
 {
-    internal  interface  IObjectAccessor<T>
+    public interface IEntity<TPrimarykey>
     {
-        internal T? Value { get; set; }
+        TPrimarykey {get;set;}
     }
 }

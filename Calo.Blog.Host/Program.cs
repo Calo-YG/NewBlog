@@ -1,6 +1,5 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Calo.Blog.Extenions.AppModule;
 using Calo.Blog.Host;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;

@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="DatabaseConext\" />
+    <Folder Include="EntityAttribute\" />
+    <Folder Include="EntityBase\" />
+  </ItemGroup>
+
 </Project>

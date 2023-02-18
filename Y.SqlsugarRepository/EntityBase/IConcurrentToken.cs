@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace Y.SqlsugarRepository.EntityBase
 {
-    public interface IEntity<TPrimarykey>
+    /// <summary>
+    /// 并发token
+    /// </summary>
+    public interface IConcurrentToken
     {
-        TPrimarykey Id {get;set;}
+        public string? ConcurrentToken { get; set; }
     }
 }

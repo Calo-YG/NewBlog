@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Y.SqlsugarRepository.EntityBase
 {
-    public interface IEntity<TPrimarykey>
+    public class FullAutiedEntity<TPrimarykey> : AutiedEntity<TPrimarykey>
     {
-        TPrimarykey Id {get;set;}
     }
 }

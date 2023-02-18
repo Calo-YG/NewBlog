@@ -23,11 +23,9 @@ namespace Y.Module.Extensions
         /// <param name="moduleType"></param>
         /// <param name="types"></param>
         /// <returns></returns>
-        private static List<Type> GetModuleDepend(Type moduleType)
+        private static List<Type> GetModuleDepend(Type moduleType,List<Type> types)
         {
             YModule.CheckModuleType(moduleType);
-
-            List<Type> types = new();
 
             var depedns = moduleType.GetCustomAttributes().OfType<DependOnAttribute>();
             
@@ -50,7 +48,7 @@ namespace Y.Module.Extensions
                 return;
             }
             types.Add(moduleType);
-            foreach(var type in GetModuleDepend(moduleType))
+            foreach(var type in GetModuleDepend(moduleType,types))
             {
                 AddModuleFrompepend(moduleType, types);
             }

@@ -49,9 +49,9 @@ namespace Calo.Blog.Host
 
             context.Services.AddScoped<IDbAopProvider, DbAopProvider>();
             //添加数据库上下文AOP配置
-            context.Services.Configure<DbConfigureOptions>(options =>
+            Configure<DbConfigureOptions>(options =>
             {
-                var config =configuration
+                var config = configuration
                 .GetSection("App:DbConfigureOptions")
                 .Get<DbConfigureOptions>();
                 options.EnableAopLog = config.EnableAopLog;

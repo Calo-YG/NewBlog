@@ -66,7 +66,7 @@ namespace Y.Module.Modules
             }
         }
 
-        private void Configure<TOptions>(Action<TOptions> action) where TOptions : class
+        public void Configure<TOptions>(Action<TOptions> action) where TOptions : class
         {
             ConfigerServiceContext.Services.Configure<TOptions>(action);
         }

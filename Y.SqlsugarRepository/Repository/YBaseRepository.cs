@@ -9,15 +9,15 @@ using Y.SqlsugarRepository.EntityBase;
 
 namespace Y.SqlsugarRepository.Repository
 {
-    public class YBaseRepository<TDbcontext, TEntity, TPrimaryKey> : BaseRepository<TEntity, TPrimaryKey>
-            where TDbcontext : SugarUnitOfWork, new()
+    public class YBaseRepository<TUnitOfWork, TEntity, TPrimaryKey> : BaseRepository<TEntity, TPrimaryKey>
+            where TUnitOfWork : SugarUnitOfWork, new()
             where TEntity :class, IEntity<TPrimaryKey>, new()
     {
-        private readonly ISugarUnitOfWork<TDbcontext> _unitOfWork;
-        public YBaseRepository(ISugarUnitOfWork<TDbcontext> unitOfWork
+        private readonly ISugarUnitOfWork<TUnitOfWork> _unitOfWork;
+        public YBaseRepository(ISugarUnitOfWork<TUnitOfWork> unitOfWork
             , IServiceProvider provider
             , IDbAopProvider dbAopProvider
-            , ILogger<YBaseRepository<TDbcontext, TEntity, TPrimaryKey>> logger
+            , ILogger<YBaseRepository<TUnitOfWork, TEntity, TPrimaryKey>> logger
             , ISqlSugarClient client = null) : base(provider, dbAopProvider, logger, client)
         {
             _unitOfWork = unitOfWork;

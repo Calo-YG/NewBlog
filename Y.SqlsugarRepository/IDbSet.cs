@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Y.SqlsugarRepository
 {
-    public class IDbSet<T>
+    public interface IDbSet<T>
     {
+        public T Entity { get; set; }
     }
 }

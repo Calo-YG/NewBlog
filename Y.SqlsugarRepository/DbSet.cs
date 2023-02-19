@@ -8,5 +8,6 @@ namespace Y.SqlsugarRepository
 {
     public class DbSet<T> : IDbSet<T>
     {
+        public T Entity { get ; set; }
     }
 }

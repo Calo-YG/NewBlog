@@ -26,7 +26,6 @@ namespace Y.SqlsugarRepository.Entensions
             action.Invoke(config);
             ISqlSugarClient sugar = new SqlSugarScope(config);
             services.AddSingleton<ISqlSugarClient>(sugar);
-            sugar.QueryFilter.ConfigureFilterForEntity();
             ISugarUnitOfWork<TDbContext> context = new SugarUnitOfWork<TDbContext>(sugar);
             services.AddSingleton<ISugarUnitOfWork<TDbContext>>(context);
             return services;
@@ -46,7 +45,6 @@ namespace Y.SqlsugarRepository.Entensions
             services.AddScoped<ISqlSugarClient>(p =>
             {
                 var suagr = new SqlSugarClient(config);
-                suagr.QueryFilter.ConfigureFilterForEntity();
                 return suagr;
             });
             return services;

@@ -28,8 +28,14 @@ namespace Y.Module
 
             services.TryAddIObjectAccessor<IServiceProvider>();
             services.TryAddObjectAccessor<IServiceProvider>();
+
+            Services.TryAddIObjectAccessor<InitApplicationContext>();
+            Services.TryAddObjectAccessor<InitApplicationContext>();
+
             Services.AddSingleton<IModuleContainer>(this);
             Services.AddSingleton<IModuleApplication>(this);
+
+
 
             Modules = LoadModules();
 
@@ -48,12 +54,25 @@ namespace Y.Module
                 {
                     Module.ConfigerServiceContext = context;
                 }
+            }
 
-                if (module.Incetance is IPreInitApplication application)
+            //初始化之前处理
+            try
+            {
+                foreach (var module in Modules)
                 {
-                    application.PreInitApplication(context);
+                    if (module.Incetance is IPreConfigServices application)
+                    {
+                        application.PreInitApplication(context);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
             try
             {
                 foreach (var module in Modules)
@@ -61,9 +80,8 @@ namespace Y.Module
                     module.Incetance.ConfigerService(context);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
                 throw;
             }
             isConfigService = true;
@@ -83,9 +101,18 @@ namespace Y.Module
                 .IninAppliaction();
         }
 
+
         protected virtual IReadOnlyList<IYModuleDescritor> LoadModules()
         {
             return new ModuleLoad().GetYModuleDescritors(StartModuleType, Services);
+        }
+
+        public virtual void LaterApplication(IServiceProvider serviceProvider)
+        {
+            using var scope = serviceProvider.CreateScope();
+            scope.ServiceProvider
+                .GetRequiredService<IModuleManager>()
+                .LaterApplication();
         }
     }
 }

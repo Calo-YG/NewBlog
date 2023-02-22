@@ -9,6 +9,8 @@ namespace Y.Module.Interfaces
 {
     public interface IModuleManager
     {
-       void IninAppliaction();
+        void IninAppliaction();
+
+        void LaterApplication();
     }
 }

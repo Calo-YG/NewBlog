@@ -10,12 +10,14 @@ namespace Y.Module.Interfaces
     public interface IModuleApplication : IModuleContainer
     {
         Type StartModuleType { get; }
-        IServiceCollection Services { get; }    
+        IServiceCollection Services { get; }
 
         IServiceProvider ServiceProvider { get; }
 
         void ConfigerService();
 
         void InitApplication(IServiceProvider serviceProvider);
+
+        void LaterApplication(IServiceProvider serviceProvider);
     }
 }

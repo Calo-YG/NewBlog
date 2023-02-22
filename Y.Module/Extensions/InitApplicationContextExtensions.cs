@@ -18,16 +18,24 @@ namespace Y.Module.Extensions
 
         public static IApplicationBuilder GetApplicationBuilder(this InitApplicationContext context)
         {
-          return  context.ServiceProvider.GetRequiredService<IObjectAccessor<IApplicationBuilder>>().Value;
+            return context.ServiceProvider.GetRequiredService<IObjectAccessor<IApplicationBuilder>>().Value;
         }
 
         public static void InitApplication(this IApplicationBuilder app)
         {
             app.CheckNull();
-            app.ApplicationServices.GetRequiredService<ObjectAccessor<IApplicationBuilder>>().Value= app;
-            app.ApplicationServices.GetRequiredService<IObjectAccessor<IApplicationBuilder>>().Value= app;
+
+            InitApplicationContext context = new InitApplicationContext(app.ApplicationServices);
+
+            app.ApplicationServices.GetRequiredService<ObjectAccessor<IApplicationBuilder>>().Value = app;
+            app.ApplicationServices.GetRequiredService<IObjectAccessor<IApplicationBuilder>>().Value = app;
+
+            app.ApplicationServices.GetRequiredService<ObjectAccessor<InitApplicationContext>>().Value = context;
+            app.ApplicationServices.GetRequiredService<IObjectAccessor<InitApplicationContext>>().Value = context;
+
             var runner = app.ApplicationServices.GetRequiredService<IModuleRunner>();
             runner.InitApplication(app.ApplicationServices);
+            runner.LaterApplication(app.ApplicationServices);
         }
     }
 }

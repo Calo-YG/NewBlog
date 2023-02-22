@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Y.Module.Modules
 {
-    public interface IPreInitApplication
+    public interface IPreConfigServices
     {
         /// <summary>
         /// 预处理初始化程序

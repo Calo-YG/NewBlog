@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Y.Module.Modules
 {
-    public class YModule : IYModule, IPreInitApplication
+    public class YModule : IYModule, IPreConfigServices, ILaterApplication
     {
         protected internal ConfigerServiceContext ConfigerServiceContext
         {
@@ -25,7 +25,7 @@ namespace Y.Module.Modules
         /// <exception cref="NotImplementedException"></exception>
         public virtual void PreInitApplication(ConfigerServiceContext context)
         {
-            
+
         }
 
         /// <summary>
@@ -33,9 +33,9 @@ namespace Y.Module.Modules
         /// </summary>
         /// <param name="context"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public virtual void  ConfigerService(ConfigerServiceContext context)
+        public virtual void ConfigerService(ConfigerServiceContext context)
         {
-            
+
         }
         /// <summary>
         /// 配置中间件
@@ -44,7 +44,16 @@ namespace Y.Module.Modules
         /// <exception cref="NotImplementedException"></exception>
         public virtual void InitApplication(InitApplicationContext context)
         {
-            
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        public virtual void LaterInitApplication(InitApplicationContext context)
+        {
+
         }
 
         public static bool IsModule(Type type)

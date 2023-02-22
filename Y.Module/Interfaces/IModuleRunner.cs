@@ -10,5 +10,6 @@ namespace Y.Module.Interfaces
     {
         void InitApplication(IServiceProvider serviceProvider);
 
+        void LaterApplication(IServiceProvider serviceProvider);
     }
 }

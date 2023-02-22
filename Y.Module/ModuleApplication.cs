@@ -8,7 +8,7 @@ using Y.Module.Interfaces;
 
 namespace Y.Module
 {
-    public class ModuleApplication : ModuleApplicationBase , IModuleRunner
+    public class ModuleApplication : ModuleApplicationBase, IModuleRunner
     {
         public ModuleApplication(Type startModuleType, IServiceCollection services) : base(startModuleType, services)
         {
@@ -19,6 +19,12 @@ namespace Y.Module
         {
             SetServiceProvider(serviceProvider);
             base.InitApplication(serviceProvider);
+        }
+
+        public override void LaterApplication(IServiceProvider serviceProvider)
+        {
+            SetServiceProvider(serviceProvider);
+            base.LaterApplication(serviceProvider);
         }
     }
 }

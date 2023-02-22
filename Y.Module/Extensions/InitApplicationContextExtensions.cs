@@ -35,7 +35,6 @@ namespace Y.Module.Extensions
 
             var runner = app.ApplicationServices.GetRequiredService<IModuleRunner>();
             runner.InitApplication(app.ApplicationServices);
-            runner.LaterApplication(app.ApplicationServices);
         }
     }
 }

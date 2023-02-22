@@ -37,22 +37,11 @@ namespace Y.Module.Modules
                 var name = module.Incetance.GetType().Name;
                 _logger.LogInformation($"模块:{name}开始初始化");
                 module.Incetance.InitApplication(context);
-                _logger.LogInformation($"模块:{name}初始化完成");
-            }
-        }
-
-        public void LaterApplication()
-        {
-            InitApplicationContext? context = _initApplicationAccessor.Value;
-            foreach (var module in _moduleContainer.Modules)
-            {
-                var name = module.Incetance.GetType().Name;
-                if (module.Incetance is ILaterApplication laterApplication)
+                if(module.Incetance is ILaterApplication application)
                 {
-                    _logger.LogInformation($"模块:{name}开始初始化");
-                    laterApplication.LaterInitApplication(context);
-                    _logger.LogInformation($"模块:{name}初始化完成");
+                    application.LaterInitApplication(context);
                 }
+                _logger.LogInformation($"模块:{name}初始化完成");
             }
         }
     }

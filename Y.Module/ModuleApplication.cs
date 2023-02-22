@@ -20,11 +20,5 @@ namespace Y.Module
             SetServiceProvider(serviceProvider);
             base.InitApplication(serviceProvider);
         }
-
-        public override void LaterApplication(IServiceProvider serviceProvider)
-        {
-            SetServiceProvider(serviceProvider);
-            base.LaterApplication(serviceProvider);
-        }
     }
 }

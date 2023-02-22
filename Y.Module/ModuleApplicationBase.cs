@@ -54,29 +54,16 @@ namespace Y.Module
                 {
                     Module.ConfigerServiceContext = context;
                 }
-            }
-
-            //初始化之前处理
+            }      
             try
             {
                 foreach (var module in Modules)
                 {
+                    //初始化之前处理
                     if (module.Incetance is IPreConfigServices application)
                     {
                         application.PreInitApplication(context);
                     }
-                }
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-
-            try
-            {
-                foreach (var module in Modules)
-                {
                     module.Incetance.ConfigerService(context);
                 }
             }
@@ -107,12 +94,5 @@ namespace Y.Module
             return new ModuleLoad().GetYModuleDescritors(StartModuleType, Services);
         }
 
-        public virtual void LaterApplication(IServiceProvider serviceProvider)
-        {
-            using var scope = serviceProvider.CreateScope();
-            scope.ServiceProvider
-                .GetRequiredService<IModuleManager>()
-                .LaterApplication();
-        }
     }
 }

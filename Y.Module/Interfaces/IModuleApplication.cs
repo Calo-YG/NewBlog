@@ -17,7 +17,5 @@ namespace Y.Module.Interfaces
         void ConfigerService();
 
         void InitApplication(IServiceProvider serviceProvider);
-
-        void LaterApplication(IServiceProvider serviceProvider);
     }
 }

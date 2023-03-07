@@ -12,7 +12,5 @@ namespace Calo.Blog.EntityCore.DataBase.EntityBase
         public bool IsDeleted { get; set; }
 
         public T? DeleteUserId { get; set; }
-        [ConcurrentToken]
-        public Guid ConcurrentToken { get; set; }
     }
 }

@@ -9,11 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
-.ConfigureContainer<ContainerBuilder>(container =>
-{
-    // container.RegisterModule<EntityCoreModuleRegister>();
-});
+//builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
+//.ConfigureContainer<ContainerBuilder>(container =>
+//{
+//    // container.RegisterModule<EntityCoreModuleRegister>();
+//});
 builder.Services.AddApplication<CaloBlogHostModule>();
 
 var app = builder.Build();

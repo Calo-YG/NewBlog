@@ -134,7 +134,7 @@ namespace Calo.Blog.EntityCore.DataBase.Extensions
                 // var primaryKeyType = entity.EntityType;
                 var genericRepoType = repositoryType.MakeGenericType(entity.EntityType);
                 var gerericRepoTypeImpl = repositoryImpl.MakeGenericType(entity.EntityType);
-                if (services.IsExistsInDependInjection(genericRepoType))
+                if (!services.IsExistsInDependInjection(genericRepoType))
                 {
                     services.AddScoped(genericRepoType, gerericRepoTypeImpl);
                 }
@@ -143,7 +143,7 @@ namespace Calo.Blog.EntityCore.DataBase.Extensions
                     var primaryKey = GetPrimaryKeyType(entity.EntityType);
                     var genericeRepoKeyType = repositoryTypeWithKey.MakeGenericType(entity.EntityType, primaryKey);
                     var genericeRepoKeyTypeImpl = repositoryTypeWithKeyImpl.MakeGenericType(entity.EntityType, primaryKey);
-                    if (services.IsExistsInDependInjection(genericeRepoKeyType))
+                    if (!services.IsExistsInDependInjection(genericeRepoKeyType))
                     {
                         services.AddScoped(genericeRepoKeyType, genericeRepoKeyTypeImpl);
                     }

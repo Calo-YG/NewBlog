@@ -6,11 +6,11 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Calo.Blog.Host/Calo.Blog.Host.csproj", "Calo.Blog.Host/"]
-COPY ["Calo.Blog.EntityCore/Calo.Blog.EntityCore.csproj", "Calo.Blog.EntityCore/"]
-COPY ["Calo.Blog.Core/Calo.Blog.Domain.csproj", "Calo.Blog.Core/"]
-COPY ["Calo.Blog.Extenions/Calo.Blog.Extenions.csproj", "Calo.Blog.Extenions/"]
-COPY ["Y.Module/Y.Module.csproj", "Y.Module/"]
+COPY ["./Calo.Blog.Host/Calo.Blog.Host.csproj", "Calo.Blog.Host/"]
+COPY ["./Calo.Blog.EntityCore/Calo.Blog.EntityCore.csproj", "Calo.Blog.EntityCore/"]
+COPY ["./Calo.Blog.Core/Calo.Blog.Domain.csproj", "Calo.Blog.Core/"]
+COPY ["./Calo.Blog.Extenions/Calo.Blog.Extenions.csproj", "Calo.Blog.Extenions/"]
+COPY ["./Y.Module/Y.Module.csproj", "Y.Module/"]
 RUN dotnet restore "Calo.Blog.Host/Calo.Blog.Host.csproj"
 COPY . .
 WORKDIR "/src/Calo.Blog.Host"

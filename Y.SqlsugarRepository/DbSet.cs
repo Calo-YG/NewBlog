@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SqlSugar;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,5 @@ namespace Y.SqlsugarRepository
 {
     public class DbSet<T> : IDbSet<T>
     {
-        public T Entity { get; set; }
     }
 }

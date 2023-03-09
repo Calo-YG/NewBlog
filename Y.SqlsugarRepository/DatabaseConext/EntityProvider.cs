@@ -27,8 +27,6 @@ namespace Y.SqlsugarRepository.DatabaseConext
             services.AddSingleton<IEntityProvider>(this);
         }
 
-        static EntityProvider() { }
-
         public void Add(Type type)
         {
             CheckEntity(type);

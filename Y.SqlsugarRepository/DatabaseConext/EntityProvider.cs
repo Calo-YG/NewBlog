@@ -23,6 +23,12 @@ namespace Y.SqlsugarRepository.DatabaseConext
         {
             _entitys = entitys;
             Services = services;
+            services.AddSingleton<IEntityProvider>(this);
+        }
+
+        public EntityProvider(IServiceCollection services)
+        {
+            Services = services;
             _entitys = new List<Type>();
             services.AddSingleton<IEntityProvider>(this);
         }

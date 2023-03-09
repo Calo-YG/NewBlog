@@ -4,10 +4,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Y.SqlsugarRepository.DatabaseConext;
+using Y.SqlsugarRepository.Entensions;
 using Y.SqlsugarRepository.EntityBase;
 
-namespace Y.SqlsugarRepository.Entensions
+namespace Y.SqlsugarRepository.DatabaseConext
 {
     public class DbEntityFinder
     {

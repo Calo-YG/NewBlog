@@ -4,17 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Y.SqlsugarRepository
+namespace Y.SqlsugarRepository.DatabaseConext
 {
     public class EntityTypeInfo
     {
         /// <summary>
-        /// Type of the entity.
+        /// 数据库实体类型
         /// </summary>
         public Type EntityType { get; private set; }
-
         /// <summary>
-        /// DbContext type that has DbSet property.
+        /// 数据库上下文包含Dbset
         /// </summary>
         public Type DeclaringType { get; private set; }
 

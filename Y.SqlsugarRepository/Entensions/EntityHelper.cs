@@ -11,7 +11,7 @@ using Y.SqlsugarRepository.EntityBase;
 
 namespace Y.SqlsugarRepository.Entensions
 {
-     public static class EntityHelper
+    public static class EntityHelper
     {
         public static Type ContextFinder()
         {

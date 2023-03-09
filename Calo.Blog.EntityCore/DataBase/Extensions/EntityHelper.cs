@@ -50,7 +50,6 @@ namespace Calo.Blog.EntityCore.DataBase.Extensions
             var entities = GetEntityTypeInfo(dbContext);
             foreach (var entity in entities)
             {
-                var primaryKeyType = entity.EntityType;
                 var genericRepoType = repositoryType.MakeGenericType(entity.EntityType);
                 var gerericRepoTypeImpl = repositoryImpl.MakeGenericType(entity.EntityType);
                 builder.RegisterType(gerericRepoTypeImpl).As(genericRepoType).InstancePerLifetimeScope();

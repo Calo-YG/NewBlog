@@ -60,24 +60,19 @@ namespace Y.SqlsugarRepository.DatabaseConext
             var repositoryImpl = defaultType.RepositoryImplementation;
             var repositoryTypeWithKey = defaultType.RepositoryInterfaceWithPrimaryKey;
             var repositoryTypeWithKeyImpl = defaultType.RepositoryImplementationWithPrimaryKey;
-            foreach (var entity in EntityTypes)
+            // 使用 LINQ 来过滤出没有注册的实体类型
+            var unregisteredEntities = EntityTypes.Where(entity => !Services.IsExists(repositoryType.MakeGenericType(entity)));
+
+            foreach (var entity in unregisteredEntities)
             {
-                // var primaryKeyType = entity.EntityType;
-                var genericRepoType = repositoryType.MakeGenericType(entity);
-                var gerericRepoTypeImpl = repositoryImpl.MakeGenericType(entity);
-                if (!Services.IsExists(genericRepoType))
-                {
-                    Services.AddScoped(genericRepoType, gerericRepoTypeImpl);
-                }
+                // 注册仓储接口和实现
+                Services.AddScoped(repositoryType.MakeGenericType(entity), repositoryImpl.MakeGenericType(entity));
+
+                // 如果仓储接口有主键参数，再注册一次
                 if (repositoryTypeWithKey.IsGenericType && repositoryTypeWithKey.GetGenericArguments().Length == 2)
                 {
                     var primaryKey = GetPrimaryKeyType(entity);
-                    var genericeRepoKeyType = repositoryTypeWithKey.MakeGenericType(entity, primaryKey);
-                    var genericeRepoKeyTypeImpl = repositoryTypeWithKeyImpl.MakeGenericType(entity, primaryKey);
-                    if (Services.IsExists(genericeRepoKeyType))
-                    {
-                        Services.AddScoped(genericeRepoKeyType, genericeRepoKeyTypeImpl);
-                    }
+                    Services.AddScoped(repositoryTypeWithKey.MakeGenericType(entity, primaryKey), repositoryTypeWithKeyImpl.MakeGenericType(entity, primaryKey));
                 }
             }
         }

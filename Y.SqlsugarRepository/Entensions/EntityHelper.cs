@@ -13,18 +13,6 @@ namespace Y.SqlsugarRepository.Entensions
 {
     public static class EntityHelper
     {
-        public static Type GetPrimaryKeyType(Type entityType)
-        {
-            foreach (var interfaceType in entityType.GetTypeInfo().GetInterfaces())
-            {
-                if (interfaceType.GetTypeInfo().IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IEntity<>))
-                {
-                    return interfaceType.GenericTypeArguments[0];
-                }
-            }
-
-            throw new ApplicationException("没有找到实体类型主键: " + entityType + ". 确认实体是否继承了IEntity接口");
-        }
         //public static bool IsAssignableToGenericType(Type givenType, Type genericType)
         //{
         //    var givenTypeInfo = givenType.GetTypeInfo();
@@ -81,9 +69,5 @@ namespace Y.SqlsugarRepository.Entensions
         //    }
         //    return services;
         //}
-        private static bool IsExistsInDependInjection(this IServiceCollection services, Type repotype)
-        {
-            return services.Any(p => p.ServiceType == repotype);
-        }
     }
 }

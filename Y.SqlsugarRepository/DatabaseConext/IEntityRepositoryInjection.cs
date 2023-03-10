@@ -18,10 +18,7 @@ namespace Y.SqlsugarRepository.DatabaseConext
         /// 添加数据库仓储
         /// </summary>
         void AddRepository();
-        /// <summary>
-        /// 添加数据库仓储
-        /// </summary>
-        /// <typeparam name="TDbContext"></typeparam>
-        void AddRepository<TDbContext>() where TDbContext : ISqlSugarClient;
+
+        void LoadEntity(IEntityProvider provider);
     }
 }

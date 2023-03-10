@@ -8,6 +8,9 @@ namespace Y.SqlsugarRepository.DatabaseConext
 {
     public interface IEntityContainer
     {
-        IReadOnlyList<EntityTypeInfo> EntityTypes { get; set; }
+        /// <summary>
+        /// 数据库实体类型集合
+        /// </summary>
+        IReadOnlyList<Type> EntityTypes { get; set; }
     }
 }

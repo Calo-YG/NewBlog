@@ -24,7 +24,7 @@ namespace Y.SqlsugarRepository.DatabaseConext
         /// <summary>
         /// CodeFirst 创建数据库
         /// </summary>
-        public virtual void BuildContext()
+        public virtual void BuildDataBase()
         {
 
         }

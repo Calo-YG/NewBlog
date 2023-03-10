@@ -8,9 +8,9 @@ namespace Y.SqlsugarRepository.DatabaseConext
 {
     public class EntityContainer : IEntityContainer
     {
-        public IReadOnlyList<EntityTypeInfo> EntityTypes { get; set; }
+        public IReadOnlyList<Type> EntityTypes { get; set; }
 
-        public EntityContainer(IReadOnlyList<EntityTypeInfo> entityTypes)
+        public EntityContainer(List<Type> entityTypes)
         {
             EntityTypes = entityTypes;
         }

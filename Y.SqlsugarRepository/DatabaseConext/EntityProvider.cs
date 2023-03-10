@@ -59,8 +59,8 @@ namespace Y.SqlsugarRepository.DatabaseConext
             return this;
         }
 
-        private void CheckEntity(Type type) { }
+        public virtual void CheckEntity(Type type) { }
 
-        private void CheckEntity<TEntity>() { }
+        public virtual void CheckEntity<TEntity>() { }
     }
 }

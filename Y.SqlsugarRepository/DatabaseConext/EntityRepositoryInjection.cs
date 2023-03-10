@@ -15,21 +15,30 @@ namespace Y.SqlsugarRepository.DatabaseConext
         /// <summary>
         /// 数据库实体类型
         /// </summary>
-        public IReadOnlyList<EntityTypeInfo> EntityTypes { get; set; }
         public IServiceCollection Services { get; set; }
         /// <summary>
         /// 数据库上下文类型
         /// </summary>
-        private Type ContextType { get; set; }
-        public EntityRepositoryInjection(IServiceCollection services, Type contextType)
+        public IReadOnlyList<Type> EntityTypes { get; set; }
+
+        public EntityRepositoryInjection(IServiceCollection services, IEntityProvider provider)
         {
             Services = services;
-            EntityTypes = FindEntities(contextType);
-            ContextType = contextType;
+            EntityTypes = provider.Entitys;
 
             services.AddSingleton<IEntityRepositoryInjection>(this);
             services.AddSingleton<IEntityContainer>(this);
         }
+
+        public EntityRepositoryInjection(IServiceCollection services)
+        {
+            Services = services;
+            services.AddSingleton<IEntityRepositoryInjection>(this);
+            services.AddSingleton<IEntityContainer>(this);
+        }
+
+
+
         /// <summary>
         /// 添加数据库仓储
         /// </summary>
@@ -50,9 +59,9 @@ namespace Y.SqlsugarRepository.DatabaseConext
         /// </summary>
         /// <param name="contextType">数据库上下文类型</param>
         /// <returns></returns>
-        protected virtual EntityTypeInfo[] FindEntities(Type contextType)
+        public virtual Type[] FindEntities(IEntityProvider provider)
         {
-            return new DbEntityFinder().GetEntityTypeInfos(contextType).ToArray();
+            return provider.Entitys;
         }
     }
 }

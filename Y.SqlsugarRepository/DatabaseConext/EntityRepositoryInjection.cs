@@ -101,7 +101,7 @@ namespace Y.SqlsugarRepository.DatabaseConext
                 }
             }
 
-            throw new ApplicationException("没有找到实体类型主键: " + entityType + ". 确认实体是否继承了IEntity接口");
+            throw new ApplicationException("没有找到实体类型主键: " + entityType.Name + ". 确认实体是否继承了IEntity接口");
         }
     }
 }

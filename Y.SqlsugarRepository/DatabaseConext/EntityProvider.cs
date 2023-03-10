@@ -2,13 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Y.SqlsugarRepository.EntityBase;
 
 namespace Y.SqlsugarRepository.DatabaseConext
 {
     /// <summary>
-    /// 数据库实体类型提供类
+    /// 数据库实体类型提供程序
     /// </summary>
     public class EntityProvider : IEntityProvider
     {
@@ -59,8 +61,25 @@ namespace Y.SqlsugarRepository.DatabaseConext
             return this;
         }
 
-        public virtual void CheckEntity(Type type) { }
+        public virtual void CheckEntity(Type type)
+        {
+            Check(type);
+        }
 
-        public virtual void CheckEntity<TEntity>() { }
+        public virtual void CheckEntity<TEntity>()
+        {
+            Check(typeof(TEntity));
+        }
+
+        protected virtual void Check(Type type)
+        {
+            var isEntity = type.GetTypeInfo()
+                .GetInterfaces()
+                .Any(p => p.GetTypeInfo().IsGenericType && p.GetGenericTypeDefinition() == typeof(IEntity<>));
+            if (!isEntity)
+            {
+                throw new ApplicationException("没有找到实体类型主键: " + type.Name + ". 确认实体是否继承了IEntity接口");
+            }
+        }
     }
 }

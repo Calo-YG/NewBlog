@@ -1,6 +1,6 @@
 # Colo.Blog
-### 相关模块介绍
-Y.Module
+## 相关模块介绍
+### Y.Module
 模块化类库，参照AbpVnext实现，现已正常使用
 [Y.Module](http://https://www.nuget.org/packages/Y.Module)
 todo

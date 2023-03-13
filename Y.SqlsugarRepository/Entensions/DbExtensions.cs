@@ -17,21 +17,20 @@ namespace Y.SqlsugarRepository.Entensions
         /// <param name="services"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static IServiceCollection AddSqlSugarDbContextAsSignleton<TDbContext>(this IServiceCollection services, Action<ConnectionConfig> action)
-            where TDbContext : SugarUnitOfWork, new()
+        public static IServiceCollection AddSqlSugarWithUnitOfWorkAsSignleton<TUnitofWork>(this IServiceCollection services, Action<ConnectionConfig> action)
+            where TUnitofWork : SugarUnitOfWork, new()
         {
 
             ConnectionConfig config = new ConnectionConfig();
-            config.ConfigureExternalServices = TableAttributeConfig.AddContextColumsConfigure();
             action.Invoke(config);
             ISqlSugarClient sugar = new SqlSugarScope(config);
             services.AddSingleton<ISqlSugarClient>(sugar);
-            ISugarUnitOfWork<TDbContext> context = new SugarUnitOfWork<TDbContext>(sugar);
-            services.AddSingleton<ISugarUnitOfWork<TDbContext>>(context);
+            ISugarUnitOfWork<TUnitofWork> context = new SugarUnitOfWork<TUnitofWork>(sugar);
+            services.AddSingleton<ISugarUnitOfWork<TUnitofWork>>(context);
             return services;
         }
         /// <summary>
-        /// 作用域注入
+        /// 作用域注入SqlsugarClient
         /// </summary>
         /// <param name="services"></param>
         /// <param name="action"></param>
@@ -50,17 +49,17 @@ namespace Y.SqlsugarRepository.Entensions
             return services;
         }
         /// <summary>
-        /// 注入工作单元--zu
+        /// 注入工作单元
         /// </summary>
         /// <typeparam name="TDbContext"></typeparam>
         /// <param name="services"></param>
         /// <returns></returns>
-        public static IServiceCollection AddSuagarDbContextAsScoped<TDbContext>(this IServiceCollection services) where TDbContext : SugarUnitOfWork, new()
+        public static IServiceCollection AddUnitOfWorkAsScoped<TUnitOfWork>(this IServiceCollection services) where TUnitOfWork : SugarUnitOfWork, new()
         {
-            services.AddScoped<ISugarUnitOfWork<TDbContext>>(p =>
+            services.AddScoped<ISugarUnitOfWork<TUnitOfWork>>(p =>
             {
                 var sugar = p.GetRequiredService<ISqlSugarClient>();
-                return new SugarUnitOfWork<TDbContext>(sugar);
+                return new SugarUnitOfWork<TUnitOfWork>(sugar);
             });
             return services;
         }
@@ -70,12 +69,12 @@ namespace Y.SqlsugarRepository.Entensions
         /// <typeparam name="TDbContext"></typeparam>
         /// <param name="services"></param>
         /// <returns></returns>
-        public static IServiceCollection AddSuagarDbContextAsTransint<TDbContext>(this IServiceCollection services) where TDbContext : SugarUnitOfWork, new()
+        public static IServiceCollection AddUnitOfWorkAsTransint<TUnitOfWork>(this IServiceCollection services) where TUnitOfWork : SugarUnitOfWork, new()
         {
-            services.AddTransient<ISugarUnitOfWork<TDbContext>>(p =>
+            services.AddTransient<ISugarUnitOfWork<TUnitOfWork>>(p =>
             {
                 var sugar = p.GetRequiredService<ISqlSugarClient>();
-                return new SugarUnitOfWork<TDbContext>(sugar);
+                return new SugarUnitOfWork<TUnitOfWork>(sugar);
             });
             return services;
         }
@@ -85,13 +84,27 @@ namespace Y.SqlsugarRepository.Entensions
         /// <typeparam name="TDbContext"></typeparam>
         /// <param name="services"></param>
         /// <returns></returns>
-        public static IServiceCollection AddSuagarDbContextAsSignledton<TDbContext>(this IServiceCollection services) where TDbContext : SugarUnitOfWork, new()
+        public static IServiceCollection AddSuagarDbContextAsSignledton<TUnitOfWork>(this IServiceCollection services) where TUnitOfWork : SugarUnitOfWork, new()
         {
-            services.AddSingleton<ISugarUnitOfWork<TDbContext>>(p =>
+            services.AddSingleton<ISugarUnitOfWork<TUnitOfWork>>(p =>
             {
                 var sugar = p.GetRequiredService<ISqlSugarClient>();
-                return new SugarUnitOfWork<TDbContext>(sugar);
+                return new SugarUnitOfWork<TUnitOfWork>(sugar);
             });
+            return services;
+        }
+        /// <summary>
+        /// 单例注入SqlSugarscope
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddSqlsugarSignleton(this IServiceCollection services, Action<ConnectionConfig> action)
+        {
+            ConnectionConfig config = new ConnectionConfig();
+            action.Invoke(config);
+            ISqlSugarClient sugar = new SqlSugarScope(config);
+            services.AddSingleton<ISqlSugarClient>(sugar);
             return services;
         }
     }

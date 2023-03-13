@@ -1,7 +1,6 @@
 ﻿
 using Microsoft.Extensions.DependencyInjection;
 using Calo.Blog.Host.Filters;
-using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Reflection;
@@ -9,16 +8,15 @@ using System.IO;
 using Y.Module.Modules;
 using Y.Module;
 using Y.Module.Extensions;
-using Calo.Blog.EntityCore.DataBase;
-using Calo.Blog.EntityCore.DataBase.Extensions;
-using Calo.Blog.Extenions.AjaxResponse;
-using Calo.Blog.EntityCore.DataBase.Repository;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using Calo.Blog.EntityCore;
+using Calo.Blog.Extenions.AjaxResponse;
 
 namespace Calo.Blog.Host
 {
+    [DependOn(typeof(SqlSugarEnityCoreModule))]
     public class CaloBlogHostModule : YModule
     {
         public override void ConfigerService(ConfigerServiceContext context)
@@ -37,27 +35,8 @@ namespace Calo.Blog.Host
             {
                 options.Filters.Add<ResultFilter>();
             });
-
-            context.Services.AddSqlSugarClientAsCleint(p =>
-            {
-                p.ConnectionString = configuration.GetSection("App:ConnectionString:Default").Value;
-                p.DbType = SqlSugar.DbType.SqlServer;
-                p.IsAutoCloseConnection = true;
-            }).AddSuagarDbContextAsScoped<BlogContext>();
-
+            //统一返回值处理工厂
             context.Services.AddScoped<IActionResultWrapFactory, FilterResultWrapFactory>();
-
-            context.Services.AddScoped<IDbAopProvider, DbAopProvider>();
-            //添加数据库上下文AOP配置
-            Configure<DbConfigureOptions>(options =>
-            {
-                var config = configuration
-                .GetSection("App:DbConfigureOptions")
-                .Get<DbConfigureOptions>();
-                options.EnableAopLog = config.EnableAopLog;
-                options.EnableAopError = config.EnableAopError;
-            });
-
             context.Services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo
@@ -82,7 +61,7 @@ namespace Calo.Blog.Host
                 options.OrderActionsBy(o => o.RelativePath);
             });
 
-            context.Services.AddRepository<BlogContext>();
+            // context.Services.AddRepository<BlogContext>();
         }
 
         public override void InitApplication(InitApplicationContext context)

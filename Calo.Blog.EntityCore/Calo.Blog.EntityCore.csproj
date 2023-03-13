@@ -8,12 +8,12 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
-		<PackageReference Include="SqlSugarCore" Version="5.1.3.38" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\Calo.Blog.Core\Calo.Blog.Domain.csproj" />
 		<ProjectReference Include="..\Calo.Blog.Extenions\Calo.Blog.Extenions.csproj" />
+		<ProjectReference Include="..\Y.SqlsugarRepository\Y.SqlsugarRepository.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -1,10 +1,10 @@
 ﻿using Calo.Blog.EntityCore.DataBase.Entities;
-using Calo.Blog.EntityCore.DataBase.Repository;
 using Calo.Blog.Extenions.Attributes;
 using Calo.Blog.Host.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using Y.SqlsugarRepository.Repository;
 
 namespace Calo.Blog.Host.Controllers
 {

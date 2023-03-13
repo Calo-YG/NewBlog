@@ -35,7 +35,7 @@ namespace Y.SqlsugarRepository.Entensions
         /// <param name="services"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static IServiceCollection AddSqlSugarClientAsCleint(this IServiceCollection services, Action<ConnectionConfig> action)
+        public static IServiceCollection AddSqlSugarClientAsScope(this IServiceCollection services, Action<ConnectionConfig> action)
         {
 
             ConnectionConfig config = new ConnectionConfig();

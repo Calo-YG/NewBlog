@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -11,15 +12,16 @@ namespace Y.SqlsugarRepository.DatabaseConext
     public class EntityManager : IEntityManager
     {
         private readonly IEntityContainer _entityContainer;
-        private readonly ISqlSugarClient _client;
+        private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<IEntityManager> _logger;
+        private readonly ISqlSugarClient _client;
         private IReadOnlyList<Type> EntityTypes { get; set; }
         public EntityManager(IEntityContainer entityContainer
-            , ISqlSugarClient client
+            , IServiceProvider serviceProvider
             , ILogger<IEntityManager> logger)
         {
             _entityContainer = entityContainer;
-            _client = client;
+            _serviceProvider= serviceProvider;
             _logger = logger;
             EntityTypes = _entityContainer.EntityTypes;
         }
@@ -28,9 +30,12 @@ namespace Y.SqlsugarRepository.DatabaseConext
         /// </summary>
         public virtual void BuildDataBase()
         {
+            using  var scope = _serviceProvider.CreateScope();
+            var _client =scope.ServiceProvider.GetRequiredService<ISqlSugarClient>();
             _logger.LogInformation("数据库建表开始");
             try
             {
+                _client.DbMaintenance.CreateDatabase();
                 foreach (var item in EntityTypes)
                 {
                     _logger.LogInformation($"{item.Name}开始创建");
@@ -47,7 +52,7 @@ namespace Y.SqlsugarRepository.DatabaseConext
             }
             finally
             {
-                _logger.LogError("数据库建表完成");
+                _logger.LogInformation("数据库建表完成");
             }
         }
         /// <summary>

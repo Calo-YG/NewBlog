@@ -16,14 +16,16 @@ namespace Calo.Blog.EntityCore
         {
             // base.ConfigerService(context);
             var configuration = context.GetConfiguartion();
-            context.Services.AddSqlSugarClientAsCleint(p =>
+            context.Services.AddSqlSugarClientAsScope(p =>
             {
                 p.ConnectionString = configuration.GetSection("App:ConnectionString:Default").Value;
                 p.DbType = SqlSugar.DbType.SqlServer;
                 p.IsAutoCloseConnection = true;
+                p.ConfigureExternalServices = TableAttributeConfig.AddContextColumsConfigure();
             });
 
             context.Services.AddScoped<IDbAopProvider, DbAopProvider>();
+            context.Services.AddSingleton<IEntityManager,EntityManager>();
             //添加数据库上下文AOP配置
             //Configure<DbConfigureOptions>(options =>
             //{
@@ -35,12 +37,18 @@ namespace Calo.Blog.EntityCore
             //});
             context.Services.AddRepository(provider =>
             {
+                //添加数据库实体
                 provider.AddEnity<User>();
             });
         }
 
-        public override void InitApplication(InitApplicationContext context)
+        public override void LaterInitApplication(InitApplicationContext context)
         {
+           var entityManager = context.ServiceProvider
+                .GetRequiredService<IEntityManager>();
+
+            //初始化数据库
+            entityManager.BuildDataBase();
         }
     }
 }

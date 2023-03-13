@@ -4,8 +4,8 @@
 模块化类库，参照AbpVnext实现，现已正常使用
 [Y.Module](http://https://www.nuget.org/packages/Y.Module)
 todo
-1.实现批量注入方式
-2.DependOn特性待测试
+1.实现批量注入方式（待完成）
+2.DependOn特性待测试（已测试）
 3.待思考
 #### 使用方式
 ```c#
@@ -34,12 +34,56 @@ namespace Calo.Blog.Host
 
 ```
 ### Y.SqlSugarRepository
+```c#
+        public override void ConfigerService(ConfigerServiceContext context)
+        {
+            //数据库配置
+            // base.ConfigerService(context);
+            var configuration = context.GetConfiguartion();
+            context.Services.AddSqlSugarClientAsScope(p =>
+            {
+                p.ConnectionString = configuration.GetSection("App:ConnectionString:Default").Value;
+                p.DbType = SqlSugar.DbType.SqlServer;
+                p.IsAutoCloseConnection = true;
+                p.ConfigureExternalServices = TableAttributeConfig.AddContextColumsConfigure();
+            });
+
+            context.Services.AddScoped<IDbAopProvider, DbAopProvider>();
+            context.Services.AddSingleton<IEntityManager,EntityManager>();
+            //添加数据库上下文AOP配置
+            Configure<DbConfigureOptions>(options =>
+            {
+                var config = configuration
+                .GetSection("app:dbconfigureoptions")
+                .Get<DbConfigureOptions>();
+                options.EnableAopLog = config.EnableAopLog;
+                options.EnableAopError = config.EnableAopError;
+            });
+            context.Services.AddRepository(provider =>
+            {
+                //添加数据库实体
+                provider.AddEnity<User>();
+            });
+        }
+
+         public override void LaterInitApplication(InitApplicationContext context)
+        {
+           var entityManager = context.ServiceProvider
+                .GetRequiredService<IEntityManager>();
+
+            //初始化数据库
+            entityManager.BuildDataBase();
+        }
+
+```
 
 基于SqlSugar仓储注入类库
-- 已实现仓储批量注入（待测试）
-- 基于领域驱动设计带实现聚合根
-- 待完善仓储注入的扩展方法
-- 待完善数据库上下文注入扩展方法
-- 待实现统一的事务管理（Aop工作单元）
+- 已实现仓储批量注入（已测试）
+- 建库建表（已测试）
+- 创建种子数据（待测试）
+- 基于领域驱动设计带实现聚合根（待实现）
+- 待完善仓储注入的扩展方法（已测试）
+- 待完善数据库上下文注入扩展方法（已测试）
+- 待实现统一的事务管理（Aop工作单元）（带实现）
 
 

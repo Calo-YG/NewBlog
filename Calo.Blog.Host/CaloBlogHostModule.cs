@@ -60,8 +60,6 @@ namespace Calo.Blog.Host
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
                 options.OrderActionsBy(o => o.RelativePath);
             });
-
-            // context.Services.AddRepository<BlogContext>();
         }
 
         public override void InitApplication(InitApplicationContext context)

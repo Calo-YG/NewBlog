@@ -7,7 +7,7 @@ using Y.Module.Modules;
 
 namespace Y.Module
 {
-
+    [AttributeUsage(AttributeTargets.Class)]
     public class DependOnAttribute : Attribute
     {
         private Type[] _Types;

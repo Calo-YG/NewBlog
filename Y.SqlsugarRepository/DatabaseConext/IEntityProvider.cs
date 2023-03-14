@@ -30,12 +30,12 @@ namespace Y.SqlsugarRepository.DatabaseConext
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        IEntityProvider AddEnity(Type type);
+        IEntityProvider AddEntity(Type type);
         /// <summary>
         /// 添加数据库实体类型
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
         /// <returns></returns>
-        IEntityProvider AddEnity<TEntity>();
+        IEntityProvider AddEntity<TEntity>();
     }
 }

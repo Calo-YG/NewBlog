@@ -26,7 +26,7 @@ namespace Calo.Blog.EntityCore
             });
 
             context.Services.AddScoped<IDbAopProvider, DbAopProvider>();
-            context.Services.AddSingleton<IEntityManager,EntityManager>();
+            context.Services.AddSingleton<IEntityManager, EntityManager>();
             //添加数据库上下文AOP配置
             Configure<DbConfigureOptions>(options =>
             {
@@ -39,14 +39,14 @@ namespace Calo.Blog.EntityCore
             context.Services.AddRepository(provider =>
             {
                 //添加数据库实体
-                provider.AddEnity<User>();
+                provider.AddEntity<User>();
             });
         }
 
         public override void LaterInitApplication(InitApplicationContext context)
         {
-           var entityManager = context.ServiceProvider
-                .GetRequiredService<IEntityManager>();
+            var entityManager = context.ServiceProvider
+                 .GetRequiredService<IEntityManager>();
 
             //初始化数据库
             entityManager.BuildDataBase();

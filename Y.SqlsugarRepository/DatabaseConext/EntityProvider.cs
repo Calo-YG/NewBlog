@@ -47,14 +47,14 @@ namespace Y.SqlsugarRepository.DatabaseConext
             _entitys.Add(typeof(TEntity));
         }
 
-        public IEntityProvider AddEnity(Type type)
+        public IEntityProvider AddEntity(Type type)
         {
             CheckEntity(type);
             _entitys.Add(type);
             return this;
         }
 
-        public IEntityProvider AddEnity<TEntity>()
+        public IEntityProvider AddEntity<TEntity>()
         {
             CheckEntity<TEntity>();
             _entitys.Add(typeof(TEntity));

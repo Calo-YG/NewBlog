@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Y.Module.DependencyInjection;
 using Y.Module.Modules;
 
 namespace Y.Module.Extensions
@@ -23,23 +25,23 @@ namespace Y.Module.Extensions
         /// <param name="moduleType"></param>
         /// <param name="types"></param>
         /// <returns></returns>
-        private static List<Type> GetModuleDepend(Type moduleType,List<Type> types)
+        private static List<Type> GetModuleDepend(Type moduleType, List<Type> types)
         {
             YModule.CheckModuleType(moduleType);
 
             var depedns = moduleType.GetCustomAttributes().OfType<DependOnAttribute>();
-            
-            foreach(var depend in depedns)
+
+            foreach (var depend in depedns)
             {
-                foreach(var itemType in depend.Types)
+                foreach (var itemType in depend.Types)
                 {
                     types.Add(itemType);
                 }
-            }       
+            }
             return types;
         }
 
-        private static void AddModuleFrompepend(Type moduleType,List<Type> types)
+        private static void AddModuleFrompepend(Type moduleType, List<Type> types)
         {
             YModule.CheckModuleType(moduleType);
 
@@ -48,10 +50,16 @@ namespace Y.Module.Extensions
                 return;
             }
             types.Add(moduleType);
-            foreach(var type in GetModuleDepend(moduleType,types))
+            foreach (var type in GetModuleDepend(moduleType, types))
             {
                 AddModuleFrompepend(moduleType, types);
             }
+        }
+
+        public static void AddAssembly(this IServiceCollection services, Assembly assembly)
+        {
+            services.ChcekNull();
+            new InjectionFactory().InjectionAssembly(services, assembly);
         }
     }
 }

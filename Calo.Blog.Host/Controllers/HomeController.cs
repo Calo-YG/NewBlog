@@ -1,4 +1,5 @@
-﻿using Calo.Blog.EntityCore.DataBase.Entities;
+﻿using Calo.Blog.EntityCore;
+using Calo.Blog.EntityCore.DataBase.Entities;
 using Calo.Blog.Extenions.Attributes;
 using Calo.Blog.Host.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -13,14 +14,17 @@ namespace Calo.Blog.Host.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IBaseRepository<User, long> userRespo;
+        private readonly ITestInject _testInject;
 
-        public HomeController(ILogger<HomeController> logger, IBaseRepository<User, long> baseRepository)
+        public HomeController(ILogger<HomeController> logger, IBaseRepository<User, long> baseRepository,ITestInject testInject)
         {
             _logger = logger;
             userRespo = baseRepository;
+            _testInject = testInject;   
         }
         public IActionResult Index()
         {
+            _testInject.LogInfo();
             return View();
         }
         public IActionResult Privacy()

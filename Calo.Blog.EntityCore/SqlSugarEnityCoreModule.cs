@@ -1,6 +1,7 @@
 ﻿using Calo.Blog.EntityCore.DataBase.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 using Y.Module;
 using Y.Module.Extensions;
 using Y.Module.Modules;
@@ -45,6 +46,7 @@ namespace Calo.Blog.EntityCore
                 //跳过建库建表
                 p.SikpBuildDatabase = true;
             });
+            context.Services.AddAssembly(assembly: Assembly.GetExecutingAssembly());
         }
 
         public override void LaterInitApplication(InitApplicationContext context)

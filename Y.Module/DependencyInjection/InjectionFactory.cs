@@ -11,16 +11,17 @@ namespace Y.Module.DependencyInjection
             var types = assembly.GetTypes();
             foreach (var type in types)
             {
-                var firstInterface = type.GetInterfaces().FirstOrDefault();
-                if (firstInterface is null || service.IsExists(firstInterface)) continue;
-
-
+                Injection(service, type);
             }
         }
-        protected virtual void InjectionAttribute(IServiceCollection services, Type type)
+        protected virtual void Injection(IServiceCollection services, Type type)
         {
-            var attributes = type.GetCustomAttributes().Cast<InjectionAttribute>();
-            var injectionAttribute = attributes.FirstOrDefault();
+            var attributes = type.GetCustomAttributes().Where(p=>p.GetType()==typeof(InjectionAttribute));
+            if (!attributes.Any())
+            {
+                return;
+            }
+            var injectionAttribute = attributes.FirstOrDefault() as InjectionAttribute;
             if (!attributes.Any() || injectionAttribute is null || injectionAttribute.InterfaceType is null)
             {
                 if (!services.IsExists(type))

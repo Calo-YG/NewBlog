@@ -11,7 +11,6 @@ namespace Y.SqlsugarRepository.Entensions
 {
     public static class TableAttributeConfig
     {
-        public static Type[] Increments = new Type[] { typeof(int), typeof(long) };
         public static ConfigureExternalServices AddContextColumsConfigure()
         {
             ConfigureExternalServices configure = new ConfigureExternalServices();
@@ -20,10 +19,17 @@ namespace Y.SqlsugarRepository.Entensions
             {
                 var attributes = prop.GetCustomAttributes();
 
-                if (attributes.OfType<KeyWithIncrementAttribute>().Any() && attributes.Any(p => Increments.Contains(p.GetType())))
+                if (attributes.OfType<PrimaryKeyAttribute>().Any())
+                {
+                    column.IsPrimarykey = true;
+                    column.IsNullable = false;
+                }
+
+                if (attributes.OfType<KeyWithIncrementAttribute>().Any())
                 {
                     column.IsPrimarykey = true;
                     column.IsIdentity = true;
+                    column.IsNullable = false;
                 }
 
                 //并发冲突
@@ -35,7 +41,7 @@ namespace Y.SqlsugarRepository.Entensions
 
             configure.EntityNameService = (type, entity) =>
             {
-                var attributes = type.GetCustomAttributes(true);
+                var attributes = type.GetCustomAttributes();
 
                 if (attributes.Any(p => p is TableAttribute))
                 {

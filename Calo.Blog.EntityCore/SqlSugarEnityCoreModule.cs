@@ -31,7 +31,7 @@ namespace Calo.Blog.EntityCore
             Configure<DbConfigureOptions>(options =>
             {
                 var config = configuration
-                .GetSection("app:dbconfigureoptions")
+                .GetSection("App:DbConfigureOptions")
                 .Get<DbConfigureOptions>();
                 options.EnableAopLog = config.EnableAopLog;
                 options.EnableAopError = config.EnableAopError;

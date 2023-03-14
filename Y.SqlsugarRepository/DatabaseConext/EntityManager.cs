@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SqlSugar;
 using System;
@@ -14,15 +15,17 @@ namespace Y.SqlsugarRepository.DatabaseConext
         private readonly IEntityContainer _entityContainer;
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<IEntityManager> _logger;
-        private readonly ISqlSugarClient _client;
+        private readonly IConfiguration _configuration;
         private IReadOnlyList<Type> EntityTypes { get; set; }
         public EntityManager(IEntityContainer entityContainer
             , IServiceProvider serviceProvider
-            , ILogger<IEntityManager> logger)
+            , ILogger<IEntityManager> logger
+            , IConfiguration configuration)
         {
             _entityContainer = entityContainer;
-            _serviceProvider= serviceProvider;
+            _serviceProvider = serviceProvider;
             _logger = logger;
+            _configuration = configuration;
             EntityTypes = _entityContainer.EntityTypes;
         }
         /// <summary>
@@ -30,8 +33,17 @@ namespace Y.SqlsugarRepository.DatabaseConext
         /// </summary>
         public virtual void BuildDataBase()
         {
-            using  var scope = _serviceProvider.CreateScope();
-            var _client =scope.ServiceProvider.GetRequiredService<ISqlSugarClient>();
+            //跳过建库建表，加快启动速度
+            var skipBuildeDatabase = _configuration
+                .GetSection("App:SkipBuildeDatabase")
+                .Get<bool>();
+            if (skipBuildeDatabase)
+            {
+                _logger.LogInformation("已跳过建库建表，如有需要请修改appsetting文件夹");
+                return;
+            }
+            using var scope = _serviceProvider.CreateScope();
+            var _client = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>();
             _logger.LogInformation("数据库建表开始");
             try
             {

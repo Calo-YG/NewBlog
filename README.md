@@ -5,7 +5,7 @@
 #### 模块化类库，参照AbpVnext实现，现已正常使用
 [Y.Module](http://https://www.nuget.org/packages/Y.Module)
 todo
-1.实现批量注入方式（待完成）
+1.实现批量注入方式（待完成（已完成特性批量注入），基于接口的批量注入带实现）
 
 #### 使用方式
 ```c#

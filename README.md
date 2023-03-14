@@ -75,6 +75,20 @@ namespace Calo.Blog.Host
             entityManager.BuildDataBase();
         }
 
+        //使用
+    public class HomeController : Controller
+    {
+        private readonly ILogger<HomeController> _logger;
+        //依赖注入
+        private readonly IBaseRepository<User, long> userRespo;
+
+        public HomeController(ILogger<HomeController> logger, IBaseRepository<User, long> baseRepository)
+        {
+            _logger = logger;
+            userRespo = baseRepository;
+        }
+    }     
+
 ```
 
 基于SqlSugar仓储注入类库

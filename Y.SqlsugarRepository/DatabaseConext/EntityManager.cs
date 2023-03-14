@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -15,17 +16,17 @@ namespace Y.SqlsugarRepository.DatabaseConext
         private readonly IEntityContainer _entityContainer;
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<IEntityManager> _logger;
-        private readonly IConfiguration _configuration;
+        private readonly IOptions<DatabaseSetting> _options;
         private IReadOnlyList<Type> EntityTypes { get; set; }
         public EntityManager(IEntityContainer entityContainer
             , IServiceProvider serviceProvider
             , ILogger<IEntityManager> logger
-            , IConfiguration configuration)
+            , IOptions<DatabaseSetting> options)
         {
             _entityContainer = entityContainer;
             _serviceProvider = serviceProvider;
             _logger = logger;
-            _configuration = configuration;
+            _options = options;
             EntityTypes = _entityContainer.EntityTypes;
         }
         /// <summary>
@@ -34,12 +35,9 @@ namespace Y.SqlsugarRepository.DatabaseConext
         public virtual void BuildDataBase()
         {
             //跳过建库建表，加快启动速度
-            var skipBuildeDatabase = _configuration
-                .GetSection("App:SkipBuildeDatabase")
-                .Get<bool>();
-            if (skipBuildeDatabase)
+            if (_options.Value.SikpBuildDatabase)
             {
-                _logger.LogInformation("已跳过建库建表，如有需要请修改appsetting文件夹");
+                _logger.LogInformation("已跳过建库建表，如有需要请修改DatabaseSetting配置");
                 return;
             }
             using var scope = _serviceProvider.CreateScope();

@@ -15,7 +15,6 @@ namespace Calo.Blog.EntityCore
     {
         public override void ConfigerService(ConfigerServiceContext context)
         {
-            // base.ConfigerService(context);
             var configuration = context.GetConfiguartion();
             context.Services.AddSqlSugarClientAsScope(p =>
             {
@@ -24,10 +23,9 @@ namespace Calo.Blog.EntityCore
                 p.IsAutoCloseConnection = true;
                 p.ConfigureExternalServices = TableAttributeConfig.AddContextColumsConfigure();
             });
-
-            context.Services.AddScoped<IDbAopProvider, DbAopProvider>();
             context.Services.AddSingleton<IEntityManager, EntityManager>();
             //添加数据库上下文AOP配置
+            context.Services.AddScoped<IDbAopProvider, DbAopProvider>();
             Configure<DbConfigureOptions>(options =>
             {
                 var config = configuration
@@ -40,6 +38,12 @@ namespace Calo.Blog.EntityCore
             {
                 //添加数据库实体
                 provider.AddEntity<User>();
+            });
+            //数据库建库建表配置
+            Configure<DatabaseSetting>(p =>
+            {
+                //跳过建库建表
+                p.SikpBuildDatabase = true;
             });
         }
 

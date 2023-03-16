@@ -47,7 +47,7 @@ namespace Calo.Blog.EntityCore
             Configure<DatabaseSetting>(p =>
             {
                 //跳过建库建表
-                p.SikpBuildDatabase = false;
+                p.SikpBuildDatabase = true;
             });
             context.Services.AddAssembly(assembly: Assembly.GetExecutingAssembly());
         }

@@ -1,6 +1,5 @@
 ﻿
 using Microsoft.Extensions.DependencyInjection;
-using Calo.Blog.Host.Filters;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Reflection;
@@ -12,11 +11,17 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using Calo.Blog.EntityCore;
-using Calo.Blog.Extenions.AjaxResponse;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.Extensions.Configuration;
+using Calo.Blog.Common;
+using Calo.Blog.Common.Authorization;
 
 namespace Calo.Blog.Host
 {
-    [DependOn(typeof(SqlSugarEnityCoreModule))]
+    [DependOn(typeof(SqlSugarEnityCoreModule),typeof(CommonModule))]
     public class CaloBlogHostModule : YModule
     {
         public override void ConfigerService(ConfigerServiceContext context)
@@ -31,12 +36,39 @@ namespace Calo.Blog.Host
 
             context.Services.AddHttpContextAccessor();
 
-            context.Services.AddControllers(options =>
+            //添加cokkie认证和cokkie
+            context.Services.AddAuthentication(context =>
             {
-                options.Filters.Add<ResultFilter>();
+                //需要登录进行鉴权认证
+                context.RequireAuthenticatedSignIn = true;
+                context.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                context.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                
+            }).AddCookie(options =>
+            {
+                //cokkie名称
+                options.Cookie.Name = "Y.Authorization";
+                //cokkie过期时间
+                options.ExpireTimeSpan= TimeSpan.FromMinutes(60);
+                //cokkie启用滑动过期时间
+                options.SlidingExpiration = true;
+            }).AddJwtBearer(options =>
+            {
+                var jwtsetting = configuration.GetSection("App.JWtSetting").Get<JwtSetting>();
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true, //是否验证Issuer
+                    ValidIssuer = jwtsetting.Issuer, //发行人Issuer
+                    ValidateAudience = true, //是否验证Audience
+                    ValidAudience = jwtsetting.Audience,//
+                    ValidateIssuerSigningKey = true, //是否验证SecurityKey
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtsetting.SecretKey)), //SecurityKey
+                    ValidateLifetime = true, //是否验证失效时间
+                    ClockSkew = TimeSpan.FromSeconds(30), //过期时间容错值，解决服务器端时间不同步问题（秒）
+                    RequireExpirationTime = true,
+                };
             });
-            //统一返回值处理工厂
-            context.Services.AddScoped<IActionResultWrapFactory, FilterResultWrapFactory>();
+
             context.Services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo
@@ -72,6 +104,10 @@ namespace Calo.Blog.Host
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            //鉴权中间件
+            app.UseAuthentication();
+
             app.UseStaticFiles();
 
             app.UseRouting();

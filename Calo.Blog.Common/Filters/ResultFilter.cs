@@ -1,19 +1,10 @@
-﻿using Calo.Blog.EntityCore.DataBase.Entities;
-using Calo.Blog.Extenions.AjaxResponse;
+﻿using Calo.Blog.Extenions.AjaxResponse;
 using Calo.Blog.Extenions.Attributes;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
-using SqlSugar;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Metadata;
 
-namespace Calo.Blog.Host.Filters
+namespace Calo.Blog.Common.Filters
 {
     public class ResultFilter : IResultFilter
     {

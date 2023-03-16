@@ -12,7 +12,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Calo.Blog.Core\Calo.Blog.Domain.csproj" />
-		<ProjectReference Include="..\Calo.Blog.Extenions\Calo.Blog.Extenions.csproj" />
 		<ProjectReference Include="..\Y.SqlsugarRepository\Y.SqlsugarRepository.csproj" />
 	</ItemGroup>
 

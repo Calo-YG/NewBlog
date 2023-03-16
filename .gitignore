@@ -352,8 +352,6 @@ healthchecksdb
 /.vs/Calo.Blog
 /.vs/ProjectEvaluation
 /Calo.Blog.Application/obj
-/Calo.Blog.Application/*
-/Calo.Blog.Application
 /Calo.Blog.Host/bin
 /Calo.Blog.Extenions/bin
 /Calo.Blog.EntityCore/bin

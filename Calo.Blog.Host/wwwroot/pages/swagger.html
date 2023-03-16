@@ -2,19 +2,46 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>首页</title>
+    <title>Swagger</title>
+    <link rel="stylesheet" type="text/css" href="./swagger-ui.css">
 </head>
 <body>
+    <h1>SWAGGER</h1>
+   <div id="swagger-ui"></div>
 </body>
 </html>
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> 
+
+<script src="swagger-ui-bundle.js"></script>
+<script src="swagger-ui-standalone-preset.js"></script>
 <script>
-    const { createApp } = Vue
-    createApp({
-        data() {
-            return {
-                message: 'Hello Vue!'
-            }
+    window.onload = function () {
+        var configObject = JSON.parse('%(ConfigObject)');
+
+        // Apply mandatory parameters
+        configObject.dom_id = "#swagger-ui";
+        configObject.presets = [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset];
+        configObject.layout = "StandaloneLayout";
+        configObject.requestInterceptor = function (request) {
+            return request;
+        };
+
+        if (!configObject.hasOwnProperty("oauth2RedirectUrl")) {
+            configObject.oauth2RedirectUrl = window.location + "oauth2-redirect.html"; // use the built-in default
         }
-    }).mount('#app')
+
+        configObject.plugins = [
+            function (system) {
+                return {
+                    components: {
+                        authorizeBtn: function () {
+                            return null;
+                        }
+                    }
+                }
+            }
+        ];
+
+        // Build a system
+        SwaggerUIBundle(configObject);
+    }
 </script>

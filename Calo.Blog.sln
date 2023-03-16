@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calo.Blog.Extenions", "Calo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Y.Module", "Y.Module\Y.Module.csproj", "{EC563BF1-D41A-4EBD-9428-7485CE5627D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Y.SqlsugarRepository", "Y.SqlsugarRepository\Y.SqlsugarRepository.csproj", "{6F6127A2-9190-4D1C-89B3-E06CACBDA2E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Y.SqlsugarRepository", "Y.SqlsugarRepository\Y.SqlsugarRepository.csproj", "{6F6127A2-9190-4D1C-89B3-E06CACBDA2E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calo.Blog.Application", "Calo.Blog.Application\Calo.Blog.Application.csproj", "{3F749840-F103-4036-904F-CEE9CE5FD936}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{6F6127A2-9190-4D1C-89B3-E06CACBDA2E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F6127A2-9190-4D1C-89B3-E06CACBDA2E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F6127A2-9190-4D1C-89B3-E06CACBDA2E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F749840-F103-4036-904F-CEE9CE5FD936}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F749840-F103-4036-904F-CEE9CE5FD936}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F749840-F103-4036-904F-CEE9CE5FD936}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F749840-F103-4036-904F-CEE9CE5FD936}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

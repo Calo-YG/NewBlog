@@ -1,4 +1,5 @@
 ﻿using Calo.Blog.EntityCore.DataBase.Entities;
+using Calo.Blog.EntityCore.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -39,6 +40,8 @@ namespace Calo.Blog.EntityCore
             {
                 //添加数据库实体
                 provider.AddEntity<User>();
+                provider.AddEntity<Role>();
+                provider.AddEntity<Permissions>();
             });
             //数据库建库建表配置
             Configure<DatabaseSetting>(p =>

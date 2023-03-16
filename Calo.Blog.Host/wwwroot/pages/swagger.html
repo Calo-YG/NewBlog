@@ -7,52 +7,41 @@
 </head>
 <body>
 
-    <div id="swagger-ui"></div>
+   <div id="swagger-ui"></div>
+</body>
+</html>
 
-    <script src="swagger-ui-bundle.js"></script>
-    <script src="swagger-ui-standalone-preset.js"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script>
-        window.onload = function () {
-            var configObject = JSON.parse('%(ConfigObject)');
+<script src="swagger-ui-bundle.js"></script>
+<script src="swagger-ui-standalone-preset.js"></script>
+<script>
+    window.onload = function () {
+        var configObject = JSON.parse('%(ConfigObject)');
 
-            // Apply mandatory parameters
-            configObject.dom_id = "#swagger-ui";
-            configObject.presets = [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset];
-            configObject.layout = "StandaloneLayout";
-            configObject.requestInterceptor = function (request) {
-                //var token = abp.security.antiForgery.getToken();
-                //request.headers[abp.security.antiForgery.tokenHeaderName] = token;
-                return request;
-            };
+        // Apply mandatory parameters
+        configObject.dom_id = "#swagger-ui";
+        configObject.presets = [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset];
+        configObject.layout = "StandaloneLayout";
+        configObject.requestInterceptor = function (request) {
+            return request;
+        };
 
-            if (!configObject.hasOwnProperty("oauth2RedirectUrl")) {
-                configObject.oauth2RedirectUrl = window.location + "oauth2-redirect.html"; // use the built-in default
-            }
+        if (!configObject.hasOwnProperty("oauth2RedirectUrl")) {
+            configObject.oauth2RedirectUrl = window.location + "oauth2-redirect.html"; // use the built-in default
+        }
 
-            configObject.plugins = [
-                function (system) {
-                    return {
-                        components: {
-                            authorizeBtn: function () {
-                                return null;
-                            }
+        configObject.plugins = [
+            function (system) {
+                return {
+                    components: {
+                        authorizeBtn: function () {
+                            return null;
                         }
                     }
                 }
-            ];
-
-            // Build a system
-            SwaggerUIBundle(configObject);
-        }
-        const { createApp } = Vue
-        createApp({
-            data() {
-                return {
-                    message: 'Hello Vue!'
-                }
             }
-        }).mount('#app')
-    </script>
-</body>
-</html>
+        ];
+
+        // Build a system
+        SwaggerUIBundle(configObject);
+    }
+</script>

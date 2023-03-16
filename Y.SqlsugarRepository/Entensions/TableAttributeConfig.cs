@@ -32,6 +32,13 @@ namespace Y.SqlsugarRepository.Entensions
                     column.IsNullable = false;
                 }
 
+                //自动设置可空属性
+               // if(new NullabilityInfoContext()
+               //.Create(prop).WriteState is NullabilityState.Nullable)
+               // {
+               //     column.IsNullable = true;
+               // }
+
                 //并发冲突
                 if (attributes.OfType<ConcurrentTokenAttribute>().Any())
                 {

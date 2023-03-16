@@ -5,6 +5,7 @@ using Calo.Blog.Host.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Y.SqlsugarRepository.Repository;
 
 namespace Calo.Blog.Host.Controllers
@@ -22,8 +23,10 @@ namespace Calo.Blog.Host.Controllers
             userRespo = baseRepository;
             _testInject = testInject;   
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+             var count = await userRespo.AsQueryable().CountAsync();
+            _logger.LogInformation("用户人数"+count);
             _testInject.LogInfo();
             return View();
         }

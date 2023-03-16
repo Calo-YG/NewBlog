@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SqlSugar;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +12,10 @@ namespace Y.SqlsugarRepository.EntityBase
         /// <summary>
         /// 创建人id
         /// </summary>
-        public TPrimarykey UpdaterUserId { get; set; }
+        [SugarColumn(IsNullable = true)]
+        public TPrimarykey? UpdaterUserId { get; set; }
 
-        public DateTime UpdateTime { get; set; }
+        [SugarColumn(IsNullable = true)]
+        public DateTime? UpdateTime { get; set; }
     }
 }

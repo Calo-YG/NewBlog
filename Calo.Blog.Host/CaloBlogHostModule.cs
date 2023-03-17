@@ -18,10 +18,11 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using Calo.Blog.Common;
 using Calo.Blog.Common.Authorization;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace Calo.Blog.Host
 {
-    [DependOn(typeof(SqlSugarEnityCoreModule),typeof(CommonModule))]
+    [DependOn(typeof(SqlSugarEnityCoreModule), typeof(CommonModule))]
     public class CaloBlogHostModule : YModule
     {
         public override void ConfigerService(ConfigerServiceContext context)
@@ -41,15 +42,15 @@ namespace Calo.Blog.Host
             {
                 //需要登录进行鉴权认证
                 context.RequireAuthenticatedSignIn = true;
-                context.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                context.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 context.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                
+
             }).AddCookie(options =>
             {
                 //cokkie名称
                 options.Cookie.Name = "Y.Authorization";
                 //cokkie过期时间
-                options.ExpireTimeSpan= TimeSpan.FromMinutes(60);
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
                 //cokkie启用滑动过期时间
                 options.SlidingExpiration = true;
             }).AddJwtBearer(options =>
@@ -71,6 +72,9 @@ namespace Calo.Blog.Host
 
             context.Services.AddSwaggerGen(options =>
             {
+                options.OperationFilter<AddResponseHeadersFilter>();
+                options.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
+                options.OperationFilter<SecurityRequirementsOperationFilter>();
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "Calo API v1",

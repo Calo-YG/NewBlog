@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
@@ -20,13 +21,16 @@ namespace Calo.Blog.Common.Authorization
         {
             var jwtsetting = _configuration.GetSection("App:JwtSetting").Get<JwtSetting>() ?? throw new ArgumentException("请先检查JWT配置");
             // 1. 定义需要使用到的Claims
-            var claims = new[]
+            var claims = new List<Claim>()
             {
-            new Claim(ClaimTypes.Name, "u_admin"), //HttpContext.User.Identity.Name
-            new Claim(ClaimTypes.Role, "r_admin"), //HttpContext.User.IsInRole("r_admin")
-            new Claim(JwtRegisteredClaimNames.Jti, "admin"),
-            new Claim("id", user.UserId.ToString()),
-        };
+                new Claim(ClaimTypes.Name, user.UserName), //HttpContext.User.Identity.Name
+                new Claim("Id", user.UserId.ToString()),
+            };
+            if (user.RoleIds != null && user.RoleIds.Any())
+            {
+                claims.AddRange(user.RoleIds.Select(p => new Claim("RoleIds", p)));
+            }
+
 
             // 2. 从 appsettings.json 中读取SecretKey
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtsetting.SecretKey));

@@ -10,6 +10,7 @@ namespace Calo.Blog.Common.Authorization
         public CustomAuthorizationAttribute(params string[] authorizeName)
         {
             AuthorizeName = authorizeName;
+            Policy = string.Join(",", AuthorizeName);
         }
     }
 }

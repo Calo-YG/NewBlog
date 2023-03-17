@@ -19,6 +19,7 @@ namespace Calo.Blog.Common
             context.Services.AddScoped<IPermissionCheck, PermissionCheck>();
             context.Services.AddSingleton<IAuthorizationPolicyProvider, AuthorizationProvider>();
             context.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizeMiddleHandle>();
+            context.Services.AddSingleton<IAuthorizationHandler, AuthorizeHandler>();
 
             context.Services.AddControllers(options =>
             {

@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Calo.Blog.Common.Authorization
 {
@@ -14,9 +10,10 @@ namespace Calo.Blog.Common.Authorization
         private readonly IPermissionCheck _permisscheck;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthorizeHandler(IPermissionCheck permisscheck, IHttpContextAccessor httpContextAccessor)
+        public AuthorizeHandler(IHttpContextAccessor httpContextAccessor,IServiceProvider serviceProvider)
         {
-            _permisscheck = permisscheck;
+            using var scope = serviceProvider.CreateScope();
+            _permisscheck = scope.ServiceProvider.GetRequiredService<IPermissionCheck>();
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -30,16 +27,27 @@ namespace Calo.Blog.Common.Authorization
             if (userId is null || !isAuthenticated)
             {
                 context.Fail();
+                return Task.CompletedTask;
             }
             var roleIds = claims?
-                .Where(p => p is not null || p.Type.Equals("RoleIds"))
+                .Where(p => p?.Type?.Equals("RoleIds") ?? false)
                 .Select(p => long.Parse(p.Value));
             var roleNames = claims?
-                .Where(p => p is not null || p.Type.Equals("Role"))
+                .Where(p => p?.Type?.Equals(ClaimTypes.Role) ?? false)
                 .Select(p => p.Value);
+            UserTokenModel tokenModel = new UserTokenModel()
+            {
+                UserId= long.Parse(userId??"0"),
+                UserName= claims?.FirstOrDefault(p=>p.Type== ClaimTypes.Name)?.Value ?? "",
+                RoleNames = roleNames?.ToArray(),
+                RoleIds= roleIds?.ToArray(),
+            };
             if (requirement.AuthorizeName.Any())
             {
-
+                if (_permisscheck.IsGranted(tokenModel, requirement.AuthorizeName))
+                {
+                    context.Succeed(requirement);
+                }
 
             }
             return Task.CompletedTask;

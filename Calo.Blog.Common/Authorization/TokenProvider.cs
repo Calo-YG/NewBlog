@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
@@ -28,9 +26,14 @@ namespace Calo.Blog.Common.Authorization
             };
             if (user.RoleIds != null && user.RoleIds.Any())
             {
-                claims.AddRange(user.RoleIds.Select(p => new Claim("RoleIds", p)));
+                claims.AddRange(user.RoleIds.Select(p => new Claim("RoleIds", p.ToString())));
+            }
+            if(user.RoleNames!= null && user.RoleNames.Any())
+            {
+                claims.AddRange(user.RoleNames.Select(p=>new Claim(ClaimTypes.Role, p)));
             }
 
+            user.Claims = claims.ToArray();
 
             // 2. 从 appsettings.json 中读取SecretKey
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtsetting.SecretKey));
@@ -47,7 +50,7 @@ namespace Calo.Blog.Common.Authorization
                 jwtsetting.Audience,   //Audience
                 claims,                          //Claims,
                 DateTime.Now,                    //notBefore
-                DateTime.Now.AddSeconds(30),    //expires
+                DateTime.Now.AddMinutes(30),    //expires
                 signingCredentials               //Credentials
             );
 

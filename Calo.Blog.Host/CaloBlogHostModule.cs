@@ -19,6 +19,8 @@ using Microsoft.Extensions.Configuration;
 using Calo.Blog.Common;
 using Calo.Blog.Common.Authorization;
 using Swashbuckle.AspNetCore.Filters;
+using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
 
 namespace Calo.Blog.Host
 {
@@ -42,8 +44,8 @@ namespace Calo.Blog.Host
             {
                 //需要登录进行鉴权认证
                 context.RequireAuthenticatedSignIn = true;
-                context.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                context.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                context.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                context.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 
             }).AddCookie(options =>
             {
@@ -55,7 +57,7 @@ namespace Calo.Blog.Host
                 options.SlidingExpiration = true;
             }).AddJwtBearer(options =>
             {
-                var jwtsetting = configuration.GetSection("App.JWtSetting").Get<JwtSetting>();
+                var jwtsetting = configuration.GetSection("App:JWtSetting").Get<JwtSetting>();
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuer = true, //是否验证Issuer
@@ -67,6 +69,20 @@ namespace Calo.Blog.Host
                     ValidateLifetime = true, //是否验证失效时间
                     ClockSkew = TimeSpan.FromSeconds(30), //过期时间容错值，解决服务器端时间不同步问题（秒）
                     RequireExpirationTime = true,
+                };
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Cookies["x-access-token"];
+
+                        if (!string.IsNullOrEmpty(accessToken))
+                        {
+                            context.Token = accessToken;
+                        }
+
+                        return Task.CompletedTask;
+                    }
                 };
             });
 

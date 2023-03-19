@@ -7,7 +7,10 @@ namespace Calo.Blog.Common.Authorization
     {
         public Task<AuthorizationPolicy> GetDefaultPolicyAsync()
         {
-            return Task.FromResult<AuthorizationPolicy>(null);
+            var policy = new AuthorizationPolicyBuilder();
+            policy.AddAuthenticationSchemes("Bearer");
+            policy.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
+            return Task.FromResult<AuthorizationPolicy>(policy.Build());
         }
 
         public Task<AuthorizationPolicy?> GetFallbackPolicyAsync()
@@ -17,16 +20,19 @@ namespace Calo.Blog.Common.Authorization
 
         public Task<AuthorizationPolicy?> GetPolicyAsync(string policyName)
         {
+            var policy = new AuthorizationPolicyBuilder();
+            policy.AddAuthenticationSchemes("Bearer");
+            policy.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
+            if(policyName is null)
+            {
+                return Task.FromResult<AuthorizationPolicy>(null);
+            }
             var authorizations = policyName.Split(',');
             if (authorizations.Any())
             {
-                var policy = new AuthorizationPolicyBuilder();
-                policy.AddAuthenticationSchemes("Bearer");
-                policy.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
-                policy.AddRequirements(new AuthorizeRequirement(authorizations));
-                return Task.FromResult(policy.Build());
+                policy.AddRequirements(new AuthorizeRequirement(authorizations));              
             }
-            return Task.FromResult<AuthorizationPolicy>(null);
+            return Task.FromResult(policy.Build());
         }
     }
 }

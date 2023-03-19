@@ -1,6 +1,8 @@
 ﻿using Calo.Blog.Common.Authorization;
 using Calo.Blog.Common.Filters;
+using Calo.Blog.Common.Redis;
 using Calo.Blog.Extenions.AjaxResponse;
+using FreeRedis;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Y.Module;
@@ -20,6 +22,10 @@ namespace Calo.Blog.Common
             context.Services.AddSingleton<IAuthorizationPolicyProvider, AuthorizationProvider>();
             context.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizeMiddleHandle>();
             context.Services.AddSingleton<IAuthorizationHandler, AuthorizeHandler>();
+
+            //使用Free Redis
+            context.Services.AddSingleton<IRedisClient,RedisClient>(p=>new RedisClient("124.71.15.19:6379,password=154511,defaultDatabase=1"));
+            context.Services.AddSingleton<ICacheManager,CacheManager>();    
 
             context.Services.AddControllers(options =>
             {

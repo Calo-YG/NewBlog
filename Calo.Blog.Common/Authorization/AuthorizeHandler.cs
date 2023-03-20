@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
@@ -9,25 +10,41 @@ namespace Calo.Blog.Common.Authorization
     {
         private readonly IPermissionCheck _permisscheck;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IAuthenticationSchemeProvider _authenticationSchemes;
 
-        public AuthorizeHandler(IHttpContextAccessor httpContextAccessor,IServiceProvider serviceProvider)
+        public AuthorizeHandler(IHttpContextAccessor httpContextAccessor
+            , IServiceProvider serviceProvider
+            , IAuthenticationSchemeProvider authenticationSchemes)
         {
             using var scope = serviceProvider.CreateScope();
             _permisscheck = scope.ServiceProvider.GetRequiredService<IPermissionCheck>();
             _httpContextAccessor = httpContextAccessor;
+            _authenticationSchemes = authenticationSchemes;
         }
 
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AuthorizeRequirement requirement)
+        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, AuthorizeRequirement requirement)
         {
             var identity = _httpContextAccessor?.HttpContext?.User?.Identity;
+            var httpContext = _httpContextAccessor?.HttpContext;
             var isAuthenticated = identity?.IsAuthenticated ?? false;
-            //判断是否通过鉴权中间件
             var claims = _httpContextAccessor?.HttpContext?.User?.Claims;
             var userId = claims?.FirstOrDefault(p => p.Type == "Id")?.Value;
+            var schemes = await _authenticationSchemes.GetAllSchemesAsync();
+            var handlers = httpContext?.RequestServices.GetRequiredService<IAuthenticationHandlerProvider>();
+            foreach (var scheme in schemes)
+            {
+                //判断请求是否停止
+                if (handlers?.GetHandlerAsync(httpContext, scheme.Name) is IAuthenticationRequestHandler requestHandler && await requestHandler.HandleRequestAsync())
+                {
+                    context.Fail();
+                    return;
+                }
+            }
+            //判断是否通过鉴权中间件--是否登录
             if (userId is null || !isAuthenticated)
             {
                 context.Fail();
-                return Task.CompletedTask;
+                return;
             }
             var roleIds = claims?
                 .Where(p => p?.Type?.Equals("RoleIds") ?? false)
@@ -37,20 +54,20 @@ namespace Calo.Blog.Common.Authorization
                 .Select(p => p.Value);
             UserTokenModel tokenModel = new UserTokenModel()
             {
-                UserId= long.Parse(userId??"0"),
-                UserName= claims?.FirstOrDefault(p=>p.Type== ClaimTypes.Name)?.Value ?? "",
+                UserId = long.Parse(userId ?? "0"),
+                UserName = claims?.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value ?? "",
                 RoleNames = roleNames?.ToArray(),
-                RoleIds= roleIds?.ToArray(),
+                RoleIds = roleIds?.ToArray(),
             };
             if (requirement.AuthorizeName.Any())
             {
-                if (_permisscheck.IsGranted(tokenModel, requirement.AuthorizeName))
+                if (!_permisscheck.IsGranted(tokenModel, requirement.AuthorizeName))
                 {
-                    context.Succeed(requirement);
+                    context.Fail();
+                    return;
                 }
-
             }
-            return Task.CompletedTask;
+            context.Succeed(requirement);
         }
 
     }

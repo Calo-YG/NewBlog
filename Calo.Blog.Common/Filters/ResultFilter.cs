@@ -18,7 +18,6 @@ namespace Calo.Blog.Common.Filters
         }
         public void OnResultExecuted(ResultExecutedContext context)
         {
-
         }
 
         public void OnResultExecuting(ResultExecutingContext context)

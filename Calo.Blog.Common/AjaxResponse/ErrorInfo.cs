@@ -14,5 +14,7 @@ namespace Calo.Blog.Extenions.AjaxResponse
         {
             Error = error;
         }
+
+        public ErrorInfo() { }
     }
 }

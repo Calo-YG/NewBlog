@@ -17,7 +17,7 @@ namespace Calo.Blog.Host.Controllers
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ITokenProvider _tokenProvider;
-        public TestController(IHttpContextAccessor httpContextAccessor,ITokenProvider tokenProvider) 
+        public TestController(IHttpContextAccessor httpContextAccessor, ITokenProvider tokenProvider)
         {
             _httpContextAccessor = httpContextAccessor;
             _tokenProvider = tokenProvider;
@@ -32,13 +32,14 @@ namespace Calo.Blog.Host.Controllers
             return 1;
         }
 
-        [CustomAuthorization("test1","test1")]
+        [CustomAuthorization("test1", "test1")]
         [HttpGet("TestTask")]
         public async Task<int> TestTask()
         {
             await Task.CompletedTask;
             return 1;
         }
+        [CustomAuthorization("tttt")]
         [HttpGet("GetUser")]
         public User GetUser(Guid id)
         {
@@ -50,7 +51,7 @@ namespace Calo.Blog.Host.Controllers
             UserTokenModel tokenModel = new UserTokenModel();
             tokenModel.UserName = "test";
             tokenModel.UserId = 1;
-            var token =_tokenProvider.GenerateToken(tokenModel);
+            var token = _tokenProvider.GenerateToken(tokenModel);
 
             Response.Cookies.Append("x-access-token", token);
             var claimsIdentity = new ClaimsIdentity(tokenModel.Claims, "Login");
@@ -59,5 +60,5 @@ namespace Calo.Blog.Host.Controllers
         }
 
 
-   }
+    }
 }

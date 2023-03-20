@@ -10,7 +10,8 @@ namespace Calo.Blog.Common.Authorization
     {
         public virtual bool IsGranted(UserTokenModel userTokenModel, string[] authorizationNames)
         {
-            return false;
+            var array = new string[] { "tttt" };
+            return array.Contains(authorizationNames[0]);
         }
     }
 }

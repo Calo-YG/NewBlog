@@ -42,6 +42,12 @@ namespace Calo.Blog.Extenions.AjaxResponse
 
         }
 
+        public AjaxResponse(object result, bool _unAuthorizedRequest):base(result)
+        {
+            UnAuthorizedRequest = _unAuthorizedRequest;
+        }
+
+
         public AjaxResponse() : base(){ }
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Calo.Blog.Extenions.AjaxResponse
 {
@@ -28,7 +29,14 @@ namespace Calo.Blog.Extenions.AjaxResponse
 
             if (!(objectResult.Value is AjaxResponseBase))
             {
-                objectResult.Value = new AjaxResponse(objectResult.Value);
+                var unAuthorization = context.HttpContext.Response.StatusCode == StatusCodes.Status401Unauthorized;
+                var response = new AjaxResponse();
+                response.Result = objectResult.Value;
+                response.UnAuthorizedRequest = unAuthorization;
+                var error = new ErrorInfo();
+                error.Error = unAuthorization ? "你没有权限访问该接口" : "";
+                response.Error = error;
+                objectResult.Value = response;
                 objectResult.DeclaredType = typeof(AjaxResponse);
             }
         }

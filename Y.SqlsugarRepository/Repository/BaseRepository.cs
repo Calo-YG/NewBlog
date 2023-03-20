@@ -1,6 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SqlSugar;
+using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
+using System.Reflection;
+using Y.SqlsugarRepository.DatabaseConext;
 using Y.SqlsugarRepository.EntityBase;
 
 namespace Y.SqlsugarRepository.Repository
@@ -38,6 +42,7 @@ namespace Y.SqlsugarRepository.Repository
             _dbAopProvider = dbAopProvider;
             _logger = logger;
             base.Context = _servicerProvider.GetRequiredService<ISqlSugarClient>();
+            InitFilter();
             InitDbAop();
         }
 
@@ -50,6 +55,21 @@ namespace Y.SqlsugarRepository.Repository
             if (_dbAopProvider.DbConfigureOptions.EnableAopError)
             {
                 base.Context.Aop.OnError = _dbAopProvider.AopErrorAction(_logger);
+            }
+        }
+
+        private void InitFilter()
+        {
+            var entityContianer = _servicerProvider.GetRequiredService<IEntityContainer>();
+            var entityTypes = entityContianer.EntityTypes;
+
+            foreach (var type in entityTypes)
+            {
+                var lambda = DynamicExpressionParser.ParseLambda
+                                         (new[] { Expression.Parameter(type, "p") },
+                                          typeof(bool), $"IsDeleted ==  @0",
+                                           false);
+                base.Context.QueryFilter.AddTableFilter(type, lambda);
             }
         }
     }

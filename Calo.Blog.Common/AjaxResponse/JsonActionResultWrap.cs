@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ResultExecutingContext = Microsoft.AspNetCore.Mvc.Filters.ResultExecutingContext;
+using Microsoft.AspNetCore.Http;
 
 namespace Calo.Blog.Extenions.AjaxResponse
 {
@@ -13,6 +14,7 @@ namespace Calo.Blog.Extenions.AjaxResponse
     {
         public void Wrap(FilterContext context)
         {
+         
             JsonResult? jsonResult = null;
 
             switch (context)
@@ -29,7 +31,14 @@ namespace Calo.Blog.Extenions.AjaxResponse
 
             if (!(jsonResult.Value is AjaxResponseBase))
             {
-                jsonResult.Value = new AjaxResponse(jsonResult.Value);
+                var unAuthorization = context.HttpContext.Response.StatusCode == StatusCodes.Status401Unauthorized;
+                var response = new AjaxResponse();
+                response.Result = jsonResult.Value;
+                response.UnAuthorizedRequest= unAuthorization;
+                var error = new ErrorInfo();
+                error.Error= unAuthorization ? "你没有权限访问该接口" : "";
+                response.Error = error;
+                jsonResult.Value = response;
             }
         }
     }

@@ -70,19 +70,28 @@ namespace Calo.Blog.Host.Controllers
             return token;
         }
         [HttpGet("SetArray")]
-        public IEnumerable<int> SetArray()
+        public async Task<IEnumerable<int>> SetArray()
         {
-            var list = new List<string>();
+            List<Task<bool>> tlist = new List<Task<bool>>();
             int max = 100;
-            int current = 0;
-            while (current <= max)
+            int current = 1;
+            var date1= DateTime.Now;
+            var exists =await _cacheManager.Current.ExistsAsync("wygset");
+            while (current < max && !exists)
             {
                 current += 1;
-                list.Add(current.ToString());
-                //RedisHelper.HSet("wygset", "wyg" + current.ToString(), current);
-                _cache.SetString(current.ToString() + "test", current.ToString());
+                var t =_cacheManager.Current.HSetAsync("wygset", "wyg" + current.ToString(), current);
+               //var t = _cacheManager.Current.SetAsync("current" + current, current,10000,CSRedis.RedisExistence.Nx);
+                tlist.Add(t);
+                if (tlist.Count > 20)
+                {
+                    await Task.WhenAll(tlist);
+                    tlist.Clear();
+                }
             }
-            var dic = RedisHelper.HGetAll<int>("wygset");
+            var date2= DateTime.Now;
+            Console.WriteLine("耗时" + date2.Subtract(date1).TotalMilliseconds);
+            var dic = new Dictionary<string,int>();
             return dic.Select(p => p.Value);
         }
         [HttpGet("TestCache")]

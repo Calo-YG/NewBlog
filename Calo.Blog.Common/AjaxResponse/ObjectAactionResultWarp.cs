@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Calo.Blog.Extenions.AjaxResponse
 {
-    public class ObjectAactionResultWarp : IActionResultWarp 
+    public class ObjectAactionResultWarp : IActionResultWarp
     {
         public void Wrap(FilterContext context)
         {
@@ -29,13 +29,10 @@ namespace Calo.Blog.Extenions.AjaxResponse
 
             if (!(objectResult.Value is AjaxResponseBase))
             {
-                var unAuthorization = context.HttpContext.Response.StatusCode == StatusCodes.Status401Unauthorized;
                 var response = new AjaxResponse();
                 response.Result = objectResult.Value;
-                response.UnAuthorizedRequest = unAuthorization;
-                var error = new ErrorInfo();
-                error.Error = unAuthorization ? "你没有权限访问该接口" : "";
-                response.Error = error;
+                response.StatusCode = "200";
+                response.Success = true;
                 objectResult.Value = response;
                 objectResult.DeclaredType = typeof(AjaxResponse);
             }

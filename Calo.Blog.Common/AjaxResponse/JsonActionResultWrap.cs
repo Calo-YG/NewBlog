@@ -14,7 +14,7 @@ namespace Calo.Blog.Extenions.AjaxResponse
     {
         public void Wrap(FilterContext context)
         {
-         
+
             JsonResult? jsonResult = null;
 
             switch (context)
@@ -31,13 +31,10 @@ namespace Calo.Blog.Extenions.AjaxResponse
 
             if (!(jsonResult.Value is AjaxResponseBase))
             {
-                var unAuthorization = context.HttpContext.Response.StatusCode == StatusCodes.Status401Unauthorized;
                 var response = new AjaxResponse();
                 response.Result = jsonResult.Value;
-                response.UnAuthorizedRequest= unAuthorization;
-                var error = new ErrorInfo();
-                error.Error= unAuthorization ? "你没有权限访问该接口" : "";
-                response.Error = error;
+                response.Success = true;
+                response.StatusCode = "200";
                 jsonResult.Value = response;
             }
         }

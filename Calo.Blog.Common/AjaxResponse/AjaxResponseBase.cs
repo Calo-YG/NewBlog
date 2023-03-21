@@ -29,5 +29,7 @@ namespace Calo.Blog.Extenions.AjaxResponse
         /// This property can be used to indicate that the current user has no privilege to perform this request.
         /// </summary>
         public bool UnAuthorizedRequest { get; set; }
+
+        public string StatusCode { get; set; }
     }
 }

@@ -37,6 +37,7 @@ namespace Calo.Blog.Host
                            })
                            .AddRazorRuntimeCompilation();
 
+
             context.Services.AddHttpContextAccessor();
 
             //添加cokkie认证和cokkie

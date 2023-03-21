@@ -8,5 +8,6 @@ namespace Calo.Blog.Common.Redis
 {
     public interface ICacheManager
     {
+        Task<T?> GetOrCreateAsync<T>(string key, Func<Task<T>> func, int absulote, int slider);
     }
 }

@@ -11,23 +11,27 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Collections.Generic;
 using System.Linq;
+using Calo.Blog.Common.Redis;
 
 namespace Calo.Blog.Host.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class TestController : ControllerBase
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ITokenProvider _tokenProvider;
         private readonly IDistributedCache _cache;
+        private readonly ICacheManager _cacheManager;
         public TestController(IHttpContextAccessor httpContextAccessor
             , ITokenProvider tokenProvider
-            , IDistributedCache cache)
+            , IDistributedCache cache
+            , ICacheManager cacheManager)
         {
             _httpContextAccessor = httpContextAccessor;
             _tokenProvider = tokenProvider;
             _cache = cache;
+            _cacheManager = cacheManager;
         }
         /// <summary>
         /// justTestApi
@@ -66,7 +70,7 @@ namespace Calo.Blog.Host.Controllers
             return token;
         }
         [HttpGet("SetArray")]
-        public List<int> SetArray()
+        public IEnumerable<int> SetArray()
         {
             var list = new List<string>();
             int max = 100;
@@ -79,7 +83,17 @@ namespace Calo.Blog.Host.Controllers
                 _cache.SetString(current.ToString() + "test", current.ToString());
             }
             var dic = RedisHelper.HGetAll<int>("wygset");
-            return dic.Select(p => p.Value).ToList();
+            return dic.Select(p => p.Value);
+        }
+        [HttpGet("TestCache")]
+        public async Task<User?> TestCache()
+        {
+            User user = new();
+            user.UserName = "test";
+            user.Phone = "1";
+            user.UpdateTime = DateTime.Now;
+            user.Id = 1;
+            return await _cacheManager.GetOrCreateAsync<User>("user1", () => Task.FromResult(user), 200, 150);
         }
     }
 }

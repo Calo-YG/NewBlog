@@ -1,31 +1,35 @@
 ﻿
 
+using CSRedis;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Configuration;
 using System.Text.Json;
 
 namespace Calo.Blog.Common.Redis
 {
     public class CacheManager : ICacheManager
     {
+        public CSRedisClient Current { get => _client ?? GetDefaultClient(); }
         private readonly IDistributedCache _cache;
-        public CacheManager(IDistributedCache cache)
+        private readonly CSRedisClient _client;
+        private readonly IConfiguration _configuration;
+        public CacheManager(IDistributedCache cache,IConfiguration configuration)
         {
             _cache = cache;
+            _configuration = configuration;
+            _client = RedisHelper.Instance ?? GetDefaultClient();
+        }
+
+        private CSRedisClient GetDefaultClient()
+        {
+            var connstr = _configuration.GetSection("App:redis:connstr").Get<string>();
+            return new CSRedisClient(connstr);
         }
 
         private DistributedCacheEntryOptions CreateDistributedOptions(int slider, int absolute)
         {
-            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
-            double perfix = slider % absolute;
-            if (perfix > 1)
-            {
-                perfix = Math.Floor(perfix);
-                if (perfix < 0.4)
-                {
-                    perfix += 0.1;
-                }
-            }
-            slider = (int)(perfix * absolute);
+            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();  
+            slider = Random.Shared.Next(slider, absolute);
             options.SlidingExpiration = TimeSpan.FromSeconds(slider);
             options.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(absolute);
             return options;

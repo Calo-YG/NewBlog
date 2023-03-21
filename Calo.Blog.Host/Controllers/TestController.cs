@@ -92,7 +92,7 @@ namespace Calo.Blog.Host.Controllers
             user.UserName = "test";
             user.Phone = "1";
             user.UpdateTime = DateTime.Now;
-            user.Id = 1;
+            user.Id = 1;           
             return await _cacheManager.GetOrCreateAsync<User>("user1", () => Task.FromResult(user), 200, 150);
         }
     }

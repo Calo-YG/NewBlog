@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Distributed;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Calo.Blog.Host.Controllers
 {
@@ -17,10 +20,14 @@ namespace Calo.Blog.Host.Controllers
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ITokenProvider _tokenProvider;
-        public TestController(IHttpContextAccessor httpContextAccessor, ITokenProvider tokenProvider)
+        private readonly IDistributedCache _cache;
+        public TestController(IHttpContextAccessor httpContextAccessor
+            , ITokenProvider tokenProvider
+            , IDistributedCache cache)
         {
             _httpContextAccessor = httpContextAccessor;
             _tokenProvider = tokenProvider;
+            _cache = cache;
         }
         /// <summary>
         /// justTestApi
@@ -58,7 +65,21 @@ namespace Calo.Blog.Host.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
             return token;
         }
-
-
+        [HttpGet("SetArray")]
+        public List<int> SetArray()
+        {
+            var list = new List<string>();
+            int max = 100;
+            int current = 0;
+            while (current <= max)
+            {
+                current += 1;
+                list.Add(current.ToString());
+                //RedisHelper.HSet("wygset", "wyg" + current.ToString(), current);
+                _cache.SetString(current.ToString() + "test", current.ToString());
+            }
+            var dic = RedisHelper.HGetAll<int>("wygset");
+            return dic.Select(p => p.Value).ToList();
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace Calo.Blog.Common.Authorization
             var policy = new AuthorizationPolicyBuilder();
             policy.AddAuthenticationSchemes("Bearer");
             policy.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
+            //默认授权测率必须添加一个IAuthorizationRequirement的实现
             policy.AddRequirements(new AuthorizeRequirement());
             return Task.FromResult<AuthorizationPolicy>(policy.Build());
         }

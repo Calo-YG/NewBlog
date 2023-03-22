@@ -12,13 +12,14 @@ namespace Calo.Blog.Common.Authorization
         {
             if (!authorizeResult.Succeeded || authorizeResult.Challenged)
             {
-                var path = context.Request.Path;
+                var isLogin = context?.User?.Identity?.IsAuthenticated ?? false;
+                var path = context?.Request?.Path ?? "";
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 var response = new AjaxResponse();
                 response.UnAuthorizedRequest = true;
                 response.StatusCode = "401";
                 var error = new ErrorInfo();
-                error.Error = "你没有权限访问该接口";
+                error.Error = isLogin ? $"你没有权限访问该接口-接口路由{path}" : "请先登录系统";
                 response.Error = error;
                 await context.Response.WriteAsJsonAsync(response);
                 return;

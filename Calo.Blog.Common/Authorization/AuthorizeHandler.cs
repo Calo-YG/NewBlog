@@ -47,7 +47,7 @@ namespace Calo.Blog.Common.Authorization
                 return;
             }
             //默认授权策略
-            if (requirement.AuthorizeName is null || !requirement.AuthorizeName.Any())
+            if (!requirement.AuthorizeName?.Any() ?? false)
             {
                 context.Succeed(requirement);
                 return;

@@ -21,6 +21,7 @@ using Calo.Blog.Common.Authorization;
 using Swashbuckle.AspNetCore.Filters;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
+using Calo.Blog.Common.Middlewares;
 
 namespace Calo.Blog.Host
 {
@@ -121,10 +122,7 @@ namespace Calo.Blog.Host
 
             var env = (IHostingEnvironment)context.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
 
-            if (env.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
+            app.UseMiddleware<ExceptionMiddleware>();
 
             //鉴权中间件
             app.UseAuthentication();

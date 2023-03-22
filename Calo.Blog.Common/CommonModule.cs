@@ -1,4 +1,5 @@
 ﻿using Calo.Blog.Common.Authorization;
+using Calo.Blog.Common.CustomOptions;
 using Calo.Blog.Common.Filters;
 using Calo.Blog.Common.Redis;
 using Calo.Blog.Extenions.AjaxResponse;
@@ -8,6 +9,9 @@ using Microsoft.Extensions.Caching.Redis;
 using Microsoft.Extensions.DependencyInjection;
 using Y.Module;
 using Y.Module.Modules;
+using Y.Module.Extensions;
+using Microsoft.AspNetCore.Builder;
+using Calo.Blog.Common.Middlewares;
 
 namespace Calo.Blog.Common
 {
@@ -34,6 +38,11 @@ namespace Calo.Blog.Common
             context.Services.AddControllers(options =>
             {
                 options.Filters.Add<ResultFilter>();
+            });
+
+            Configure<ExceptionOptions>(p =>
+            {
+                p.UseDataBase = false;
             });
         }
 

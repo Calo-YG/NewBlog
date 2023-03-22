@@ -41,6 +41,7 @@ namespace Calo.Blog.Host.Controllers
         [NoResult]
         public int SetNotOP()
         {
+            throw new ArgumentNullException(nameof(TestTask));
             return 1;
         }
 

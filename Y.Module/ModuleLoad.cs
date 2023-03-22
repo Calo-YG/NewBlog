@@ -12,6 +12,8 @@ namespace Y.Module
             if (services is null) throw new ArgumentException("ModuleLoad中Services为空");
             List<IYModuleDescritor> result = new();
             LoadModules(startModuleType, result, services);
+            //反向排序 保证被依赖的模块优先级高于依赖的模块
+            result.Reverse();
             return result;
         }
 
@@ -34,7 +36,7 @@ namespace Y.Module
 
         private IYModuleDescritor CreateModuleDescritor(Type type, IServiceCollection services)
         {
-            return new YModuleDescritor(type,CreateAndRegistModule(type ,services));
+            return new YModuleDescritor(type, CreateAndRegistModule(type, services));
         }
 
 

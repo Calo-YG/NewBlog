@@ -122,8 +122,6 @@ namespace Calo.Blog.Host
 
             var env = (IHostingEnvironment)context.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
 
-            app.UseMiddleware<ExceptionMiddleware>();
-
             //鉴权中间件
             app.UseAuthentication();
 

@@ -48,7 +48,9 @@ namespace Calo.Blog.Common
 
         public override void InitApplication(InitApplicationContext context)
         {
+            var app = context.GetApplicationBuilder();
 
+            app.UseMiddleware<ExceptionMiddleware>();
         }
     }
 }

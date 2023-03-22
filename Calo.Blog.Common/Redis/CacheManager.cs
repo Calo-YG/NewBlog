@@ -13,7 +13,7 @@ namespace Calo.Blog.Common.Redis
         private readonly IDistributedCache _cache;
         private readonly CSRedisClient _client;
         private readonly IConfiguration _configuration;
-        public CacheManager(IDistributedCache cache,IConfiguration configuration)
+        public CacheManager(IDistributedCache cache, IConfiguration configuration)
         {
             _cache = cache;
             _configuration = configuration;
@@ -23,12 +23,14 @@ namespace Calo.Blog.Common.Redis
         private CSRedisClient GetDefaultClient()
         {
             var connstr = _configuration.GetSection("App:redis:connstr").Get<string>();
-            return new CSRedisClient(connstr);
+            var redis = new CSRedisClient(connstr);
+            RedisHelper.Initialization(redis);
+            return redis;
         }
 
         private DistributedCacheEntryOptions CreateDistributedOptions(int slider, int absolute)
         {
-            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();  
+            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
             slider = Random.Shared.Next(slider, absolute);
             options.SlidingExpiration = TimeSpan.FromSeconds(slider);
             options.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(absolute);

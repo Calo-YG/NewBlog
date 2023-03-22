@@ -46,6 +46,12 @@ namespace Calo.Blog.Common.Authorization
                 context.Fail();
                 return;
             }
+            //默认授权策略
+            if (requirement.AuthorizeName is null || !requirement.AuthorizeName.Any())
+            {
+                context.Succeed(requirement);
+                return;
+            }
             var roleIds = claims?
                 .Where(p => p?.Type?.Equals("RoleIds") ?? false)
                 .Select(p => long.Parse(p.Value));

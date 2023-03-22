@@ -15,7 +15,7 @@ using Calo.Blog.Common.Redis;
 
 namespace Calo.Blog.Host.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class TestController : ControllerBase
     {
@@ -36,6 +36,7 @@ namespace Calo.Blog.Host.Controllers
         /// <summary>
         /// justTestApi
         /// </summary>
+        [CustomAuthorization]
         [HttpGet("SetNotOP")]
         [NoResult]
         public int SetNotOP()
@@ -75,13 +76,13 @@ namespace Calo.Blog.Host.Controllers
             List<Task<bool>> tlist = new List<Task<bool>>();
             int max = 100;
             int current = 1;
-            var date1= DateTime.Now;
-            var exists =await _cacheManager.Current.ExistsAsync("wygset");
+            var date1 = DateTime.Now;
+            var exists = await _cacheManager.Current.ExistsAsync("wygset");
             while (current < max && !exists)
             {
                 current += 1;
-                var t =_cacheManager.Current.HSetAsync("wygset", "wyg" + current.ToString(), current);
-               //var t = _cacheManager.Current.SetAsync("current" + current, current,10000,CSRedis.RedisExistence.Nx);
+                var t = _cacheManager.Current.HSetAsync("wygset", "wyg" + current.ToString(), current);
+                //var t = _cacheManager.Current.SetAsync("current" + current, current,10000,CSRedis.RedisExistence.Nx);
                 tlist.Add(t);
                 if (tlist.Count > 20)
                 {
@@ -89,9 +90,9 @@ namespace Calo.Blog.Host.Controllers
                     tlist.Clear();
                 }
             }
-            var date2= DateTime.Now;
+            var date2 = DateTime.Now;
             Console.WriteLine("耗时" + date2.Subtract(date1).TotalMilliseconds);
-            var dic = new Dictionary<string,int>();
+            var dic = new Dictionary<string, int>();
             return dic.Select(p => p.Value);
         }
         [HttpGet("TestCache")]
@@ -101,7 +102,7 @@ namespace Calo.Blog.Host.Controllers
             user.UserName = "test";
             user.Phone = "1";
             user.UpdateTime = DateTime.Now;
-            user.Id = 1;           
+            user.Id = 1;
             return await _cacheManager.GetOrCreateAsync<User>("user1", () => Task.FromResult(user), 200, 150);
         }
     }

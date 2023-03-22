@@ -9,5 +9,7 @@ namespace Calo.Blog.Common.Authorization
         {
             AuthorizeName = authorizeName;
         }
+
+        public AuthorizeRequirement() { }
     }
 }

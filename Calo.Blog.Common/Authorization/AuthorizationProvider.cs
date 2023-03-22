@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using System.Net;
 
 namespace Calo.Blog.Common.Authorization
 {
@@ -10,6 +11,7 @@ namespace Calo.Blog.Common.Authorization
             var policy = new AuthorizationPolicyBuilder();
             policy.AddAuthenticationSchemes("Bearer");
             policy.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
+            policy.AddRequirements(new AuthorizeRequirement());
             return Task.FromResult<AuthorizationPolicy>(policy.Build());
         }
 
@@ -23,14 +25,14 @@ namespace Calo.Blog.Common.Authorization
             var policy = new AuthorizationPolicyBuilder();
             policy.AddAuthenticationSchemes("Bearer");
             policy.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
-            if(policyName is null)
+            if (policyName is null)
             {
                 return Task.FromResult<AuthorizationPolicy>(null);
             }
             var authorizations = policyName.Split(',');
             if (authorizations.Any())
             {
-                policy.AddRequirements(new AuthorizeRequirement(authorizations));              
+                policy.AddRequirements(new AuthorizeRequirement(authorizations));
             }
             return Task.FromResult(policy.Build());
         }

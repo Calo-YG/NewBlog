@@ -41,6 +41,7 @@ namespace Y.SqlsugarRepository.Repository
             _dbAopProvider = dbAopProvider;
             _logger = loggerFactory.CreateLogger(this.GetType());
             base.Context = _servicerProvider.GetRequiredService<ISqlSugarClient>();
+            EntityService();
             InitFilter();
             InitDbAop();
         }
@@ -57,7 +58,30 @@ namespace Y.SqlsugarRepository.Repository
             }
         }
 
-        private void InitFilter()
+        public virtual void EntityService()
+        {
+            base.Context.Aop.DataExecuting = (oldValue, entityInfo) =>
+            {
+                var operationType = entityInfo.OperationType;
+
+                if (entityInfo.PropertyName == "CreationTime" && operationType == DataFilterType.InsertByObject)
+                {
+                    entityInfo.SetValue(DateTime.Now);
+                }
+                if (entityInfo.PropertyName == "IsDeleted" && operationType == DataFilterType.InsertByObject)
+                {
+                    entityInfo.SetValue(false);
+                }
+
+                if (entityInfo.PropertyName == "UpdateTime" && operationType == DataFilterType.UpdateByObject)
+                {
+                    entityInfo.SetValue(DateTime.Now);
+                }
+            };
+        }
+
+
+        public virtual void InitFilter()
         {
             var entityContianer = _servicerProvider.GetRequiredService<IEntityContainer>();
             var entityTypes = entityContianer.EntityTypes;

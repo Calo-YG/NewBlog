@@ -8,7 +8,6 @@ namespace Y.SqlsugarRepository.EntityBase
         public TPrimarykey Id { get; set; }
 
         [ConcurrentToken]
-        [SugarColumn(IsNullable = true, IsEnableUpdateVersionValidation = true)]
         public string? ConcurrentToken { get; set; }
 
         [SugarColumn(IsNullable = true)]
@@ -18,7 +17,7 @@ namespace Y.SqlsugarRepository.EntityBase
         public string? CreateorUserName { get; set; }
 
         [SugarColumn(IsNullable = true)]
-        public DateTime? CreattionTime { get; set; }
+        public DateTime? CreationTime { get; set; }
         public bool IsDeleted { get; set; }
 
         [SugarColumn(IsNullable = true)]

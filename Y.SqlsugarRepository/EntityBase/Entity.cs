@@ -1,9 +1,4 @@
 ﻿using SqlSugar;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Y.SqlsugarRepository.EntityAttribute;
 
 namespace Y.SqlsugarRepository.EntityBase
@@ -13,7 +8,7 @@ namespace Y.SqlsugarRepository.EntityBase
         public TPrimarykey Id { get; set; }
 
         [ConcurrentToken]
-        [SugarColumn(IsNullable = true)]
+        [SugarColumn(IsNullable = true, IsEnableUpdateVersionValidation = true)]
         public string? ConcurrentToken { get; set; }
 
         [SugarColumn(IsNullable = true)]

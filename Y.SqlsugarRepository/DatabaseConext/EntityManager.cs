@@ -72,10 +72,11 @@ namespace Y.SqlsugarRepository.DatabaseConext
         /// <summary>
         /// 添加种子数据
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        public virtual void DbSeed<T>()
+        public virtual void DbSeed(Action<ISqlSugarClient> action)
         {
-
+            using var scope = _serviceProvider.CreateScope();
+            var _client = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>();
+            action.Invoke(_client);
         }
     }
 }

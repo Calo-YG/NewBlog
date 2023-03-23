@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SqlSugar;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +20,6 @@ namespace Y.SqlsugarRepository.DatabaseConext
         /// <summary>
         /// 添加种子数据
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        void DbSeed<T>();
+        void DbSeed(Action<ISqlSugarClient> action);
     }
 }

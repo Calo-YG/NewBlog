@@ -13,15 +13,15 @@ namespace Y.SqlsugarRepository.Repository
     {
         private readonly IServiceProvider _servicerProvider;
         private readonly IDbAopProvider _dbAopProvider;
-        private readonly ILogger<BaseRepository<TEntity, TPrimaryKey>> _logger;
+        private readonly ILogger _logger;
         public BaseRepository(IServiceProvider provider
             , IDbAopProvider dbAopProvider
-            , ILogger<BaseRepository<TEntity, TPrimaryKey>> logger
-            , ISqlSugarClient client = null) : base(provider, dbAopProvider, logger)
+            , ILoggerFactory loggerFactory
+            , ISqlSugarClient client = null) : base(provider, dbAopProvider, loggerFactory)
         {
             _servicerProvider = provider;
             _dbAopProvider = dbAopProvider;
-            _logger = logger;
+            _logger = loggerFactory.CreateLogger(this.GetType());
             base.Context = _servicerProvider.GetRequiredService<ISqlSugarClient>();
         }
     }
@@ -31,15 +31,15 @@ namespace Y.SqlsugarRepository.Repository
     {
         private readonly IServiceProvider _servicerProvider;
         private readonly IDbAopProvider _dbAopProvider;
-        private readonly ILogger<BaseRepository<TEntity>> _logger;
+        private readonly ILogger _logger;
         public BaseRepository(IServiceProvider provider
             , IDbAopProvider dbAopProvider
-            , ILogger<BaseRepository<TEntity>> logger
+            , ILoggerFactory loggerFactory
             , ISqlSugarClient client = null) : base(client)
         {
             _servicerProvider = provider;
             _dbAopProvider = dbAopProvider;
-            _logger = logger;
+            _logger = loggerFactory.CreateLogger(this.GetType());
             base.Context = _servicerProvider.GetRequiredService<ISqlSugarClient>();
             InitFilter();
             InitDbAop();

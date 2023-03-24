@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SqlSugar;
 using System.Linq.Dynamic.Core;
@@ -14,10 +15,12 @@ namespace Y.SqlsugarRepository.Repository
         private readonly IServiceProvider _servicerProvider;
         private readonly IDbAopProvider _dbAopProvider;
         private readonly ILogger _logger;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         public BaseRepository(IServiceProvider provider
             , IDbAopProvider dbAopProvider
             , ILoggerFactory loggerFactory
-            , ISqlSugarClient client = null) : base(provider, dbAopProvider, loggerFactory)
+            , IHttpContextAccessor httpContextAccessor
+            , ISqlSugarClient client = null) : base(provider, dbAopProvider, loggerFactory, httpContextAccessor)
         {
             _servicerProvider = provider;
             _dbAopProvider = dbAopProvider;
@@ -32,18 +35,29 @@ namespace Y.SqlsugarRepository.Repository
         private readonly IServiceProvider _servicerProvider;
         private readonly IDbAopProvider _dbAopProvider;
         private readonly ILogger _logger;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private long? UserId { get; set; }
+        private string? UserName { get; set; }
         public BaseRepository(IServiceProvider provider
             , IDbAopProvider dbAopProvider
             , ILoggerFactory loggerFactory
+            , IHttpContextAccessor httpContextAccessor
             , ISqlSugarClient client = null) : base(client)
         {
             _servicerProvider = provider;
             _dbAopProvider = dbAopProvider;
             _logger = loggerFactory.CreateLogger(this.GetType());
+            _httpContextAccessor = httpContextAccessor;
             base.Context = _servicerProvider.GetRequiredService<ISqlSugarClient>();
+            InitInfo();
             EntityService();
             InitFilter();
             InitDbAop();
+        }
+
+        public virtual void InitInfo()
+        {
+
         }
 
         private void InitDbAop()
@@ -80,7 +94,6 @@ namespace Y.SqlsugarRepository.Repository
             };
         }
 
-
         public virtual void InitFilter()
         {
             var entityContianer = _servicerProvider.GetRequiredService<IEntityContainer>();
@@ -94,6 +107,91 @@ namespace Y.SqlsugarRepository.Repository
                                            false);
                 base.Context.QueryFilter.AddTableFilter(type, lambda);
             }
+        }
+
+        public virtual Task DeleteAsync(TEntity entity, string? logic = null)
+        {
+            if (logic is null)
+            {
+                return base.Context.Deleteable<TEntity>(entity).ExecuteCommandAsync();
+            }
+            return base.Context.Deleteable<TEntity>(entity).IsLogic().ExecuteCommandAsync(logic);
+        }
+
+        public new virtual Task DeleteAsync(Expression<Func<TEntity, bool>>? expression = null)
+        {
+            if (expression is null)
+            {
+                return base.Context.Deleteable<TEntity>().ExecuteCommandAsync();
+            }
+            return base.Context.Deleteable<TEntity>().Where(expression).ExecuteCommandAsync();
+        }
+
+        public new virtual Task InsertAsync(TEntity entity)
+        {
+            return base.Context.Insertable<TEntity>(entity).ExecuteCommandAsync();
+        }
+
+        public virtual Task<TEntity> InsertReturnEnityAsync(TEntity entity)
+        {
+            return base.Context.Insertable<TEntity>(entity).ExecuteReturnEntityAsync();
+        }
+
+        public virtual async Task BatchInsertAsync(List<TEntity> entitys)
+        {
+            await base.Context.Insertable<TEntity>(entitys).ExecuteCommandAsync();
+        }
+
+        public virtual Task BatchFastInsertAsync(List<TEntity> entities, int pageSize = 1000)
+        {
+            return base.Context.Fastest<TEntity>().PageSize(pageSize).BulkCopyAsync(entities);
+        }
+
+        public virtual Task<bool> AnyAsync(Expression<Func<TEntity, bool>>? expression = null)
+        {
+            return base.Context.Queryable<TEntity>().WhereIF(expression != null, expression).AnyAsync();
+        }
+
+        public virtual bool Any(Expression<Func<TEntity, bool>>? expression = null)
+        {
+            return base.Context.Queryable<TEntity>().WhereIF(expression != null, expression).Any();
+        }
+
+        public virtual Task UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>>? expression = null)
+        {
+            if (expression == null)
+            {
+                return base.Context.Updateable<TEntity>(entity).ExecuteCommandAsync();
+            }
+            return base.Context.Updateable<TEntity>(entity).Where(expression).ExecuteCommandAsync();
+        }
+
+        public virtual Task BatchUpdateAsync(List<TEntity> entityes)
+        {
+            return base.Context.Updateable<TEntity>(entityes).ExecuteCommandAsync();
+        }
+
+        public virtual Task FastBatchUpdateAsync(List<TEntity> entities)
+        {
+            return base.Context.Fastest<TEntity>().BulkCopyAsync(entities);
+        }
+
+        public virtual Task UpdateColumnsAsync(TEntity entity, Expression<Func<TEntity, object>>? columns = null)
+        {
+            if (columns != null)
+            {
+                return base.Context.Updateable<TEntity>().UpdateColumns(columns).ExecuteCommandAsync();
+            }
+            return base.Context.Updateable<TEntity>().UpdateColumns().ExecuteCommandAsync();
+        }
+
+        public virtual Task UpdateColumnsAsync(TEntity entity, params string[]? columns)
+        {
+            if (columns != null)
+            {
+                return base.Context.Updateable<TEntity>().UpdateColumns(columns).ExecuteCommandAsync();
+            }
+            return base.Context.Updateable<TEntity>().UpdateColumns().ExecuteCommandAsync();
         }
     }
 }

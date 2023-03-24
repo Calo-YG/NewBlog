@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Y.Module\Y.Module.csproj" />
+    <ProjectReference Include="..\Y.SqlsugarRepository\Y.SqlsugarRepository.csproj" />
   </ItemGroup>
 
 </Project>

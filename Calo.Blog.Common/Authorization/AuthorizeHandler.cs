@@ -31,15 +31,15 @@ namespace Calo.Blog.Common.Authorization
             var userId = claims?.FirstOrDefault(p => p.Type == "Id")?.Value;
             var schemes = await _authenticationSchemes.GetAllSchemesAsync();
             var handlers = httpContext?.RequestServices.GetRequiredService<IAuthenticationHandlerProvider>();
-            //foreach (var scheme in schemes)
-            //{
-            //    //判断请求是否停止
-            //    if (handlers?.GetHandlerAsync(httpContext, scheme.Name) is IAuthenticationRequestHandler requestHandler && await requestHandler.HandleRequestAsync())
-            //    {
-            //        context.Fail();
-            //        return;
-            //    }
-            //}
+            foreach (var scheme in schemes)
+            {
+                //判断请求是否停止
+                if (handlers?.GetHandlerAsync(httpContext, scheme.Name) is IAuthenticationRequestHandler requestHandler && await requestHandler.HandleRequestAsync())
+                {
+                    context.Fail();
+                    return;
+                }
+            }
             //判断是否通过鉴权中间件--是否登录
             if (userId is null || !isAuthenticated)
             {

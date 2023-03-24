@@ -15,7 +15,7 @@ using Calo.Blog.Common.Redis;
 
 namespace Calo.Blog.Host.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class TestController : ControllerBase
     {
@@ -37,7 +37,7 @@ namespace Calo.Blog.Host.Controllers
         /// justTestApi
         /// </summary>
         [CustomAuthorization]
-        [HttpGet("SetNotOP")]
+        [HttpGet]
         [NoResult]
         public int SetNotOP()
         {
@@ -46,19 +46,19 @@ namespace Calo.Blog.Host.Controllers
         }
 
         [CustomAuthorization("test1", "test1")]
-        [HttpGet("TestTask")]
+        [HttpGet]
         public async Task<int> TestTask()
         {
             await Task.CompletedTask;
             return 1;
         }
         [CustomAuthorization("tttt")]
-        [HttpGet("GetUser")]
+        [HttpGet]
         public User GetUser(Guid id)
         {
             return new User { Id = 1, };
         }
-        [HttpGet("GetToken")]
+        [HttpGet]
         public async Task<string> GetToken()
         {
             UserTokenModel tokenModel = new UserTokenModel();
@@ -71,7 +71,7 @@ namespace Calo.Blog.Host.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
             return token;
         }
-        [HttpGet("SetArray")]
+        [HttpGet]
         public async Task<IEnumerable<int>> SetArray()
         {
             List<Task<bool>> tlist = new List<Task<bool>>();
@@ -96,7 +96,7 @@ namespace Calo.Blog.Host.Controllers
             var dic = new Dictionary<string, int>();
             return dic.Select(p => p.Value);
         }
-        [HttpGet("TestCache")]
+        [HttpGet]
         public async Task<User?> TestCache()
         {
             User user = new();

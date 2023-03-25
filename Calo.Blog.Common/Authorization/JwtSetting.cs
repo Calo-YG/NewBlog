@@ -7,5 +7,7 @@
         public virtual string Issuer { get; set; }
 
         public virtual string Audience { get; set; }
+
+        public virtual int ExpMinutes { get; set; }
     }
 }

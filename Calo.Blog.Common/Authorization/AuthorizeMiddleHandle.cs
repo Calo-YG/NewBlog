@@ -12,6 +12,7 @@ namespace Calo.Blog.Common.Authorization
         {
             if (!authorizeResult.Succeeded || authorizeResult.Challenged)
             {
+                var reason = authorizeResult?.AuthorizationFailure?.FailureReasons.FirstOrDefault();
                 var isLogin = context?.User?.Identity?.IsAuthenticated ?? false;
                 var path = context?.Request?.Path ?? "";
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
@@ -19,7 +20,7 @@ namespace Calo.Blog.Common.Authorization
                 response.UnAuthorizedRequest = true;
                 response.StatusCode = "401";
                 var error = new ErrorInfo();
-                error.Error = isLogin ? $"你没有权限访问该接口-接口路由{path}" : "请先登录系统";
+                error.Error = reason?.Message ?? "Token异常";
                 response.Error = error;
                 await context.Response.WriteAsJsonAsync(response);
                 return;

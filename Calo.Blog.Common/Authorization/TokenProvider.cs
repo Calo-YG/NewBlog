@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using SqlSugar.Extensions;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -23,6 +24,8 @@ namespace Calo.Blog.Common.Authorization
             {
                 new Claim(ClaimTypes.Name, user.UserName), //HttpContext.User.Identity.Name
                 new Claim("Id", user.UserId.ToString()),
+                new Claim (JwtRegisteredClaimNames.Exp,$"{new DateTimeOffset(DateTime.Now.AddMinutes(jwtsetting.ExpMinutes)).ToUnixTimeSeconds()}"),
+                new Claim(ClaimTypes.Expiration, DateTime.Now.AddMinutes(jwtsetting.ExpMinutes).ToString()),
             };
             if (user.RoleIds != null && user.RoleIds.Any())
             {
@@ -58,6 +61,29 @@ namespace Calo.Blog.Common.Authorization
             var token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
 
             return token;
+        }
+        
+        /// <summary>
+        /// 解析jwt字符串
+        /// </summary>
+        public virtual JwtAnalysis AnalysisJwt(string jwt)
+        {
+            var jwtHandler = new JwtSecurityTokenHandler();
+            var jwtAn = new JwtAnalysis();
+
+            if (!string.IsNullOrEmpty(jwt) && jwtHandler.CanReadToken(jwt))
+            {
+
+                JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(jwt);
+                var expraion  = jwtToken.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Expiration) ?? null;
+
+                DateTime datetime;
+                
+                DateTime.TryParse(expraion?.Value ?? "", out datetime);
+
+                jwtAn.ExprationTime= datetime;
+            }
+            return jwtAn;
         }
     }
 }

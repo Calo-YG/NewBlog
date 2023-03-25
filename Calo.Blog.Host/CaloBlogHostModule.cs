@@ -40,25 +40,27 @@ namespace Calo.Blog.Host
 
             context.Services.AddHttpContextAccessor();
 
+            var jwtsetting = configuration.GetSection("App:JWtSetting").Get<JwtSetting>();
+
             //添加cokkie认证和cokkie
             context.Services.AddAuthentication(context =>
             {
                 //需要登录进行鉴权认证
                 context.RequireAuthenticatedSignIn = true;
-                context.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                context.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                context.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                context.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
             }).AddCookie(options =>
             {
                 //cokkie名称
                 options.Cookie.Name = "Y.Authorization";
                 //cokkie过期时间
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(jwtsetting.ExpMinutes);
                 //cokkie启用滑动过期时间
-                options.SlidingExpiration = true;
+                options.SlidingExpiration = false;
             }).AddJwtBearer(options =>
             {
-                var jwtsetting = configuration.GetSection("App:JWtSetting").Get<JwtSetting>();
+                
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuer = true, //是否验证Issuer
@@ -70,6 +72,7 @@ namespace Calo.Blog.Host
                     ValidateLifetime = true, //是否验证失效时间
                     ClockSkew = TimeSpan.FromSeconds(30), //过期时间容错值，解决服务器端时间不同步问题（秒）
                     RequireExpirationTime = true,
+                    SaveSigninToken= true,
                 };
                 options.Events = new JwtBearerEvents
                 {
@@ -136,11 +139,11 @@ namespace Calo.Blog.Host
                 endOptions.MapRazorPages();
             });
 
-            app.UseMiddleware<UseWithShowSwaggerUI>();
+            //app.UseMiddleware<UseWithShowSwaggerUI>();
 
             app.UseSwagger();
 
-            app.UseSwaggerUI(options =>
+            app.UseWithLoginSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Calo API V1");
                 options.EnableDeepLinking();
@@ -151,7 +154,6 @@ namespace Calo.Blog.Host
                     return new FileInfo(path).OpenRead();
                 };
             });
-
         }
     }
 }

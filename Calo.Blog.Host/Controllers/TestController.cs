@@ -58,8 +58,10 @@ namespace Calo.Blog.Host.Controllers
         }
         [CustomAuthorization("tttt")]
         [HttpGet]
-        public User GetUser(Guid id)
+        public async Task<User> GetUser(Guid id)
         {
+            var context = _httpContextAccessor.HttpContext;
+            var result =await context.AuthenticateAsync("Cookies");
             return new User { Id = 1, };
         }
         [HttpGet]

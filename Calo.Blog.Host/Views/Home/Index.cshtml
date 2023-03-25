@@ -3,55 +3,115 @@
 }
 
 <div>
-    <div>
+    <div class="login-box">
+		<h2>登录</h2>
+		<form>
+			<div class="user-box">
+				<label for="username">用户名:</label>
+				<input type="text" id="username" name="username">
+			</div>
+			<div class="user-box">
+				<label for="password">密码:</label>
+				<input type="password" id="password" name="password">
+			</div>
+			
+		</form>
+		<button type="submit" id="login-btn">登录</button>
+	</div>
+@*    <div>
          <a asp-controller="Test" asp-action="GetToken">登陆</a>
-    </div>
+    </div>*@
 </div>
-<script>
-    const { createApp } = Vue
-    createApp({
-        data() {
-            return {
-                message: 'Hello Vue!'
-            }
-        },
-        moundted(){
 
-        },
-        methods:{
-            login(){
-                
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+    // 当表单提交时
+    $('#login-btn').click(function(event) {
+        //event.preventDefault(); // 防止页面刷新
+        //$('.error').remove(); // 移除已有的错误信息
+        //var username = $('#username').val();
+        //var password = $('#password').val();
+        // 发起 AJAX 请求
+        $.ajax({
+            type: 'get',
+            url: 'http://localhost:5103/api/Test/GetToken',
+            //data: {
+            //    username: username,
+            //    password: password
+            //},
+            success: function(response) {
+				console.info(response)
+                if (response.statusCode== '200') {
+                    window.location.href = '/swagger';
+                } else {
+                    // 如果返回错误信息，则显示在页面上
+                    $('form').append('<div class="error">' + response + '</div>');
+                }
             }
-        },
-    }).mount('#app')
+        });
+    });
+});
+
 </script>
 
 <style>
-     .el-row {
-    margin-bottom: 20px;
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-  .el-col {
-    border-radius: 4px;
-  }
-  .bg-purple-dark {
-    background: #99a9bf;
-  }
-  .bg-purple {
-    background: #d3dce6;
-  }
-  .bg-purple-light {
-    background: #e5e9f2;
-  }
-  .grid-content {
-    border-radius: 4px;
-    min-height: 36px;
-  }
-  .row-bg {
-    padding: 10px 0;
-    background-color: #f9fafc;
-  }
+    body {
+	background-color: #f1f1f1;
+}
+
+.login-box {
+	background-color: #fff;
+	border-radius: 10px;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+	margin: 0px auto;
+	padding: 20px;
+	text-align: center;
+	width: 350px;
+}
+
+.login-box h2 {
+	margin: 0 0 20px;
+}
+
+.user-box {
+	margin-bottom: 20px;
+	text-align: left;
+}
+
+.user-box label {
+	display: block;
+	margin-bottom: 5px;
+}
+
+.user-box input {
+	border: none;
+	border-radius: 5px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+	padding: 10px;
+	width: 100%;
+}
+
+button {
+	background-color: #4CAF50;
+	border: none;
+	border-radius: 5px;
+	color: #fff;
+	cursor: pointer;
+	padding: 10px;
+	width: 100%;
+}
+
+button:hover {
+	background-color: #3e8e41;
+}
+
+.error {
+	color: red;
+	font-size: 12px;
+	margin-top: 5px;
+}
+
 </style>
   

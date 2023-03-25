@@ -40,12 +40,25 @@ namespace Calo.Blog.Common.Authorization
                     return;
                 }
             }
+            AuthorizationFailureReason failureReason;
             //判断是否通过鉴权中间件--是否登录
             if (userId is null || !isAuthenticated)
             {
-                context.Fail();
+                failureReason = new AuthorizationFailureReason(this, "请登录到系统");
+                context.Fail(failureReason);
                 return;
             }
+            //判断token是否过期
+            DateTime expire;
+            var expiraton = claims?.FirstOrDefault(p => p.Type == ClaimTypes.Expiration);
+            DateTime.TryParse(expiraton?.Value ?? "",out expire);
+            if(expire < DateTime.Now)
+            {
+                failureReason = new AuthorizationFailureReason(this, "Token过期，请重新登陆");
+                context.Fail(failureReason);
+                return;
+            }
+
             var defaultPolicy = requirement.AuthorizeName?.Any() ?? false;
             //默认授权策略
             if (!defaultPolicy)
@@ -70,7 +83,8 @@ namespace Calo.Blog.Common.Authorization
             {
                 if (!_permisscheck.IsGranted(tokenModel, requirement.AuthorizeName))
                 {
-                    context.Fail();
+                    failureReason = new AuthorizationFailureReason(this, $"权限不足，无法请求--请求接口{httpContext?.Request?.Path ?? ""}");
+                    context.Fail(failureReason);
                     return;
                 }
             }

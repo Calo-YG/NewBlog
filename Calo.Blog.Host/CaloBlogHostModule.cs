@@ -19,7 +19,6 @@ using Microsoft.Extensions.Configuration;
 using Calo.Blog.Common;
 using Calo.Blog.Common.Authorization;
 using Swashbuckle.AspNetCore.Filters;
-using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using Calo.Blog.Common.Middlewares;
 
@@ -136,6 +135,8 @@ namespace Calo.Blog.Host
                 endOptions.MapDefaultControllerRoute();
                 endOptions.MapRazorPages();
             });
+
+            app.UseMiddleware<UseWithShowSwaggerUI>();
 
             app.UseSwagger();
 

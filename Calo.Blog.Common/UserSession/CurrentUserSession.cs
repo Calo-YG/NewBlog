@@ -20,7 +20,7 @@ namespace Calo.Blog.Common.UserSession
         {
             _httpContextAccessor = httpContextAccessor;
             _userRepository = userRepository;
-            SetUserInfo();
+            //SetUserInfo();
         }
 
         public virtual void SetUserInfo()

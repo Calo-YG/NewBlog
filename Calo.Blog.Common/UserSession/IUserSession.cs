@@ -9,5 +9,7 @@
         public IEnumerable<string>? RoleName { get; }
 
         public IEnumerable<long>? RoleIds { get; }
+
+        void SetUserInfo();
     }
 }

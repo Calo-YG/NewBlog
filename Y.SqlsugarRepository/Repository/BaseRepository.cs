@@ -109,22 +109,29 @@ namespace Y.SqlsugarRepository.Repository
             }
         }
 
-        public virtual Task DeleteAsync(TEntity entity, string? logic = null)
+        public virtual Task DeleteAsync(TEntity entity, string? logic = "IsDelete")
         {
+            var delete = base.Context.Deleteable<TEntity>(entity);
             if (logic is null)
             {
-                return base.Context.Deleteable<TEntity>(entity).ExecuteCommandAsync();
+                return delete.ExecuteCommandAsync();
             }
-            return base.Context.Deleteable<TEntity>(entity).IsLogic().ExecuteCommandAsync(logic);
+            return delete.IsLogic().ExecuteCommandAsync(logic);
         }
 
-        public new virtual Task DeleteAsync(Expression<Func<TEntity, bool>>? expression = null)
+        public virtual async Task BatchDeleteAsync(List<TEntity> entities,Expression<Func<TEntity,bool>>? expression = null,string? logic = "IsDelete")
         {
-            if (expression is null)
+            var delete = base.Context.Deleteable<TEntity>(entities);
+            if (expression != null)
             {
-                return base.Context.Deleteable<TEntity>().ExecuteCommandAsync();
+                delete.Where(expression);
             }
-            return base.Context.Deleteable<TEntity>().Where(expression).ExecuteCommandAsync();
+            if(logic != null)
+            {
+              await delete.IsLogic().ExecuteCommandAsync(logic);
+              return;
+            }
+            await delete.ExecuteCommandAsync();
         }
 
         public new virtual Task InsertAsync(TEntity entity)
@@ -159,11 +166,12 @@ namespace Y.SqlsugarRepository.Repository
 
         public virtual Task UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>>? expression = null)
         {
+            var update = base.Context.Updateable<TEntity>(entity);
             if (expression == null)
             {
-                return base.Context.Updateable<TEntity>(entity).ExecuteCommandAsync();
+                return update.ExecuteCommandAsync();
             }
-            return base.Context.Updateable<TEntity>(entity).Where(expression).ExecuteCommandAsync();
+            return update.Where(expression).ExecuteCommandAsync();
         }
 
         public virtual Task BatchUpdateAsync(List<TEntity> entityes)
@@ -178,20 +186,22 @@ namespace Y.SqlsugarRepository.Repository
 
         public virtual Task UpdateColumnsAsync(TEntity entity, Expression<Func<TEntity, object>>? columns = null)
         {
+            var update = base.Context.Updateable(entity);
             if (columns != null)
             {
-                return base.Context.Updateable<TEntity>().UpdateColumns(columns).ExecuteCommandAsync();
+                return update.UpdateColumns(columns).ExecuteCommandAsync();
             }
-            return base.Context.Updateable<TEntity>().UpdateColumns().ExecuteCommandAsync();
+            return update.ExecuteCommandAsync();
         }
 
         public virtual Task UpdateColumnsAsync(TEntity entity, params string[]? columns)
         {
+            var update = base.Context.Updateable(entity);
             if (columns != null)
             {
-                return base.Context.Updateable<TEntity>().UpdateColumns(columns).ExecuteCommandAsync();
+                return update.UpdateColumns(columns).ExecuteCommandAsync();
             }
-            return base.Context.Updateable<TEntity>().UpdateColumns().ExecuteCommandAsync();
+            return update.ExecuteCommandAsync();
         }
     }
 }

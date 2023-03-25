@@ -12,6 +12,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using System.Collections.Generic;
 using System.Linq;
 using Calo.Blog.Common.Redis;
+using Calo.Blog.Common.UserSession;
 
 namespace Calo.Blog.Host.Controllers
 {
@@ -23,15 +24,18 @@ namespace Calo.Blog.Host.Controllers
         private readonly ITokenProvider _tokenProvider;
         private readonly IDistributedCache _cache;
         private readonly ICacheManager _cacheManager;
+        private readonly IUserSession _usersession;
         public TestController(IHttpContextAccessor httpContextAccessor
             , ITokenProvider tokenProvider
             , IDistributedCache cache
-            , ICacheManager cacheManager)
+            , ICacheManager cacheManager
+            , IUserSession userSession)
         {
             _httpContextAccessor = httpContextAccessor;
             _tokenProvider = tokenProvider;
             _cache = cache;
             _cacheManager = cacheManager;
+            _usersession = userSession;
         }
         /// <summary>
         /// justTestApi
@@ -105,6 +109,12 @@ namespace Calo.Blog.Host.Controllers
             user.UpdateTime = DateTime.Now;
             user.Id = 1;
             return await _cacheManager.GetOrCreateAsync<User>("user1", () => Task.FromResult(user), 200, 150);
+        }
+        [HttpGet]
+        public long? Info()
+        {
+            _usersession.SetUserInfo();
+            return _usersession.UserId;
         }
     }
 }

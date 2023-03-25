@@ -40,7 +40,9 @@ namespace Calo.Blog.Common.Middlewares
             }
             if (_options.Value.UseDataBase)
             {
-                await RecordInDatabase(context);
+                var record = RecordInDatabase(context);
+                await Awaited(context,()=>record);
+
             }
             await HandlerException(context, edi);
         }

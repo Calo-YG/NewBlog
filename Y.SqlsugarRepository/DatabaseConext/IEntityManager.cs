@@ -16,10 +16,6 @@ namespace Y.SqlsugarRepository.DatabaseConext
         /// <summary>
         /// 添加种子数据
         /// </summary>
-        void DbSeed();
-        /// <summary>
-        /// 添加种子数据
-        /// </summary>
         void DbSeed(Action<ISqlSugarClient> action);
     }
 }

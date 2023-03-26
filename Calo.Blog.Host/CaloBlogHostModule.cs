@@ -58,6 +58,9 @@ namespace Calo.Blog.Host
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(jwtsetting.ExpMinutes);
                 //cokkie启用滑动过期时间
                 options.SlidingExpiration = false;
+
+                options.LogoutPath= "/Home/Index";
+
             }).AddJwtBearer(options =>
             {
                 
@@ -74,6 +77,7 @@ namespace Calo.Blog.Host
                     RequireExpirationTime = true,
                     SaveSigninToken= true,
                 };
+
                 options.Events = new JwtBearerEvents
                 {
                     OnMessageReceived = context =>
@@ -86,8 +90,8 @@ namespace Calo.Blog.Host
                         }
 
                         return Task.CompletedTask;
-                    }
-                };
+                    },
+            };
             });
 
             context.Services.AddSwaggerGen(options =>

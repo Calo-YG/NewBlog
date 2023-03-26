@@ -1,5 +1,4 @@
 ﻿using Calo.Blog.Common.Authorization;
-using Calo.Blog.Common.UserSession;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +7,6 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerUI;
-using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;

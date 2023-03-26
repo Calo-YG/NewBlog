@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Calo.Blog.Common.Redis;
 using Calo.Blog.Common.UserSession;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Calo.Blog.Host.Controllers
 {
@@ -73,8 +74,13 @@ namespace Calo.Blog.Host.Controllers
             var token = _tokenProvider.GenerateToken(tokenModel);
 
             Response.Cookies.Append("x-access-token", token);
-            var claimsIdentity = new ClaimsIdentity(tokenModel.Claims, "Login");
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+            var claimsIdentity = new ClaimsIdentity(tokenModel.Claims, "Login"); 
+            AuthenticationProperties properties = new AuthenticationProperties();
+            properties.AllowRefresh = false;
+            properties.IsPersistent = true;
+            properties.IssuedUtc = DateTimeOffset.UtcNow;
+            properties.ExpiresUtc = DateTimeOffset.Now.AddMinutes(1);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity),properties);
             return token;
         }
         [HttpGet]

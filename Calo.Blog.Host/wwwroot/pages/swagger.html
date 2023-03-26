@@ -22,7 +22,7 @@
         configObject.layout = "StandaloneLayout";
         configObject.requestInterceptor = function (request) {
             var token = getCookiesValue("x-access-token");
-            request.headers['Authorization'] = token;
+            request.headers['Authorization'] ='Bearer '+ token;
             return request;
         };
 

@@ -21,6 +21,9 @@ using Calo.Blog.Common.Authorization;
 using Swashbuckle.AspNetCore.Filters;
 using System.Threading.Tasks;
 using Calo.Blog.Common.Middlewares;
+using Autofac.Core;
+using System.Linq;
+using Calo.Blog.Common.Extensions;
 
 namespace Calo.Blog.Host
 {
@@ -120,6 +123,23 @@ namespace Calo.Blog.Host
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
                 options.OrderActionsBy(o => o.RelativePath);
             });
+
+            context.Services.AddCors(
+    options => options.AddPolicy(
+        "YCores",
+        builder => builder
+            .WithOrigins(
+                // App:CorsOrigins in appsettings.json can contain more than one address separated by comma.
+                configuration["App:CorsOriginsco"]
+                    .Split(",", StringSplitOptions.RemoveEmptyEntries)
+                    .Select(o => o.RemoteFix("/"))
+                    .ToArray()
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()
+    )
+);
         }
 
         public override void InitApplication(InitApplicationContext context)

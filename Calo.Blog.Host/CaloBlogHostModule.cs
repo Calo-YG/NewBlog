@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using Calo.Blog.EntityCore;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -21,7 +20,6 @@ using Calo.Blog.Common.Authorization;
 using Swashbuckle.AspNetCore.Filters;
 using System.Threading.Tasks;
 using Calo.Blog.Common.Middlewares;
-using Autofac.Core;
 using System.Linq;
 using Calo.Blog.Common.Extensions;
 
@@ -130,7 +128,7 @@ namespace Calo.Blog.Host
         builder => builder
             .WithOrigins(
                 // App:CorsOrigins in appsettings.json can contain more than one address separated by comma.
-                configuration["App:CorsOriginsco"]
+                configuration["App:CorsOriginscors"]
                     .Split(",", StringSplitOptions.RemoveEmptyEntries)
                     .Select(o => o.RemoteFix("/"))
                     .ToArray()

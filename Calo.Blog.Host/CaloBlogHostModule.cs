@@ -148,12 +148,13 @@ namespace Calo.Blog.Host
 
             var env = (IHostingEnvironment)context.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
 
+            app.UseCors("YCores");
+
+            app.UseRouting();
             //鉴权中间件
             app.UseAuthentication();
 
             app.UseStaticFiles();
-
-            app.UseRouting();
 
             app.UseAuthorization();
 

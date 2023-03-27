@@ -24,7 +24,7 @@ namespace Calo.Blog.EntityCore
                 p.ConnectionString = configuration.GetSection("App:ConnectionString:Default").Value;
                 p.DbType = SqlSugar.DbType.SqlServer;
                 p.IsAutoCloseConnection = true;
-                p.ConfigureExternalServices = TableAttributeConfig.AddContextColumsConfigure();
+                p.ConfigureExternalServices = TableAttributeConfig.AddContextColumsConfigure(); 
             });
             context.Services.AddSingleton<IEntityManager, EntityManager>();
             //添加数据库上下文AOP配置
@@ -48,7 +48,7 @@ namespace Calo.Blog.EntityCore
             Configure<DatabaseSetting>(p =>
             {
                 //跳过建库建表
-                p.SikpBuildDatabase = true;
+                p.SikpBuildDatabase = false;
             });
             context.Services.AddAssembly(assembly: Assembly.GetExecutingAssembly());
         }

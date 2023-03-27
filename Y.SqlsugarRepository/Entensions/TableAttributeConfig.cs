@@ -32,6 +32,13 @@ namespace Y.SqlsugarRepository.Entensions
                     column.IsNullable = false;
                 }
 
+                if(attributes.OfType<StringAtrribute>().Any() && prop.PropertyType== typeof(string))
+                {
+                    var strAttribute = attributes.OfType<StringAtrribute>().FirstOrDefault();
+                    column.DataType = strAttribute._Type;
+                    column.Length = strAttribute._length;
+                }
+
                 //自动设置可空属性
                 if (new NullabilityInfoContext()
                .Create(prop).WriteState is NullabilityState.Nullable)

@@ -23,7 +23,7 @@ namespace Calo.Blog.EntityCore.DadaSeed
             user.BirthDate = DateTime.Now;
             user.Email = "31645222062@qq.com";
             user.Password = "wyg154511";
-            user.UserName = "wyg";
+            user.UserName = "wyg文";
             var isExists = _client.Queryable<User>().Any(p => p.UserName.Equals(user.UserName));
             if (!isExists)
             {

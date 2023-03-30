@@ -24,12 +24,13 @@ jobs:
           if docker images | grep $image_name > /dev/null ; then
               docker rmi $image_name:$tag_name
           fi
-          sudo docker build -t latest  --file ${{ secrets.DOCKERFILE }} .
+          sudo docker build -t $image_name:$tag_name --file ${{ secrets.DOCKERFILE }} .
       
       - name: Build and push ALI
         id: ALI_build
         run: |
-          sudo docker push $IMAGE_NAME:latest registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:latest
+          image_name="${{ secrets.USERNAME }}/newblog"
+          sudo docker push $image_name:latest registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:latest
       
       - name: Run Docker container
         run: |

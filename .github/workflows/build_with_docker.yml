@@ -22,7 +22,6 @@ jobs:
         with:
           username: ${{ secrets.PASSWORD }}
           password: ${{ secrets.USERNAME }}
-          access-token: ${{ secrets.ACCESSTOKEN }}
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v4

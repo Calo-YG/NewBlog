@@ -38,5 +38,5 @@ jobs:
             echo "Docker container already exists, removing..."
             docker rm $container_name
           fi
-          sudo docker run --name newblog -p 5980:80 $IMAGE_NAME:last
+          sudo docker run --name newblog -p 5980:80 -d $IMAGE_NAME:last
 

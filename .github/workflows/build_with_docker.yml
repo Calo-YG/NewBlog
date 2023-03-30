@@ -9,8 +9,6 @@ on:
 jobs:
   build:
     runs-on: self-hosted
-    env:
-      IMAGE_NAME: ${{ secrets.USERNAME }}/newblog
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2

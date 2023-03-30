@@ -2,37 +2,43 @@ name: build_with_docker
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
     runs-on: self-hosted
     env:
-     DOCKER_USERNAME: ${{ secrets.USERNAME }}
-     DOCKER_PASSWORD: ${{ secrets.PASSWORD }}
+      IMAGE_NAME: ${{ secrets.USERNAME }}/newblog
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      
       - name: login aliyun
         run: |
-         sudo docker login --username=${{ secrets.ALINAME }} --password=${{ secrets.ALIPASSWORD }}  registry.cn-hongkong.aliyuncs.com
+          sudo docker login --username=${{ secrets.ALINAME }} --password=${{ secrets.ALIPASSWORD }}  registry.cn-hongkong.aliyuncs.com
+      
       - name: Build Docker Image
         run: |
-         sudo docker build -t blog:last --file ${{ secrets.DOCKERFILE }} .
+          image_name="${{ secrets.USERNAME }}/newblog"
+          tag_name="last"
+          if docker images | grep $image_name > /dev/null ; then
+              docker rmi $image_name:$tag_name
+          fi
+          sudo docker build -t $IMAGE_NAME --file ${{ secrets.DOCKERFILE }} .
+      
       - name: Build and push ALI
         id: ALI_build
         run: |
-          sudo docker ${{ secrets.USERNAME }}/newblog registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:latest
-          sudo docker push registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:latest
+          sudo docker push $IMAGE_NAME:latest registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:latest
+      
       - name: Run Docker container
         run: |
-         sudo docker run --name newblog -p 5980:80 ${{ secrets.USERNAME }}/newblog:latest
+          container_name="newblog"
+          if docker ps -a | grep $container_name > /dev/null ; then
+            echo "Docker container already exists, removing..."
+            docker rm $container_name
+          fi
+          sudo docker run --name newblog -p 5980:80 $IMAGE_NAME:last
 
-
-
-
-        
-  
-  

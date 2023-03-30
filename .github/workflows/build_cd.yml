@@ -48,7 +48,7 @@ jobs:
           if docker images | grep $image_name:$tag_name > /dev/null; then
            docker rmi $image_name:$tag_name
           fi
-          sudo  docker pull registry.cn-hangzhou.aliyuncs.com/sdwyg/blogo:$tag_name
+          sudo  docker pull registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:$tag_name
       
       - name: Run Docker container
         run: |

@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     env:
      DOCKER_USERNAME: ${{ secrets.USERNAME }}
      DOCKER_PASSWORD: ${{ secrets.PASSWORD }}
@@ -34,6 +34,12 @@ jobs:
           tags: |
             ${{ secrets.USERNAME }}/newblog:${{ github.ref_name }}
             ${{ secrets.USERNAME }}/newblog:latest
+      - name: Run Docker container
+        uses: docker/container-action@v1.3.3
+        with:
+          image: dockerhub_username/image_name:latest
+          ports: '5980:80'
+
 
 
         

@@ -1,4 +1,4 @@
-name: build_with_docker
+name: build_cd
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -19,7 +19,7 @@ jobs:
       - name: Build Docker Image
         run: |
           image_name="${{ secrets.USERNAME }}/newblog"
-          tag_name="latest"
+          tag_name="${{IMAGETAG}}"
           if docker images | grep $image_name:$tag_name > /dev/null; then
            docker rmi $image_name:$tag_name
           fi
@@ -31,14 +31,4 @@ jobs:
           image_name="${{ secrets.USERNAME }}/newblog"
           sudo docker tag  $image_name:latest registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:latest
           sudo docker push registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:latest
-      
-      - name: Run Docker container
-        run: |
-          container_name="newblog"
-          tag_name="latest"
-          if docker ps -a | grep $container_name > /dev/null ; then
-            echo "Docker container already exists, removing..."
-            docker rm $container_name
-          fi
-          sudo docker run --name $container_name -p 5980:80 -d ${{ secrets.USERNAME }}/newblog:$tag_name
 

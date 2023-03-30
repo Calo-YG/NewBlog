@@ -1,0 +1,36 @@
+name: build_ci
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+
+jobs:
+  build:
+    needs:build_cd
+    runs-on: self-hosted
+    steps:
+      - name: login aliyun
+        run: |
+          sudo docker login --username=${{ secrets.ALINAME }} --password=${{ secrets.ALIPASSWORD }}  registry.cn-hongkong.aliyuncs.com
+      
+      - name: Pull ALI Image
+        run: |
+          image_name="${{ secrets.USERNAME }}/newblog"
+          tag_name="${{IMAGETAG}}"
+          if docker images | grep $image_name:$tag_name > /dev/null; then
+           docker rmi $image_name:$tag_name
+          fi
+          sudo  docker pull registry.cn-hangzhou.aliyuncs.com/sdwyg/blogo:$tag_name
+      
+      - name: Run Docker container
+        run: |
+          container_name="newblog"
+          tag_name="${{IMAGETAG}}"
+          if docker ps -a | grep $container_name > /dev/null ; then
+            echo "Docker container already exists, removing..."
+            docker rm $container_name
+          fi
+          sudo docker run --name $container_name -p 5980:80 -d ${{ secrets.USERNAME }}/newblog:$tag_name

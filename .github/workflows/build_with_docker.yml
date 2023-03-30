@@ -1,29 +1,28 @@
- name: build_with_docker
- 
- on:
-    push:
-      branches: [ master ]
-    pull_request:
-      branches: [ master ]
-      
+name: build_with_docker
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
       Docker_File: ${{ secrets.MY_SECRET }}
-    
-  steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-    - name: Build Docker Image
-      run: |
-          docker build -t  --file ${{ secrets.DOCKERFILE }} --tag blog:last .
-    - name:Dockr Hub Login
-      uses: docker/login-action@v2
-      with:
-         username:${{ secrets.PASSWORD }}
-         password:${{ secrets.USERNAME }}
-   - name: Build and push
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Build Docker Image
+        run: |
+          docker build -t blog:last --file ${{ secrets.DOCKERFILE }} .
+      - name: Docker Hub Login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.PASSWORD }}
+          password: ${{ secrets.USERNAME }}
+      - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v4
         with:
@@ -34,6 +33,7 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/NewBlog:${{ github.ref_name }}
             ${{ secrets.DOCKERHUB_USERNAME }}/NewBlog:latest
+
 
         
   

@@ -35,10 +35,9 @@ jobs:
             ${{ secrets.USERNAME }}/newblog:${{ github.ref_name }}
             ${{ secrets.USERNAME }}/newblog:latest
       - name: Run Docker container
-        uses: docker/container-action@v1.3.3
-        with:
-          image: dockerhub_username/image_name:latest
-          ports: '5980:80'
+        run: |
+          docker run --name newblog -p 5980:80 ${{ secrets.USERNAME }}/newblog:latest
+
 
 
 

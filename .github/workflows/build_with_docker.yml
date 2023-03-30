@@ -24,7 +24,7 @@ jobs:
       - name: Build and push ALI
         id: ALI_build
         run: |
-          sudo docker latest wyg154511aw/newblog registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:latest
+          sudo docker ${{ secrets.USERNAME }}/newblog registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:latest
           sudo docker push registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:latest
       - name: Run Docker container
         run: |

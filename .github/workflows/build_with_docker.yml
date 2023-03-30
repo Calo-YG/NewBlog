@@ -12,7 +12,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      
       - name: login aliyun
         run: |
           sudo docker login --username=${{ secrets.ALINAME }} --password=${{ secrets.ALIPASSWORD }}  registry.cn-hongkong.aliyuncs.com
@@ -21,11 +20,11 @@ jobs:
         run: |
           image_name="${{ secrets.USERNAME }}/newblog"
           tag_name="latest"
-          if docker images | grep $image_name > /dev/null ; then
-              docker rmi $image_name:$tag_name
+          if docker images | grep $image_name > /dev/null; then
+           docker rmi $image_name:$tag_name
           fi
-          sudo docker build -t $image_name:$tag_name --file ${{ secrets.DOCKERFILE }} .
-      
+          sudo docker build -t $image_name:$tag_name -f ${{ secrets.DOCKERFILE }} .
+
       - name: Build and push ALI
         id: ALI_build
         run: |

@@ -24,7 +24,7 @@ jobs:
           if docker images | grep $image_name > /dev/null ; then
               docker rmi $image_name:$tag_name
           fi
-          sudo docker build -t $IMAGE_NAME --file ${{ secrets.DOCKERFILE }} .
+          sudo docker build -t latest  --file ${{ secrets.DOCKERFILE }} .
       
       - name: Build and push ALI
         id: ALI_build

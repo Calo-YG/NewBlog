@@ -55,7 +55,8 @@ jobs:
           container_name="newblog"
           tag_name="${{secrets.IMAGETAG}}"
           if docker ps -a | grep $container_name > /dev/null ; then
-            echo "Docker container already exists, removing..."
+            echo "Docker container already exists, removing..."        
+            docker stop $container_name
             docker rm $container_name
           fi
           sudo docker run --name $container_name -p 5980:80 -d ${{ secrets.USERNAME }}/newblog:$tag_name

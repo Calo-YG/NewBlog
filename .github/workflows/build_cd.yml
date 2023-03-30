@@ -34,7 +34,7 @@ jobs:
           sudo docker push registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:$tag_name
   
   deploy:
-    needs:build
+    needs: build
     runs-on: self-hosted
     steps:
       - name: login aliyun

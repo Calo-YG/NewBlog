@@ -20,7 +20,7 @@ jobs:
       - name: Build Docker Image
         run: |
           image_name="${{ secrets.USERNAME }}/newblog"
-          tag_name="last"
+          tag_name="latest"
           if docker images | grep $image_name > /dev/null ; then
               docker rmi $image_name:$tag_name
           fi

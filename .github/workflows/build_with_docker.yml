@@ -29,7 +29,8 @@ jobs:
         id: ALI_build
         run: |
           image_name="${{ secrets.USERNAME }}/newblog"
-          sudo docker push $image_name:latest registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:latest
+          sudo docker tag  $image_name:latest registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:latest
+          sudo docker push registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:latest
       
       - name: Run Docker container
         run: |

@@ -31,7 +31,6 @@ jobs:
           context: .
           push: true
           labels: ${{ steps.meta.outputs.labels }}
-          platforms: linux/arm64
           tags: |
             ${{ secrets.USERNAME }}/newblog:${{ github.ref_name }}
             ${{ secrets.USERNAME }}/newblog:latest

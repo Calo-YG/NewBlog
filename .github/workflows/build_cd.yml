@@ -19,7 +19,7 @@ jobs:
       - name: Build Docker Image
         run: |
           image_name="${{ secrets.USERNAME }}/newblog"
-          tag_name="${{IMAGETAG}}"
+          tag_name="${{secrets.IMAGETAG}}"
           if docker images | grep $image_name:$tag_name > /dev/null; then
            docker rmi $image_name:$tag_name
           fi
@@ -29,6 +29,7 @@ jobs:
         id: ALI_build
         run: |
           image_name="${{ secrets.USERNAME }}/newblog"
-          sudo docker tag  $image_name:latest registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:latest
-          sudo docker push registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:latest
+          tag_name="${{secrets.IMAGETAG}}"
+          sudo docker tag  $image_name:latest registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:$tag_name
+          sudo docker push registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:$tag_name
 

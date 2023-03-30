@@ -60,5 +60,6 @@ jobs:
       
       - name: Run Docker container
         run: |
+          tag_name="${{secrets.IMAGETAG}}"
           sudo docker run --name $container_name -p 5980:80 -d ${{ secrets.ALIREPOSITORY }}:$tag_name
 

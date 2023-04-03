@@ -1,6 +1,6 @@
 # Colo.Blog
 
-#### 该项目已通过阿里云云效持续集成与部署（[Home Page - Calo.Blog.Host](http://124.71.15.19:1545/)）
+#### 该项目已通过阿里云云效、GithubAction持续集成与部署（[Home Page - Calo.Blog.Host](http://124.71.15.19:1545/)）
 
 ## 相关模块介绍
 ### Y.Module

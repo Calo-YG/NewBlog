@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using Calo.Blog.EntityCore.Entities;
+using System.Linq.Expressions;
 
 namespace Calo.Blog.Common.Authorization.Authorize
 {
@@ -35,6 +36,28 @@ namespace Calo.Blog.Common.Authorization.Authorize
             var newExpre = Expression.New(tye);
             var instance = Expression.Lambda<Func<T>>(newExpre).Compile();
             return instance.Invoke();
+        } 
+
+        public virtual List<Permission> InitAuthorize()
+        {
+            if (AuthorizeProviders is null) throw new ArgumentNullException(nameof(AuthorizeProviders));
+            List<Permission> permissions = new List<Permission>();  
+            foreach(var provider in AuthorizeProviders)
+            {
+                GetPermissions(provider.Permissions, permissions);
+            }
+            return permissions;
+        }
+
+        private void GetPermissions(Permission permission,List<Permission> permissions)
+        {
+            if(permission is null) throw new ArgumentNullException(nameof(permission));
+            permissions.Add(permission);
+            if (permissions is null) return;
+            foreach(var item in permission.Children)
+            {
+                GetPermissions(item, permissions);  
+            }
         }
     }
 }

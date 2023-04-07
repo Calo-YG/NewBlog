@@ -2,13 +2,13 @@
 {
     public  class AuthorizeProvider
     {
-        public Permissions Permissions { get => _permissions; }
+        public Permission Permissions { get => _permissions; }
 
-        private Permissions _permissions { get; set; }
+        private Permission _permissions { get; set; }
 
         public AuthorizeProvider() 
         {
-            _permissions = _permissions ?? new Permissions();
+            _permissions = _permissions ?? new Permission();
             InitPermissions();
         }
 

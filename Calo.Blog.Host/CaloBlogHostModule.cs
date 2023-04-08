@@ -10,22 +10,21 @@ using Y.Module.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Swashbuckle.AspNetCore.SwaggerUI;
-using Calo.Blog.EntityCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.Configuration;
-using Calo.Blog.Common;
 using Calo.Blog.Common.Authorization;
 using Swashbuckle.AspNetCore.Filters;
 using System.Threading.Tasks;
 using Calo.Blog.Common.Middlewares;
 using System.Linq;
 using Calo.Blog.Common.Extensions;
+using Calo.Blog.Application;
 
 namespace Calo.Blog.Host
 {
-    [DependOn(typeof(SqlSugarEnityCoreModule), typeof(CommonModule))]
+    [DependOn(typeof(BlogApplicationModule))]
     public class CaloBlogHostModule : YModule
     {
         public override void ConfigerService(ConfigerServiceContext context)

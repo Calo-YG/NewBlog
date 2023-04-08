@@ -7,6 +7,8 @@ namespace Calo.Blog.Common.Authorization.Authorize
     {
         public static List<AuthorizeProvider> AuthorizeProviders { get; private set; }
 
+        public static List<Permission> Permissions { get; private set; }    
+ 
         public AuthorizeRegister() 
         {        
             if(AuthorizeProviders is null) throw new ArgumentNullException(nameof(AuthorizeProviders));
@@ -15,6 +17,7 @@ namespace Calo.Blog.Common.Authorization.Authorize
         static AuthorizeRegister()
         {
             AuthorizeProviders = AuthorizeProviders ?? new List<AuthorizeProvider>();
+            Permissions = Permissions?? new List<Permission>(); 
         }
 
         
@@ -44,19 +47,19 @@ namespace Calo.Blog.Common.Authorization.Authorize
             List<Permission> permissions = new List<Permission>();  
             foreach(var provider in AuthorizeProviders)
             {
-                GetPermissions(provider.Permissions, permissions);
+                GetPermissions(provider.Permissions);
             }
             return permissions;
         }
 
-        private void GetPermissions(Permission permission,List<Permission> permissions)
+        private void GetPermissions(Permission permission)
         {
             if(permission is null) throw new ArgumentNullException(nameof(permission));
-            permissions.Add(permission);
-            if (permissions is null) return;
+            Permissions.Add(permission);
+            if (permission.Children is null) return;
             foreach(var item in permission.Children)
             {
-                GetPermissions(item, permissions);  
+                GetPermissions(item);  
             }
         }
     }

@@ -35,7 +35,7 @@ namespace Y.Module.Extensions
             {
                 foreach (var itemType in depend.Types)
                 {
-                    types.Add(itemType);
+                    AddModuleFrompepend(itemType, types);
                 }
             }
             return types;
@@ -44,7 +44,6 @@ namespace Y.Module.Extensions
         private static void AddModuleFrompepend(Type moduleType, List<Type> types)
         {
             YModule.CheckModuleType(moduleType);
-
             if (types.Contains(moduleType))
             {
                 return;

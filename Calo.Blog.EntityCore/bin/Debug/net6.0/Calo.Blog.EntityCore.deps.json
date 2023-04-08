@@ -8,7 +8,6 @@
     ".NETCoreApp,Version=v6.0": {
       "Calo.Blog.EntityCore/1.0.0": {
         "dependencies": {
-          "Calo.Blog.Domain": "1.0.0",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
           "Y.SqlsugarRepository": "1.0.0"
         },
@@ -1084,11 +1083,6 @@
           }
         }
       },
-      "Calo.Blog.Domain/1.0.0": {
-        "runtime": {
-          "Calo.Blog.Domain.dll": {}
-        }
-      },
       "Y.Module/1.0.5": {
         "dependencies": {
           "Microsoft.AspNetCore.Http.Abstractions": "2.2.0",
@@ -1742,11 +1736,6 @@
       "sha512": "sha512-CeWTdRNfRaSh0pm2gDTJFwVaXfTq6Xwv/sA887iwPTneW7oMtMlpvDIO+U60+3GWTB7Aom6oQwv5VZVUhQRdPQ==",
       "path": "system.windows.extensions/4.7.0",
       "hashPath": "system.windows.extensions.4.7.0.nupkg.sha512"
-    },
-    "Calo.Blog.Domain/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
     },
     "Y.Module/1.0.5": {
       "type": "project",

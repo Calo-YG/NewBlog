@@ -13,6 +13,7 @@ using Y.Module.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Calo.Blog.Common.Middlewares;
 using Calo.Blog.Common.UserSession;
+using Calo.Blog.Common.Authorization.Authorize;
 
 namespace Calo.Blog.Common
 {
@@ -30,6 +31,8 @@ namespace Calo.Blog.Common
             context.Services.AddSingleton<IAuthorizationHandler, AuthorizeHandler>();
             //注入IUserSession
             context.Services.AddScoped<IUserSession, CurrentUserSession>();
+            //添加权限
+            context.Services.AddSingleton<IAuthorizeManager, AuthorizeManager>();
 
             //使用CsRedis
             var csredis = new CSRedis.CSRedisClient("124.71.15.19:6379,password=154511,defaultDatabase=1,ssl=false,writeBuffer=10240,poolsize=50,prefix=Y");

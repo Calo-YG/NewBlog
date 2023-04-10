@@ -14,6 +14,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.8.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.8.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.19.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.4.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
   </ItemGroup>
@@ -21,6 +22,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Y.Module\Y.Module.csproj" />
     <ProjectReference Include="..\Y.SqlsugarRepository\Y.SqlsugarRepository.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="MQ\" />
+    <Folder Include="ES\" />
   </ItemGroup>
 
 </Project>

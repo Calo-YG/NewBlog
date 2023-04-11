@@ -6,5 +6,7 @@ namespace Calo.Blog.Common.MongoDB
     {
         void ChangeMongoDatbase(string name);
         Task<IClientSessionHandle> GetSessionHandle();
+
+        IMongoCollection<T> GetCollection<T>();
     }
 }

@@ -1,6 +1,4 @@
-﻿
-
-using CSRedis;
+﻿using CSRedis;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;

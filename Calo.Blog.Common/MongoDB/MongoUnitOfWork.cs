@@ -19,7 +19,7 @@ namespace Calo.Blog.Common.MongoDB
             session.StartTransaction();
             try
             {
-                await func();
+                await func.Invoke();
                 await session.CommitTransactionAsync();
             }
             catch (Exception ex)

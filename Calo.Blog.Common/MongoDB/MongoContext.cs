@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Calo.Blog.Common.MongoDB.MongoAttribute;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using System.Reflection;
 
 namespace Calo.Blog.Common.MongoDB
 {
@@ -14,6 +16,13 @@ namespace Calo.Blog.Common.MongoDB
             _options = options.Value;
             _client = new MongoClient(_options.ConnectString);
             Current = _client.GetDatabase(_options.DataBaseName);
+        }
+
+        public IMongoCollection<T> GetCollection<T>()
+        {
+            var entity = typeof(T);
+            var name = entity.GetCustomAttributes().OfType<TableAttribute>().FirstOrDefault()?.Name ?? entity.Name;
+            return Current.GetCollection<T>(name);
         }
         
         public void ChangeMongoDatbase(string name)

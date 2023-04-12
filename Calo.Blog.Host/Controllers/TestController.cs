@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Calo.Blog.Common.Redis;
 using Calo.Blog.Common.UserSession;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Calo.Blog.Common.Y.EventBus;
 
 namespace Calo.Blog.Host.Controllers
 {
@@ -26,17 +26,20 @@ namespace Calo.Blog.Host.Controllers
         private readonly IDistributedCache _cache;
         private readonly ICacheManager _cacheManager;
         private readonly IUserSession _usersession;
+        private readonly IEventBus _eventBus;
         public TestController(IHttpContextAccessor httpContextAccessor
             , ITokenProvider tokenProvider
             , IDistributedCache cache
             , ICacheManager cacheManager
-            , IUserSession userSession)
+            , IUserSession userSession
+            , IEventBus eventBus)
         {
             _httpContextAccessor = httpContextAccessor;
             _tokenProvider = tokenProvider;
             _cache = cache;
             _cacheManager = cacheManager;
             _usersession = userSession;
+            _eventBus = eventBus;
         }
         /// <summary>
         /// justTestApi
@@ -123,6 +126,12 @@ namespace Calo.Blog.Host.Controllers
         {
             _usersession.SetUserInfo();
             return _usersession.UserId;
+        }
+
+        [HttpGet]
+        public void EventBusTest()
+        {
+            _eventBus.Publish<User>(new User());
         }
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Y.SqlsugarRepository.EntityAttribute
+﻿namespace Y.SqlsugarRepository.EntityAttribute
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class ConcurrentTokenAttribute:Attribute

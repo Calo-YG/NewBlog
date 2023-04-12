@@ -12,7 +12,7 @@ namespace Calo.Blog.Common.MongoDB
             _collection = _context.GetCollection<T>();
         }
 
-        public Task Add(T item) 
+        public Task Insert(T item) 
         {
            return _collection.InsertOneAsync(item);
         }

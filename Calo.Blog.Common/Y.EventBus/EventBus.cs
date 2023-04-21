@@ -26,7 +26,10 @@ namespace Calo.Blog.Common.Y.EventBus
                 handle.OnError(ex);
                 throw;
             }
-            finally { scope.Dispose(); }
+            finally 
+            { 
+                if(scope is not null) scope.Dispose();
+            }
             
         }
     }

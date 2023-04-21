@@ -57,13 +57,16 @@ namespace Y.Module
             }      
             try
             {
-                foreach (var module in Modules)
+                foreach(var module in Modules)
                 {
                     //初始化之前处理
                     if (module.Incetance is IPreConfigServices application)
                     {
                         application.PreInitApplication(context);
                     }
+                }
+                foreach (var module in Modules)
+                {
                     module.Incetance.ConfigerService(context);
                 }
             }

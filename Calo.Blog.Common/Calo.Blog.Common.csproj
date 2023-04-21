@@ -27,6 +27,7 @@
   <ItemGroup>
     <Folder Include="ES\" />
     <Folder Include="MQ\Y.MessageQuenn\" />
+    <Folder Include="Y.DynamicApplication\" />
   </ItemGroup>
 
 </Project>

@@ -54,7 +54,9 @@ namespace Y.Module
                 {
                     Module.ConfigerServiceContext = context;
                 }
-            }      
+            }
+
+            //PreInitApplication
             try
             {
                 foreach (var module in Modules)
@@ -64,6 +66,20 @@ namespace Y.Module
                     {
                         application.PreInitApplication(context);
                     }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            //ConfigerService
+            try
+            {
+
+                foreach (var module in Modules)
+                {
                     module.Incetance.ConfigerService(context);
                 }
             }
@@ -71,6 +87,7 @@ namespace Y.Module
             {
                 throw;
             }
+
             isConfigService = true;
         }
 

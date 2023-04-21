@@ -21,6 +21,7 @@ using Calo.Blog.Common.Middlewares;
 using System.Linq;
 using Calo.Blog.Common.Extensions;
 using Calo.Blog.Application;
+using Microsoft.Extensions.Hosting;
 
 namespace Calo.Blog.Host
 {
@@ -143,7 +144,7 @@ namespace Calo.Blog.Host
         {
             var app = context.GetApplicationBuilder();
 
-            var env = (IHostingEnvironment)context.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
+            var env = (IHostEnvironment)context.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
 
             app.UseCors("YCores");
 
@@ -172,7 +173,7 @@ namespace Calo.Blog.Host
                 options.DocExpansion(DocExpansion.None);
                 options.IndexStream = () =>
                 {
-                    var path = Path.Join(env.WebRootPath, "pages", "swagger.html");
+                    var path = Path.Join(env.ContentRootPath, "pages", "swagger.html");
                     return new FileInfo(path).OpenRead();
                 };
             });

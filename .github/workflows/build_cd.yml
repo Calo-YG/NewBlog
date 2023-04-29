@@ -62,5 +62,5 @@ jobs:
         run: |
           container_name="newblog"
           tag_name="${{secrets.IMAGETAG}}"
-          sudo docker run --name $container_name -p 5980:80 -d ${{ secrets.ALIREPOSITORY }}:$tag_name
+          sudo docker run --name $container_name -p ${{secrets.IMAGETAG}}:80 -d ${{ secrets.ALIREPOSITORY }}:$tag_name
 

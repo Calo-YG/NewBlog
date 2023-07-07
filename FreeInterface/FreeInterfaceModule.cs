@@ -7,7 +7,7 @@ namespace FreeInterface
     {
         public override void ConfigerService(ConfigerServiceContext context)
         {
-            
+            base.ConfigerService(context);
         }
     }
 }

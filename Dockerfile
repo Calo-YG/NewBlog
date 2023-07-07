@@ -6,21 +6,22 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Calo.Blog.Host/Calo.Blog.Host.csproj", "Calo.Blog.Host/"]
+#COPY ["Calo.Blog.Host/Calo.Blog.Host.csproj", "Calo.Blog.Host/"]
 COPY ["Calo.Blog.EntityCore/Calo.Blog.EntityCore.csproj", "Calo.Blog.EntityCore/"]
 COPY ["Calo.Blog.Core/Calo.Blog.Domain.csproj", "Calo.Blog.Core/"]
 COPY ["Calo.Blog.Common/Calo.Blog.Common.csproj", "Calo.Blog.Common/"]
 COPY ["Calo.Blog.Application/Calo.Blog.Application.csproj", "Calo.Blog.Application/"]
 COPY ["Y.Module/Y.Module.csproj", "Y.Module/"]
-RUN dotnet restore "Calo.Blog.Host/Calo.Blog.Host.csproj"
+COPY ["Y.Blog.Host/Y.Blog.Host.csproj","Y.Blog.Host"]
+RUN dotnet restore "Y.Blog.Host/Y.Blog.Host.csproj"
 COPY . .
-WORKDIR "/src/Calo.Blog.Host"
-RUN dotnet build "Calo.Blog.Host.csproj" -c Release -o /app/build
+WORKDIR "/src/Y.Blog.Host"
+RUN dotnet build "Y.Blog.Host.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Calo.Blog.Host.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Y.Blog.Host.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Calo.Blog.Host.dll"]
+ENTRYPOINT ["dotnet", "Y.Blog.Host.dll"]

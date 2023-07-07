@@ -1,0 +1,49 @@
+﻿@keyframes animation-before {
+    0% {
+        clip-path: inset(0 0 0 0);
+    }
+
+    ... 100% {
+        clip-path: inset(.62em 0 .29em 0);
+    }
+}
+
+@keyframes animation-after {
+    0% {
+        clip-path: inset(0 0 0 0);
+    }
+
+    ... 100% {
+        clip-path: inset(.29em 0 .62em 0);
+    }
+}
+
+.text {
+    display: inline-block;
+    font-size: 3.5em;
+    font-weight: 600;
+    padding: 0 4px;
+    color: white;
+    position: relative;
+}
+
+    .text::before {
+        content: attr(data-text);
+        position: absolute;
+        left: -2px;
+        width: 100%;
+        background: black;
+        text-shadow: 2px 0 red;
+        animation: animation-before 3s infinite linear alternate-reverse;
+    }
+
+    .text::after {
+        content: attr(data-text);
+        position: absolute;
+        left: 2px;
+        width: 100%;
+        background: black;
+        text-shadow: -2px 0 blue;
+        animation: animation-after 3s infinite linear alternate-reverse;
+    }
+

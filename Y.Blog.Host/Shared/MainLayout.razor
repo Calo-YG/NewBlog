@@ -2,14 +2,25 @@
 
 @*<PageTitle>灰色的西北平原</PageTitle>*@
 
-<div class="page">
+<div class="page flamingo">
 @*    <div class="sidebar">
         <NavMenu />
     </div>*@
     @*注释菜单栏*@
     <main>
-        <article class="content px-4">
+<Layout>
+@*    <Header Style="position: fixed; z-index: 1; width: 100%; ">
+        <div class="logo" />
+    </Header>*@
+    <Content  Style="padding:0 50px; margin-top: 18px; ">
+        <div class="site-layout-background " style="padding: 24px; min-height: 380px ">
             @Body
-        </article>
+        </div>
+    </Content>
+    <Footer Style="text-align: center;">Y.Blog @Year Created by WYG</Footer>
+</Layout>
     </main>
 </div>
+@code{
+    private int Year = DateTime.Now.Year;
+}

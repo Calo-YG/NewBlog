@@ -3,16 +3,51 @@
 <PageTitle>关于作者</PageTitle>
 
 <div>
-   <div>
-        <Avatar Src="/images/初代.jpg"></Avatar>
+   <div class="box" style="text-align:center"> 
+        <Avatar Src="/images/初代.jpg" Alt="作者头像" Size="120"></Avatar>
    </div>
-    <div>
-        <Steps Size="small" Current=Current Percent="Percent">
-            <Step Title="Finished" />
-            <Step Title="In Progress" />
-            <Step Title="Waiting" />
-        </Steps>
-    </div>
+   <div class="box">
+    <Descriptions Title="个人信息">
+    <DescriptionsItem Title="芳名">布吉岛（想象力发作）</DescriptionsItem>
+    <DescriptionsItem Title="打 Call">17363955980</DescriptionsItem>
+    <DescriptionsItem Title="目前活着的地方">广州, 广东</DescriptionsItem>
+    <DescriptionsItem Title="邮箱">wyg154511sj1@63.com</DescriptionsItem>
+    <DescriptionsItem Title="标签">
+<div class="tag-colorful-demo">
+    <Tag Color="#f50">篮球</Tag>
+    <Tag Color="#2db7f5">.NET 菜鸡程序员</Tag>
+    <Tag Color="#87d068">会一点前端</Tag>
+    <Tag Color="#108ee9">啥都知道一点</Tag>
+    <Tag Color="HotPink">喜欢看小说</Tag>
+    <Tag Color="DarkRed">韩寒</Tag>
+    <Tag Color="rgb(143, 201, 146)">村上春树</Tag>
+    <Tag Color="rgb(105, 58, 236)">张爱玲</Tag> 
+</div>
+    </DescriptionsItem>
+        <DescriptionsItem Title="Github"><a href="https://github.com/Calo-YG/NewBlog">https://github.com/Calo-YG/NewBlog</a></DescriptionsItem>
+    <DescriptionsItem Title="活着的详细地方">
+        往左往右、往左往右、如此而已
+    </DescriptionsItem>
+</Descriptions>
+<div class="box">
+<Collapse DefaultActiveKey="@(new[]{"1"})" Bordered="false">
+    <Panel Header="看过的书" Key="1">
+        <p></p>
+    </Panel>
+    <Panel Header="功能开发" Key="3">
+        @if (Steps.Any())
+        {
+            <Steps Size="small" Current=Current Percent="Percent">
+                @foreach(var item in Steps)
+                {
+                    <Step Title="@item.Title"></Step>
+                }
+            </Steps>
+        }
+    </Panel>
+</Collapse>
+</div>
+</div>
 
 </div>
 
@@ -20,18 +55,31 @@
     /// <summary>
     /// 当前状态
     /// </summary>
-    private int Current = 1;
+    private int Current = 0;
     /// <summary>
     /// 进度条
     /// </summary>
     private int Percent = 10;
-
+    /// <summary>
+    /// 步骤条
+    /// </summary>
     private List<Step> Steps;
 
     protected override void OnInitialized()
     {
         Steps = new List<Step>();
-        Steps.Add(new Step());
+        Steps.Add(new Step
+        {
+            Title="完成接口列表开发",
+        });
+        Steps.Add(new Step
+        {
+            Title = "登录注册-博客功能开发"
+        });
+        Steps.Add(new Step
+        {
+            Title = "推荐功能开发"
+        });
     }
 
     private void Stepchange()

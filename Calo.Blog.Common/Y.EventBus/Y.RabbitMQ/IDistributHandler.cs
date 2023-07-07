@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Calo.Blog.Common.Y.RabbitMQ
+namespace Calo.Blog.Common.Y.EventBus.Y.RabbitMQ
 {
-    public class ConsumerOptions
+    public interface IDistributHandler<TEto>:IEventHandle<TEto>
     {
-        public int PreFetchCount { get; set; } = 1;
-
     }
 }

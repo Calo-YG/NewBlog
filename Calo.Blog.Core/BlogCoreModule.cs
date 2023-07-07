@@ -1,5 +1,6 @@
 ﻿using Calo.Blog.Common;
 using Calo.Blog.Common.Y.EventBus;
+using Calo.Blog.Domain.Eto;
 using Calo.Blog.EntityCore;
 using Calo.Blog.EntityCore.DataBase.Entities;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +19,12 @@ namespace Calo.Blog.Domain
             {
                 p.AddEventHandle<User,TestHandle>();
             });
-            
+        }
+
+        public override void LaterInitApplication(InitApplicationContext context)
+        {
+            var provider = context.ServiceProvider;
+
         }
     }
 }

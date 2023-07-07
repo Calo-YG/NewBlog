@@ -1,4 +1,4 @@
-﻿namespace Calo.Blog.Common.Y.RabbitMQ
+﻿namespace Calo.Blog.Common.Y.EventBus.Y.RabbitMQ
 {
     public class RabbitMqOptions
     {

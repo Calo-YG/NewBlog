@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Builder;
 using Calo.Blog.Common.Middlewares;
 using Calo.Blog.Common.UserSession;
 using Calo.Blog.Common.Authorization.Authorize;
+using Calo.Blog.Common.Y.EventBus.Y.RabbitMQ;
 
 namespace Calo.Blog.Common
 {
@@ -21,6 +22,8 @@ namespace Calo.Blog.Common
     {
         public override void ConfigerService(ConfigerServiceContext context)
         {
+            var configuration = context.GetConfiguartion();
+
             //统一返回值处理工厂
             context.Services.AddScoped<IActionResultWrapFactory, FilterResultWrapFactory>();
             context.Services.AddSingleton<ITokenProvider, TokenProvider>();
@@ -45,6 +48,8 @@ namespace Calo.Blog.Common
             {
                 options.Filters.Add<ResultFilter>();
             });
+
+            context.Services.AddRabbitMQ(configuration);
 
             Configure<ExceptionOptions>(p =>
             {

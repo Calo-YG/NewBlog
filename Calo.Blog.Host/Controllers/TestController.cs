@@ -14,6 +14,7 @@ using System.Linq;
 using Calo.Blog.Common.Redis;
 using Calo.Blog.Common.UserSession;
 using Calo.Blog.Common.Y.EventBus;
+using Calo.Blog.Domain.Eto;
 
 namespace Calo.Blog.Host.Controllers
 {

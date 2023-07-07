@@ -123,8 +123,8 @@ namespace Calo.Blog.Host
             });
 
             context.Services.AddCors(
-    options => options.AddPolicy(
-        "YCores",
+              options => options.AddPolicy(
+              "YCores",
         builder => builder
             .WithOrigins(
                 // App:CorsOrigins in appsettings.json can contain more than one address separated by comma.
@@ -166,7 +166,7 @@ namespace Calo.Blog.Host
 
             app.UseSwagger();
 
-            app.UseWithLoginSwaggerUI(options =>
+            app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Calo API V1");
                 options.EnableDeepLinking();

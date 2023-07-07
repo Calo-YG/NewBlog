@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="WebApiClientCore" Version="2.0.4" />
+    <PackageReference Include="WebApiClientCore.Extensions.OAuths" Version="2.0.4" />
   </ItemGroup>
 
   <ItemGroup>

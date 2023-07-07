@@ -1,0 +1,42 @@
+﻿@page "/author"
+@inject ILoggerFactory _loggerFactory;
+<PageTitle>关于作者</PageTitle>
+
+<div>
+   <div>
+        <Avatar Src="/images/初代.jpg"></Avatar>
+   </div>
+    <div>
+        <Steps Size="small" Current=Current Percent="Percent">
+            <Step Title="Finished" />
+            <Step Title="In Progress" />
+            <Step Title="Waiting" />
+        </Steps>
+    </div>
+
+</div>
+
+@code {
+    /// <summary>
+    /// 当前状态
+    /// </summary>
+    private int Current = 1;
+    /// <summary>
+    /// 进度条
+    /// </summary>
+    private int Percent = 10;
+
+    private List<Step> Steps;
+
+    protected override void OnInitialized()
+    {
+        Steps = new List<Step>();
+        Steps.Add(new Step());
+    }
+
+    private void Stepchange()
+    {
+        var logger = _loggerFactory.CreateLogger<Step>();
+        logger.LogInformation("步骤触发切换");
+    }
+}

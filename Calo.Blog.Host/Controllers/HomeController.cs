@@ -1,5 +1,4 @@
-﻿using Calo.Blog.EntityCore;
-using Calo.Blog.EntityCore.DataBase.Entities;
+﻿using Calo.Blog.EntityCore.DataBase.Entities;
 using Calo.Blog.Extenions.Attributes;
 using Calo.Blog.Host.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -15,19 +14,16 @@ namespace Calo.Blog.Host.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IBaseRepository<User, long> userRespo;
-        private readonly ITestInject _testInject;
 
-        public HomeController(ILogger<HomeController> logger, IBaseRepository<User, long> baseRepository,ITestInject testInject)
+        public HomeController(ILogger<HomeController> logger, IBaseRepository<User, long> baseRepository)
         {
             _logger = logger;
-            userRespo = baseRepository;
-            _testInject = testInject;   
+            userRespo = baseRepository; 
         }
         public async Task<IActionResult> Index()
         {
              var count = await userRespo.AsQueryable().CountAsync();
             _logger.LogInformation("用户人数"+count);
-            _testInject.LogInfo();
             return View();
         }
         public IActionResult Privacy()

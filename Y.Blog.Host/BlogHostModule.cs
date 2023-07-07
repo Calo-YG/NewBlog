@@ -13,7 +13,7 @@ namespace Y.Blog.Host
             //base.ConfigerService(context);
             context.Services.AddRazorPages();
             context.Services.AddAntDesign();
-            context.Services.AddServerSideBlazor();
+            context.Services.AddServerSideBlazor(); 
             context.Services.AddSingleton<WeatherForecastService>();
         }
     }

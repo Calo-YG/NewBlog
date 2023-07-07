@@ -18,4 +18,9 @@
     <ProjectReference Include="..\FreeInterface\FreeInterface.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\" />
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>

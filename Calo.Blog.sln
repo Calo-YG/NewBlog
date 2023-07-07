@@ -17,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calo.Blog.Application", "Ca
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calo.Blog.Common", "Calo.Blog.Common\Calo.Blog.Common.csproj", "{D7C944ED-168A-46DD-8597-D335E14D13FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Y.Blog.Host", "Y.Blog.Host\Y.Blog.Host.csproj", "{07BEE9A3-74F6-4E23-A332-3AB0E75744E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Y.Blog.Host", "Y.Blog.Host\Y.Blog.Host.csproj", "{07BEE9A3-74F6-4E23-A332-3AB0E75744E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeInterface", "FreeInterface\FreeInterface.csproj", "{0EA9A156-D7E0-466F-A9A2-CEDB3237F62D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreeInterface", "FreeInterface\FreeInterface.csproj", "{0EA9A156-D7E0-466F-A9A2-CEDB3237F62D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

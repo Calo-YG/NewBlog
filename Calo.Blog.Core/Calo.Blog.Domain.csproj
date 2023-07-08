@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Calo.Blog.Common\Calo.Blog.Common.csproj" />
-    <ProjectReference Include="..\Calo.Blog.EntityCore\Calo.Blog.EntityCore.csproj" />
   </ItemGroup>
 
 </Project>

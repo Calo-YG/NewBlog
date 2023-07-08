@@ -1,4 +1,5 @@
-﻿using Calo.Blog.EntityCore.DadaSeed;
+﻿using Calo.Blog.Domain.Sqlsugarcore;
+using Calo.Blog.EntityCore.DadaSeed;
 using Calo.Blog.EntityCore.DataBase.Entities;
 using Calo.Blog.EntityCore.Entities;
 using Microsoft.Extensions.Configuration;
@@ -24,7 +25,7 @@ namespace Calo.Blog.EntityCore
                 p.ConnectionString = configuration.GetSection("App:ConnectionString:Default").Value;
                 p.DbType = SqlSugar.DbType.SqlServer;
                 p.IsAutoCloseConnection = true;
-                p.ConfigureExternalServices = TableAttributeConfig.AddContextColumsConfigure(); 
+                p.ConfigureExternalServices = TableAttributeConfig.AddContextColumsConfigure();
             });
             context.Services.AddSingleton<IEntityManager, EntityManager>();
             //添加数据库上下文AOP配置
@@ -43,6 +44,7 @@ namespace Calo.Blog.EntityCore
                 provider.AddEntity<User>();
                 provider.AddEntity<Role>();
                 provider.AddEntity<Permissions>();
+                provider.AddEntity<FreeInterface>();
             });
             //数据库建库建表配置
             Configure<DatabaseSetting>(p =>

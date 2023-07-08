@@ -11,6 +11,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Calo.Blog.Core\Calo.Blog.Domain.csproj" />
 		<ProjectReference Include="..\Y.SqlsugarRepository\Y.SqlsugarRepository.csproj" />
 	</ItemGroup>
 

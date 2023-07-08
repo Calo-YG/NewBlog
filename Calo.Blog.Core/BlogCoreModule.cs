@@ -1,6 +1,5 @@
 ﻿using Calo.Blog.Common;
 using Calo.Blog.Common.Y.EventBus;
-using Calo.Blog.Domain.Eto;
 using Calo.Blog.EntityCore;
 using Calo.Blog.EntityCore.DataBase.Entities;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,15 +8,15 @@ using Y.Module.Modules;
 
 namespace Calo.Blog.Domain
 {
-    [DependOn(typeof(SqlSugarEnityCoreModule), typeof(CommonModule))]
-    public class BlogCoreModule:YModule
+    [DependOn(typeof(CommonModule))]
+    public class BlogCoreModule : YModule
     {
         public override void ConfigerService(ConfigerServiceContext context)
         {
             context.Services.AddSingleton<IEventBus, EventBus>();
             context.Services.AddEventHandle(p =>
             {
-                p.AddEventHandle<User,TestHandle>();
+                p.AddEventHandle<User, TestHandle>();
             });
         }
 

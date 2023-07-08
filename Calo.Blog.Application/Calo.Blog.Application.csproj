@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Calo.Blog.Core\Calo.Blog.Domain.csproj" />
+    <ProjectReference Include="..\Calo.Blog.EntityCore\Calo.Blog.EntityCore.csproj" />
   </ItemGroup>
 
 </Project>

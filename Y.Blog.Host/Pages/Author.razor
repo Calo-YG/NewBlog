@@ -1,5 +1,7 @@
 ﻿@page "/author"
 @inject ILoggerFactory _loggerFactory;
+@using Y.Blog.Host.Data;
+
 <PageTitle>关于作者</PageTitle>
 
 <div>
@@ -29,27 +31,31 @@
         往左往右、往左往右、如此而已
     </DescriptionsItem>
 </Descriptions>
+</div>
 <div class="box">
-<Collapse DefaultActiveKey="@(new[]{"1"})" Bordered="false">
-    <Panel Header="看过的书" Key="1">
-        <p></p>
-    </Panel>
-    <Panel Header="功能开发" Key="3">
-        @if (Steps.Any())
+        @if (Books.Any())
         {
-            <Steps Size="small" Current=Current Percent="Percent">
-                @foreach(var item in Steps)
-                {
-                    <Step Title="@item.Title"></Step>
-                }
-            </Steps>
+            <AntList DataSource="@Books" TItem="LikeBook">
+                <ListItem>
+                    <ListItemMeta Description="@context.Description">
+                        <TitleTemplate>
+                            <span>@context.Author</span> <span>@context.Name</span>
+                        </TitleTemplate>
+                    </ListItemMeta>
+                </ListItem>
+            </AntList>
+
         }
-    </Panel>
-</Collapse>
+</div>
+<div class="box">
+        <Steps Size="small" Current=Current Percent="Percent">
+            <Step Title="完成接口列表开发" />
+            <Step Title="登录注册-博客功能开发" />
+            <Step Title="推荐功能开发" />
+        </Steps>
 </div>
 </div>
 
-</div>
 
 @code {
     /// <summary>
@@ -61,30 +67,43 @@
     /// </summary>
     private int Percent = 10;
     /// <summary>
-    /// 步骤条
+    /// 书籍
     /// </summary>
-    private List<Step> Steps;
+    private List<LikeBook> Books;
 
     protected override void OnInitialized()
     {
-        Steps = new List<Step>();
-        Steps.Add(new Step
-        {
-            Title="完成接口列表开发",
-        });
-        Steps.Add(new Step
-        {
-            Title = "登录注册-博客功能开发"
-        });
-        Steps.Add(new Step
-        {
-            Title = "推荐功能开发"
-        });
+        InitBooks();
     }
 
     private void Stepchange()
     {
         var logger = _loggerFactory.CreateLogger<Step>();
         logger.LogInformation("步骤触发切换");
+    }
+
+    private void InitBooks()
+    {
+        Books = new List<LikeBook>();
+        Books.Add(new LikeBook
+        {
+            Author="王小波",
+            Name = "黄金时代"
+        });
+        Books.Add(new LikeBook
+        {
+            Author = "村上春树",
+            Name = "挪威的森林"
+        });
+        Books.Add(new LikeBook
+        {
+            Author = "张爱玲",
+            Name = "小团圆"
+        });
+        Books.Add(new LikeBook
+        {
+            Author = "韩寒",
+            Name = "1988：我想和这个世界谈谈"
+        });
     }
 }

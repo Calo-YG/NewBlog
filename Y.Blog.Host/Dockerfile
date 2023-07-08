@@ -5,14 +5,14 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["../Y.Blog.Host/Y.Blog.Host.csproj", "Y.Blog.Host/"]
-COPY ["../Calo.Blog.Application/Calo.Blog.Application.csproj", "Calo.Blog.Application/"]
-COPY ["../Calo.Blog.Core/Calo.Blog.Domain.csproj", "Calo.Blog.Core/"]
-COPY ["../Calo.Blog.Common/Calo.Blog.Common.csproj", "Calo.Blog.Common/"]
-COPY ["../Y.Module/Y.Module.csproj", "Y.Module/"]
-COPY ["../Y.SqlsugarRepository/Y.SqlsugarRepository.csproj", "Y.SqlsugarRepository/"]
-COPY ["../Calo.Blog.EntityCore/Calo.Blog.EntityCore.csproj", "Calo.Blog.EntityCore/"]
-COPY ["../FreeInterface/FreeInterface.csproj", "FreeInterface/"]
+COPY ["./Y.Blog.Host/Y.Blog.Host.csproj", "Y.Blog.Host/"]
+COPY ["./Calo.Blog.Application/Calo.Blog.Application.csproj", "Calo.Blog.Application/"]
+COPY ["./Calo.Blog.Core/Calo.Blog.Domain.csproj", "Calo.Blog.Core/"]
+COPY ["./Calo.Blog.Common/Calo.Blog.Common.csproj", "Calo.Blog.Common/"]
+COPY ["./Y.Module/Y.Module.csproj", "Y.Module/"]
+COPY ["./Y.SqlsugarRepository/Y.SqlsugarRepository.csproj", "Y.SqlsugarRepository/"]
+COPY ["./Calo.Blog.EntityCore/Calo.Blog.EntityCore.csproj", "Calo.Blog.EntityCore/"]
+COPY ["./FreeInterface/FreeInterface.csproj", "FreeInterface/"]
 RUN dotnet restore "Y.Blog.Host/Y.Blog.Host.csproj"
 COPY . .
 WORKDIR "/src/Y.Blog.Host"

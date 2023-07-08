@@ -1,22 +1,56 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
 
 @*<PageTitle>灰色的西北平原</PageTitle>*@
 
-<div class="page flamingo">
+<div class="page">
     <main>
-<Layout>
-@*    <Header Style="position: fixed; z-index: 1; width: 100%; ">
-        <div></div>
-    </Header>*@
-    <Content  Style="padding:0 50px; margin-top: 18px; ">
-        <div style="padding: 24px; min-height: 380px ">
+        <div style="padding: 5px; min-height: 380px ">
             @Body
         </div>
-    </Content>
-    <Footer Style="text-align: center;">Y.Blog @Year Created by WYG</Footer>
-</Layout>
+            <footer class="footer wow fadeInUp" id="contact">
+        <div class="footer-top">
+            <div class="container">
+                <GridRow>
+                    <GridCol Sm="6" Md="4" Xl="12">
+                            <div class="single-widget about">
+                            <div class="footer-logo">
+                                <h2>布吉岛</h2>
+                            </div>
+                            <p>世间所有的不切实际都关于你</p>
+                           <Button  Type="@ButtonType.Primary" Size="@ButtonSize.Default" @onclick="Author">关于作者</Button> 
+                        </div>
+                    </GridCol>
+                    <GridCol Sm="6" Md="4" Xl="12">
+                        <div class="single-widget">
+                            <h2>相关链接</h2>
+                            <ul class="social-icon">
+                                <li class="active"><a href="https://github.com/Calo-YG"><i class="fa fa-book"></i>Github</a></li>
+                                <li class="active"><a href="https://www.cnblogs.com/lonely-wen/"><i class="fa fa-comments"></i>博客园</a></li>
+                                <li class="active"><a href="https://gitee.com/wen-yaoguang"><i class="fa fa-share"></i>Gitee</a></li>
+                            </ul>                   
+                        </div>
+                    </GridCol>
+                </GridRow>
+            </div>
+        </div>
+        <div class="copyright">
+            <div class="container">
+                <GridRow>
+                    <GridCol Sm="12" Md="8" Xl="24">                    
+                        <p style="text-align:center">Create by 布吉岛 @Year Not Forget Forever </p>
+                    </GridCol>
+                </GridRow>
+            </div>
+        </div>  
+    </footer>
     </main>
 </div>
 @code{
     private int Year = DateTime.Now.Year;
+
+    private void Author()
+	{
+		NavigationManager.NavigateTo("author");
+	}
 }

@@ -1,9 +1,10 @@
 ﻿using System;
 using Y.SqlsugarRepository.EntityAttribute;
+using Y.SqlsugarRepository.EntityBase;
 
 namespace Calo.Blog.Domain.Sqlsugarcore
 {
-    public class FreeInterface
+    public class FreeInterface:Entity<Guid>
     {
         [PrimaryKey]
         public virtual Guid Id { get; set; }

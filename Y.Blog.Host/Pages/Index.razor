@@ -1,16 +1,28 @@
 ﻿@page "/"
+@using FreeInterface.VvhApi;
 @inject NavigationManager NavigationManager
+@inject IVvhHttpApi _VvhHttpApi
 
 <PageTitle>首页</PageTitle>
 
 <div>
 	<Button Type="@ButtonType.Link" @onclick="Author">关于作者</Button>
+    <span>@Sentence</span>
 </div>
 
 @code{
+
+	private string Sentence;
+
+	protected async override Task OnInitializedAsync()
+	{
+		Sentence = await _VvhHttpApi.Sentence();
+
+		await base.OnInitializedAsync();
+	}
+
 	private void Author()
 	{
 		NavigationManager.NavigateTo("author");
 	}
-
 }

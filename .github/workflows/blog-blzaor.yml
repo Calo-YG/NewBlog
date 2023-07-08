@@ -30,7 +30,7 @@ jobs:
         run: |
           image_name="${{ secrets.USERNAME }}/blog-blazor"
           tag_name="${{secrets.BLAZORTAGNAME}}"
-          sudo docker tag  $image_name:latest registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:$tag_name
+          sudo docker tag  $image_name:$tag_name registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:$tag_name
           sudo docker push registry.cn-hongkong.aliyuncs.com/sdwyg/blogo:$tag_name
   
   deploy:
@@ -42,7 +42,7 @@ jobs:
           sudo docker login --username=${{ secrets.ALINAME }} --password=${{ secrets.ALIPASSWORD }}  registry.cn-hongkong.aliyuncs.com
       - name: check container
         run: |
-          container_name="newblog"
+          container_name="blog-blazor"
           tag_name="${{secrets.BLAZORTAGNAME}}"
           if docker ps -a | grep $container_name > /dev/null ; then
             echo "Docker container already exists, removing..."        
@@ -60,6 +60,6 @@ jobs:
       
       - name: Run Docker container
         run: |
-          container_name="newblog"
+          container_name="blog-blazor"
           tag_name="${{secrets.BLAZORTAGNAME}}"
           sudo docker run --name $container_name -p ${{secrets.BLAZORPORT}}:80 -d ${{ secrets.ALIREPOSITORY }}:$tag_name

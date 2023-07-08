@@ -6,13 +6,13 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["../Calo.Blog.Host/Calo.Blog.Host.csproj", "Calo.Blog.Host/"]
-COPY ["../Calo.Blog.Application/Calo.Blog.Application.csproj", "Calo.Blog.Application/"]
-COPY ["../Calo.Blog.Core/Calo.Blog.Domain.csproj", "Calo.Blog.Core/"]
-COPY ["../Calo.Blog.Common/Calo.Blog.Common.csproj", "Calo.Blog.Common/"]
-COPY ["../Y.Module/Y.Module.csproj", "Y.Module/"]
-COPY ["../Y.SqlsugarRepository/Y.SqlsugarRepository.csproj", "Y.SqlsugarRepository/"]
-COPY ["../Calo.Blog.EntityCore/Calo.Blog.EntityCore.csproj", "Calo.Blog.EntityCore/"]
+COPY ["./Calo.Blog.Host/Calo.Blog.Host.csproj", "Calo.Blog.Host/"]
+COPY ["./Calo.Blog.Application/Calo.Blog.Application.csproj", "Calo.Blog.Application/"]
+COPY ["./Calo.Blog.Core/Calo.Blog.Domain.csproj", "Calo.Blog.Core/"]
+COPY ["./Calo.Blog.Common/Calo.Blog.Common.csproj", "Calo.Blog.Common/"]
+COPY ["./Y.Module/Y.Module.csproj", "Y.Module/"]
+COPY ["./Y.SqlsugarRepository/Y.SqlsugarRepository.csproj", "Y.SqlsugarRepository/"]
+COPY ["./Calo.Blog.EntityCore/Calo.Blog.EntityCore.csproj", "Calo.Blog.EntityCore/"]
 RUN dotnet restore "Calo.Blog.Host/Calo.Blog.Host.csproj"
 COPY . .
 WORKDIR "/src/Calo.Blog.Host"

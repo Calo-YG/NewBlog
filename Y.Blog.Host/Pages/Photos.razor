@@ -7,10 +7,12 @@
 <div>
     @if(Photo?.Any() ?? false)
     {
-        foreach(var item in Photo)
+        <ImagePreviewGroup>
+        @foreach(var item in Photo)
         {
-            <Image Width="400px" Src="@item"></Image>
+                <Image Width="400px" Src="@item" Preview="true" PreviewVisible="true" PreviewSrc="@item"></Image>
         }
+        </ImagePreviewGroup>
     }
 </div>
 

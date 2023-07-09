@@ -15,6 +15,7 @@ namespace Y.Blog.Host
             context.Services.AddAntDesign();
             context.Services.AddServerSideBlazor(); 
             context.Services.AddSingleton<WeatherForecastService>();
+            context.Services.AddScoped<LocalPhotoService>();
         }
     }
 }

@@ -1,0 +1,28 @@
+﻿@page "/photo"
+@using Y.Blog.Host.Data;
+@inject LocalPhotoService _localPhotoService;
+
+<PageTitle>日常</PageTitle>
+
+<div>
+    @if(Photo?.Any() ?? false)
+    {
+        foreach(var item in Photo)
+        {
+            <Image Width="400px" Src="@item"></Image>
+        }
+    }
+</div>
+
+@code {
+
+    private List<string> Photo;
+
+    protected async override Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        Photo = _localPhotoService.Photos();
+
+    }
+}

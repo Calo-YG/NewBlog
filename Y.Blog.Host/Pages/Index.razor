@@ -3,47 +3,38 @@
 
 <PageTitle>首页</PageTitle>
 
-<div style="height:80%">
-@*	<Button Type="@ButtonType.Link" @onclick="Author">关于作者</Button>
-    <span>@Sentence</span>*@
-
-@*    <div id="menu" class="hover_animation menu_open" data-mark="false">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>*@
-    <div id="navgation" class="navgation navgation_close">
-        <ul class="point">
-            <li><a href="#">首页</a></li>
-            <li><a href="article.html">博客</a></li>
-            <li><a href="article.html">关于作者</a></li>
-            <li><a href="message.html">留言</a></li>
-        </ul>
-        <div class="logo"><a>Mr.Yss</a></div>
-    </div>
-    <div class="section">
+    <div class="section" id="section1">
         <div class="fp-tablecell">
             <div class="page1">
                 <div class="nav wow zoomIn" data-wow-duration="2s">
-                    <p>@Sentence</p>
-                    <Button Type="@ButtonType.Primary" Size="@ButtonType.Default" style="margin-top: 20px" >Enter Blog</Button>                    
+                    <div class="intention">
+                        做这个的初衷就是人活那么久总得，给自己留点什么<br />
+                        @Sentence<br />
+                        <Button Type="@ButtonType.Primary" Size="@ButtonType.Default" style="margin-top: 20px"  @onclick="Author">关于作者</Button>  
+
+                        <Button Type="@ButtonType.Primary" Size="@ButtonType.Default" style="margin-top: 20px"  @onclick="Photo">日常拍照</Button>  
+                    </div>                  
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 @code{
 
-	private string Sentence="世间所有的不切实际都关于你";
+    private string Sentence="世间所有的不切实际都关于你";
 
-	protected async override Task OnInitializedAsync()
-	{
-		await base.OnInitializedAsync();
-	}
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
 
-	private void Author()
-	{
-		NavigationManager.NavigateTo("author");
-	}
+    private void Author()
+    {
+        NavigationManager.NavigateTo("author");
+    }
+
+    private void Photo()
+    {
+        NavigationManager.NavigateTo("photo");
+    }
 }

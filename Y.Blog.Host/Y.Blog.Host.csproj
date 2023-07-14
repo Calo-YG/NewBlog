@@ -16,7 +16,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Calo.Blog.Application\Calo.Blog.Application.csproj" />
 		<ProjectReference Include="..\FreeInterface\FreeInterface.csproj" />
-		<ProjectReference Include="..\Y.Module\Y.Module.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

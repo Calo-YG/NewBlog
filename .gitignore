@@ -359,3 +359,9 @@ healthchecksdb
 /Calo.Blog.Core/bin/Debug/net6.0
 
 
+/Calo.Blog.EntityCore/bin/Debug/net6.0/Calo.Blog.EntityCore.deps.json
+/Calo.Blog.EntityCore/bin/Debug/net6.0/Calo.Blog.EntityCore.dll
+/Calo.Blog.EntityCore/bin/Debug/net6.0/Calo.Blog.EntityCore.pdb
+/Calo.Blog.Core/bin/Debug/net6.0/Calo.Blog.Domain.deps.json
+/Calo.Blog.Core/bin/Debug/net6.0/Calo.Blog.Domain.dll
+/Calo.Blog.Core/bin/Debug/net6.0/Calo.Blog.Domain.pdb

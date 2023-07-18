@@ -28,6 +28,7 @@ namespace Y.Module.DependencyInjection
                 {
                     AddToInjection(services, type, injectionAttribute.InjectionEnum);
                 }
+                return;
             }
             if (injectionAttribute != null && !services.IsExists(injectionAttribute.InterfaceType))
             {
@@ -49,18 +50,33 @@ namespace Y.Module.DependencyInjection
                 services.AddTransient(type);
             }
         }
-        private void AddIoInjectionWithInterface(IServiceCollection services, Type type, Type interfaeType, InjectionEnum injectionEnum)
+        private void AddIoInjectionWithInterface(IServiceCollection services, Type type, Type? interfaeType, InjectionEnum injectionEnum)
         {
             if (injectionEnum == InjectionEnum.Singleton)
             {
+                if(interfaeType is null)
+                {
+                    services.AddSingleton(type);
+					return;
+				}
                 services.AddSingleton(interfaeType, type);
             }
             if (injectionEnum == InjectionEnum.Scoped)
             {
+                if(interfaeType is null)
+                {
+                    services.AddScoped(type);
+                    return;
+                }
                 services.AddScoped(interfaeType, type);
             }
             if (injectionEnum == InjectionEnum.Transient)
             {
+                if(interfaeType is null)
+                {
+                    services.AddTransient(type);
+                    return;
+                }
                 services.AddTransient(interfaeType, type);
             }
         }

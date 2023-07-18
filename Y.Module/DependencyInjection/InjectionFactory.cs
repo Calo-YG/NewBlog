@@ -34,7 +34,6 @@ namespace Y.Module.DependencyInjection
                 AddIoInjectionWithInterface(services, type, injectionAttribute.InterfaceType, injectionAttribute.InjectionEnum);
             }
         }
-
         private void AddToInjection(IServiceCollection services, Type type, InjectionEnum injectionEnum)
         {
             if (injectionEnum == InjectionEnum.Singleton)
@@ -50,7 +49,6 @@ namespace Y.Module.DependencyInjection
                 services.AddTransient(type);
             }
         }
-
         private void AddIoInjectionWithInterface(IServiceCollection services, Type type, Type interfaeType, InjectionEnum injectionEnum)
         {
             if (injectionEnum == InjectionEnum.Singleton)

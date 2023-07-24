@@ -45,12 +45,15 @@ namespace Calo.Blog.EntityCore
                 provider.AddEntity<Role>();
                 provider.AddEntity<Permissions>();
                 provider.AddEntity<FreeInterface>();
+                provider.AddEntity<ResourceOwner>();
+                provider.AddEntity<SourceBucket>();
+                provider.AddEntity<Resource>();
             });
             //数据库建库建表配置
             Configure<DatabaseSetting>(p =>
             {
                 //跳过建库建表
-                p.SikpBuildDatabase = true;
+                p.SikpBuildDatabase = false;
             });
             context.Services.AddAssembly(assembly: Assembly.GetExecutingAssembly());
         }

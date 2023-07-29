@@ -28,7 +28,7 @@ namespace Calo.Blog.Domain.Sqlsugarcore
         /// <summary>
         /// 存储桶名称
         /// </summary>
-        [StringAtrribute(50)]
+        [StringAtrribute(50)]//字符串特性解决中文乱码问题（nvchar）
         public string Nsme { get; set; }
 
         [Navigate(NavigateType.OneToMany, nameof(Resource.Id))]//BookA表中的studenId

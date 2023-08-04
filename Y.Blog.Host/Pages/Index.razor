@@ -21,6 +21,8 @@
                         <Button Type="@ButtonType.Primary" Size="@ButtonType.Default" style="margin-top: 20px"  @onclick="Author">关于作者</Button>  
 
                         <Button Type="@ButtonType.Primary" Size="@ButtonType.Default" style="margin-top: 20px"  @onclick="Photo">日常拍照</Button>  
+
+                        <Button Type="@ButtonType.Primary" Size="@ButtonType.Default" style="margin-top: 20px"  @onclick="GoMusic">网易云首页</Button> 
                     </div>                  
                 </div>
             </div>
@@ -29,7 +31,7 @@
 
 @code{
 
-    private string Sentence="世间所有的不切实际都关于你";
+    private string Sentence="夏日夜空繁星般的遐想";
 
     protected async override Task OnInitializedAsync()
     {
@@ -44,5 +46,10 @@
     private void Photo()
     {
         NavigationManager.NavigateTo("photo");
+    }
+
+    private void GoMusic()
+    {
+        NavigationManager.NavigateTo("music/login");
     }
 }

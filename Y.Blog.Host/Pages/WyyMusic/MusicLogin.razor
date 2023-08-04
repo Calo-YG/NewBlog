@@ -1,0 +1,43 @@
+﻿@page "/music/login"
+@using FreeInterface.wyymusic;
+@inject IWyyMusicHttpApi _wyyMusicHttpApi;
+@inject IMessageService _message;
+
+<div class="loginbox">
+    <GridRow>
+        
+        <GridCol Span="12">
+
+
+
+        </GridCol>
+
+        <GridCol Span="12">
+            <div>二维码扫码登录</div>
+            @if (!string.IsNullOrEmpty(basecode))
+            {
+                <img src="@basecode"/>
+            }
+        </GridCol>
+    </GridRow>
+</div>
+
+@code {
+    private string key;
+
+    private string basecode;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await _message.Success("本站承诺不会保存网易用户的任何信息!!!",3);
+
+        var keymodel = await _wyyMusicHttpApi.GetWyyKey();
+
+        key = keymodel.Data.Unikey;
+
+        var codemodel = await _wyyMusicHttpApi.GetQrCode(key);
+
+        basecode = codemodel.Data.QrImg;
+    }
+}

@@ -5,7 +5,7 @@
         /// <summary>
         /// 状态码
         /// </summary>
-        public string Code { get; set; }
+        public int Code { get; set; }
         /// <summary>
         /// key
         /// </summary>

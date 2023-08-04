@@ -4,6 +4,6 @@
     {
         public string QrUrl { get; set; }
 
-        public string QrImgBase64 { get; set; }
+        public string QrImg { get; set; }
     }
 }

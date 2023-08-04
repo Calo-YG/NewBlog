@@ -7,16 +7,18 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="wyymusic\Dtos\**" />
+	  <EmbeddedResource Remove="wyymusic\Dtos\**" />
+	  <None Remove="wyymusic\Dtos\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="WebApiClientCore" Version="2.0.4" />
 		<PackageReference Include="WebApiClientCore.Extensions.OAuths" Version="2.0.4" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\Y.Module\Y.Module.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="wyymusic\Dtos\" />
 	</ItemGroup>
 
 </Project>

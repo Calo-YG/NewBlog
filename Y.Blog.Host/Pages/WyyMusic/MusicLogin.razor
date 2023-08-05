@@ -2,10 +2,11 @@
 
 @using FreeInterface.wyymusic;
 @using Models;
+@using Data.DataShared;
 
 @inject IWyyMusicHttpApi _wyyMusicHttpApi;
 @inject IMessageService _message;
-@inject NotificationService _notice;
+@inject ProtectedSessionStorage _protectedSessionStore;
 
 <div class="loginbox">
 
@@ -63,22 +64,71 @@
 
     private PhoneLogin phoneLogin = new PhoneLogin();
 
-    private NotificationConfig noticConfig = new NotificationConfig();
+    private bool qrcodeLoginSuccess = false;
+
+    private CountdownEvent countdownEvent = new CountdownEvent(1);
+
+    private long? UserId = null;
+
+    private DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
+
+    private Thread CheckQrcodeTheard;
+
+    private Thread CheckStatusTheard;
 
     protected override async Task OnInitializedAsync()
     {
-        noticConfig.Duration = 2.5;
+        //生成二维码
         await GenrateQrCode();
-        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        //状态管理
+        await SetSesstionStrorage();
+
+        CheckQrcodeTheard = new Thread(async () =>
+        {
+            await CheckQrCodeSuccess();
+        });
+        CheckStatusTheard = new Thread(async () =>
+        {
+            await CheckStatus();
+        });
+
+        CheckQrcodeTheard.Start();
+        CheckStatusTheard.Start();
+    }
+
+    /// <summary>
+    /// 获取设置sessionStorage
+    /// </summary>
+    /// <returns></returns>
+    private async Task SetSesstionStrorage()
+    {
+        var result =await _protectedSessionStore.GetAsync<CurrentUserHubInfo>(WebSiteConsts.HubClientId);
+
+        CurrentUserHubInfo? info = result.Value ?? null;
+
+        if(info is null)
+        {
+            info = new CurrentUserHubInfo();
+
+            await _protectedSessionStore.SetAsync(WebSiteConsts.HubClientId, info);
+        }
     }
 
     private async Task GenrateQrCode()
     {
-        var keymodel = await _wyyMusicHttpApi.GetWyyKey();
+        var timestamp = (long)(DateTime.Now - startTime).TotalSeconds;
+
+        var keymodel = await _wyyMusicHttpApi.GetWyyKey(timestamp);
 
         key = keymodel.Data.Unikey;
 
-        var codemodel = await _wyyMusicHttpApi.GetQrCode(key);
+        var qrcodeTimestamp = (long)(DateTime.Now - startTime).TotalSeconds;
+
+        var codemodel = await _wyyMusicHttpApi.GetQrCode(key,qrcodeTimestamp);
 
         basecode = codemodel.Data.QrImg;
     }
@@ -118,5 +168,44 @@
         }
 
         await _message.Success("验证码发送成功，请注意查收，10分钟内有效",3);
+    }
+
+    private async Task CheckQrCodeSuccess()
+    {
+        var timestamp = (long)(DateTime.Now - startTime).TotalSeconds;
+
+        var result = await _wyyMusicHttpApi.CheckQrCode(key,timestamp);
+
+        while (result.Code != 803)
+        {
+            ///间隔一秒轮询
+            await Task.Delay(2000);
+
+            timestamp = (long)(DateTime.Now - startTime).TotalSeconds;
+
+            result = await _wyyMusicHttpApi.CheckQrCode(key,timestamp);
+        }
+
+        if (countdownEvent.CurrentCount >0)
+        {
+            countdownEvent.Signal(countdownEvent.CurrentCount);
+        }
+    }
+
+    private async Task CheckStatus()
+    {
+        //阻塞线程
+        countdownEvent.Wait();
+
+        DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
+
+        var timestamp = (long)(DateTime.Now - startTime).TotalSeconds;
+
+        var result = await _wyyMusicHttpApi.CheckStatus(timestamp);
+
+        if (result.Code == 200)
+        {
+            await _message.Success($"扫码成功,用户id{result.Data.Profile.UserId}", 3000);
+        }
     }
 }

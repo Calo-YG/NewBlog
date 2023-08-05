@@ -1,5 +1,7 @@
 using Y.Blog.Host;
 using Y.Module.Extensions;
+using Microsoft.AspNetCore.ResponseCompression;
+using Y.Blog.Host.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -17,14 +19,20 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseResponseCompression();
+
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.MapHub<QrCodeCheckHubs>("/QrCodehub");
+
 app.MapBlazorHub();
 
 app.MapFallbackToPage("/_Host");
+
+
 
 app.Run();

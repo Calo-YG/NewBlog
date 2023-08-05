@@ -38,7 +38,7 @@
         /// <summary>
         /// 登录状态
         /// </summary>
-        public const string LoginStatu = "login/status";
+        public const string LoginStatus = "login/status";
         /// <summary>
         /// 退出登录
         /// </summary>

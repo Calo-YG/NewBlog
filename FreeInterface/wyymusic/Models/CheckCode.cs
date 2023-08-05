@@ -6,6 +6,6 @@
 
         public string Message { get; set; }
 
-        public string Cokkie { get; set; }
+        public string Cookie { get; set; }
     }
 }

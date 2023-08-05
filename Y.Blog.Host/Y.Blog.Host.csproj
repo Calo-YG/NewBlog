@@ -11,6 +11,7 @@
 	<ItemGroup>
 		<PackageReference Include="AntDesign" Version="0.15.4" />
 		<PackageReference Include="Blazored.TextEditor" Version="1.1.0" />
+		<PackageReference Include="Masuit.Tools.Core" Version="2.6.4" />
 	</ItemGroup>
 
 	<ItemGroup>

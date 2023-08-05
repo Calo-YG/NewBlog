@@ -12,9 +12,15 @@ namespace FreeInterface.wyymusic
 
 		[HttpGet(WyyConsts.QrCode)]
 		public Task<WyyResponse<QrCode>> GetQrCode (string key,bool qrimg=true);
-
+		/// <summary>
+		/// 发送手机验证码
+		/// </summary>
+		/// <param name="phone"></param>
+		/// <returns></returns>
+		[HttpGet(WyyConsts.PhoneCode)]
+		public Task<WyyResponse<bool>> SentCode(string phone);
 		[HttpGet(WyyConsts.CheckCode)]
-		public Task<CheckCode> ChckeCode(string key);
+		public Task<PhoneLoginCode> CheckPhoneLogin(string phone, string code);
 
 	}
 }

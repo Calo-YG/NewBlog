@@ -1,23 +1,57 @@
 ﻿@page "/music/login"
+
 @using FreeInterface.wyymusic;
+@using Models;
+
 @inject IWyyMusicHttpApi _wyyMusicHttpApi;
 @inject IMessageService _message;
+@inject NotificationService _notice;
 
 <div class="loginbox">
-    <GridRow>
-        
+
+    <div class="messagebox">
+        <Alert Type="@AlertType.Success"
+               Message="本站承诺不会保存网易用户的任何信息!!!"
+               ShowIcon="true"
+               Closable />
+    </div>
+    <GridRow> 
         <GridCol Span="12">
 
-
+            <div class="formbox">
+                <Form Model="@phoneLogin"
+                      OnFinish="LoginByPhone"
+                      OnFinishFailed="OnFinishFailed"
+                      ValidateMode="@FormValidateMode.Complex"
+                      LabelColSpan="8"
+                      WrapperColSpan="16">
+                    <FormItem>
+                        <Input @bind-Value="@context.Phone" />
+                    </FormItem>
+                    <FormItem>
+                        <Input @bind-Value="@context.CheckCode" />
+                    </FormItem>
+                    <FormItem WrapperColOffset="8" WrapperColSpan="16">
+                        <Button Type="@ButtonType.Primary" HtmlType="submit">
+                            登录
+                        </Button>
+                        <Button Type="@ButtonType.Primary" OnClick="SentCode">
+                            发送验证码
+                        </Button>
+                    </FormItem>
+                </Form>
+            </div>
 
         </GridCol>
 
         <GridCol Span="12">
-            <div>二维码扫码登录</div>
-            @if (!string.IsNullOrEmpty(basecode))
-            {
-                <img src="@basecode"/>
-            }
+            <div class="qrcodebox">
+                <div>二维码扫码登录</div>
+                @if (!string.IsNullOrEmpty(basecode))
+                {
+                    <img src="@basecode" />
+                }
+            </div>
         </GridCol>
     </GridRow>
 </div>
@@ -25,13 +59,21 @@
 @code {
     private string key;
 
-    private string basecode;
+    private string basecode;    
 
+    private PhoneLogin phoneLogin = new PhoneLogin();
+
+    private NotificationConfig noticConfig = new NotificationConfig();
 
     protected override async Task OnInitializedAsync()
     {
-        await _message.Success("本站承诺不会保存网易用户的任何信息!!!",3);
+        noticConfig.Duration = 2.5;
+        await GenrateQrCode();
+        await base.OnInitializedAsync();
+    }
 
+    private async Task GenrateQrCode()
+    {
         var keymodel = await _wyyMusicHttpApi.GetWyyKey();
 
         key = keymodel.Data.Unikey;
@@ -39,5 +81,42 @@
         var codemodel = await _wyyMusicHttpApi.GetQrCode(key);
 
         basecode = codemodel.Data.QrImg;
+    }
+
+    private async Task LoginByPhone()
+    {
+        var response = await _wyyMusicHttpApi.CheckPhoneLogin(phoneLogin.Phone, phoneLogin.CheckCode);
+
+        if (!response.Data)
+        {
+            await _message.Error(response.Message ?? "");
+            return;
+        }
+
+        await _message.Success("二维码验证成功");
+    }
+
+    private async Task OnFinishFailed()
+    {
+        await _message.Error("参数校验失败");
+    }
+
+    private async Task SentCode()
+    {
+        if (string.IsNullOrEmpty(phoneLogin.Phone))
+        {
+            await _message.Warning("请先填写手机号发送验证码登录");
+            return;
+        }
+
+        var sent = await _wyyMusicHttpApi.SentCode(phoneLogin.Phone);
+
+        if (!sent.Data)
+        {
+            await _message.Error("验证码发送失败,我也不知道什么问题");
+            return;
+        }
+
+        await _message.Success("验证码发送成功，请注意查收，10分钟内有效",3);
     }
 }

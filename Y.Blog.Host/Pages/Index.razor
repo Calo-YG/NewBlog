@@ -1,28 +1,18 @@
 ﻿@page "/"
-@inject NavigationManager NavigationManager
+@inject NavigationManager NavigationManager;
 
 <PageTitle>首页</PageTitle>
-
     <div class="section" id="section1">
         <div class="fp-tablecell">
             <div class="page1">
                 <div class="nav wow zoomIn" data-wow-duration="2s">
                     <div class="intention">
-                       <div >
-                        那一天我二十一岁，在我一生的黄金时代，我有好多奢望。<br />
-                        我想爱，想吃，还想在一瞬间变成天上半明半暗的云。<br />
-                        后来我才知道，生活是个缓慢受锤的过程，<br />
-                        人一天天老下去，奢望也一天天消失，最后变得像挨了锤的牛一样。<br />
-                        可是我二十一岁生日时没有预见到这一点。<br />
-                        我觉得自己会永远生猛下去，什么也锤不了我。   --王小波《黄金时代》<br />
-                        <br />
-                       </div>
                         @Sentence<br />
                         <Button Type="@ButtonType.Primary" Size="@ButtonType.Default" style="margin-top: 20px"  @onclick="Author">关于作者</Button>  
 
                         <Button Type="@ButtonType.Primary" Size="@ButtonType.Default" style="margin-top: 20px"  @onclick="Photo">日常拍照</Button>  
 
-                        <Button Type="@ButtonType.Primary" Size="@ButtonType.Default" style="margin-top: 20px"  @onclick="GoMusic">网易云首页</Button> 
+                        <Button Type="@ButtonType.Primary" Size="@ButtonType.Default" style="margin-top: 20px"  @onclick="GoMusic">网易云入口</Button> 
                     </div>                  
                 </div>
             </div>

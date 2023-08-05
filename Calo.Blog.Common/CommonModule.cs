@@ -15,6 +15,7 @@ using Calo.Blog.Common.Middlewares;
 using Calo.Blog.Common.UserSession;
 using Calo.Blog.Common.Authorization.Authorize;
 using Calo.Blog.Common.Y.EventBus.Y.RabbitMQ;
+using Microsoft.Extensions.Configuration;
 
 namespace Calo.Blog.Common
 {
@@ -38,7 +39,8 @@ namespace Calo.Blog.Common
             context.Services.AddSingleton<IAuthorizeManager, AuthorizeManager>();
 
             //使用CsRedis
-            var csredis = new CSRedis.CSRedisClient("124.71.15.19:6379,password=154511,defaultDatabase=1,ssl=false,writeBuffer=10240,poolsize=50,prefix=Y");
+            var redisSetting = configuration.GetSection("App:RedisSetting").Get<RedisSetting>();
+            var csredis = new CSRedis.CSRedisClient(redisSetting.Connstr);
             context.Services.AddSingleton<IDistributedCache>(new CSRedisCache(csredis));
             RedisHelper.Initialization(csredis);
 

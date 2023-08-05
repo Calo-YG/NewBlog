@@ -1,4 +1,19 @@
 ﻿.loginbox{
     width:100%;
     height:100vh;
+    margin-top:120px;
+}
+
+.qrcodebox{
+    margin:0px auto;
+    text-align:center;
+}
+.messagebox{
+    width:50%;
+    margin:0px auto;
+    margin-bottom:45px;
+}
+
+.formbox{
+    width:80%;
 }

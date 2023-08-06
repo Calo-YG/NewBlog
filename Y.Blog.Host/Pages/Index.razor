@@ -1,16 +1,21 @@
 ﻿@page "/"
 @inject NavigationManager NavigationManager;
 
-<PageTitle>首页</PageTitle>
     <div class="section">
-                    <div class="intention">
-                        @Sentence<br />
-                        <Button Type="@ButtonType.Primary" Size="@ButtonType.Default" style="margin-top: 20px"  @onclick="Author">关于作者</Button>  
+        <div class="ownerbox">
+            <div class="avatarbox">
+                <Avatar Size="240" Src="/images/avatar.jpeg"></Avatar>
+            </div>
+            <div class="namebox">FourEleven</div>
+        </div>
+       <div class="intention">
+        @Sentence<br />
+        <Button Type="@ButtonType.Primary" Size="@ButtonType.Default" style="margin-top: 20px"  @onclick="Author">关于作者</Button>  
 
-                        <Button Type="@ButtonType.Primary" Size="@ButtonType.Default" style="margin-top: 20px"  @onclick="Photo">图集</Button>  
+        <Button Type="@ButtonType.Primary" Size="@ButtonType.Default" style="margin-top: 20px"  @onclick="Photo">图集</Button>  
 
-                        <Button Type="@ButtonType.Primary" Size="@ButtonType.Default" style="margin-top: 20px"  @onclick="GoMusic">网易云入口</Button> 
-                    </div>   
+        <Button Type="@ButtonType.Primary" Size="@ButtonType.Default" style="margin-top: 20px"  @onclick="GoMusic">网易云入口</Button> 
+        </div>   
     </div>
 
 @code{

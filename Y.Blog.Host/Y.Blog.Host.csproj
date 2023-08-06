@@ -18,8 +18,4 @@
 		<ProjectReference Include="..\FreeInterface\FreeInterface.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="Components\" />
-	</ItemGroup>
-
 </Project>

@@ -1,16 +1,36 @@
 ﻿* {
     padding: 0;
     margin: 0;
-    background-color:aliceblue
+    background-color: whitesmoke;
 }
 
 .section{
     height:100vh;
 }
 .intention {
-    width:70%;
-    height:100vh;
+    width:50%;
     margin:0px auto;
     text-align:center;
 }
 
+.ownerbox {
+    margin-top: 125px;
+    margin-bottom: 25px;
+    width: 50%;
+    height: 225px;
+    margin: 0px auto;
+}
+
+.avatarbox {
+    height: 125px;
+    width:25%;
+}
+.namebox {
+    height: 125px;
+    text-align:center;
+    width: 55%;
+    line-height:35px;
+    font-size:55px;
+    color:black;
+    margin-left:25%;
+}

@@ -7,6 +7,7 @@
 @inject IWyyMusicHttpApi _wyyMusicHttpApi;
 @inject IMessageService _message;
 @inject ProtectedSessionStorage _protectedSessionStore;
+@inject NavigationManager NavigationManager;
 
 <div class="loginbox">
 
@@ -176,19 +177,21 @@
 
         var result = await _wyyMusicHttpApi.CheckQrCode(key,timestamp);
 
-        while (result.Code != 803)
+        var polling = true;
+
+        while (polling)
         {
-            ///间隔一秒轮询
-            await Task.Delay(2000);
+            await _message.Success($"{result.Message}",1);
 
             timestamp = (long)(DateTime.Now - startTime).TotalSeconds;
 
             result = await _wyyMusicHttpApi.CheckQrCode(key,timestamp);
-        }
 
-        if (countdownEvent.CurrentCount >0)
-        {
-            countdownEvent.Signal(countdownEvent.CurrentCount);
+            if (result.Code == 803 && countdownEvent.CurrentCount > 0)
+            {
+                polling = false;
+                countdownEvent.Signal(countdownEvent.CurrentCount);
+            }
         }
     }
 
@@ -206,6 +209,8 @@
         if (result.Code == 200)
         {
             await _message.Success($"扫码成功,用户id{result.Data.Profile.UserId}", 3000);
+
+            NavigationManager.NavigateTo("music/player");
         }
     }
 }

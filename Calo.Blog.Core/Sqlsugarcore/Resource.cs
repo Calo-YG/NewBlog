@@ -1,10 +1,4 @@
-﻿using SqlSugar;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Y.SqlsugarRepository.EntityAttribute;
+﻿using Y.SqlsugarRepository.EntityAttribute;
 using Y.SqlsugarRepository.EntityBase;
 
 namespace Calo.Blog.Domain.Sqlsugarcore
@@ -23,6 +17,10 @@ namespace Calo.Blog.Domain.Sqlsugarcore
         /// 资源拥有者iD
         /// </summary>
         public Guid OwnerId { get; set; }
+        /// <summary>
+        /// 分类id
+        /// </summary>
+        public Guid SourceTypeId { get; set; }    
         /// <summary>
         /// 资源url
         /// </summary>

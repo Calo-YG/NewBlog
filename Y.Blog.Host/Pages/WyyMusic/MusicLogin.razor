@@ -183,6 +183,8 @@
         {
             await _message.Success($"{result.Message}",1);
 
+            await Task.Delay(300);
+
             timestamp = (long)(DateTime.Now - startTime).TotalSeconds;
 
             result = await _wyyMusicHttpApi.CheckQrCode(key,timestamp);

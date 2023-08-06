@@ -47,7 +47,8 @@ namespace Calo.Blog.EntityCore
                 provider.AddEntity<FreeInterface>();
                 provider.AddEntity<ResourceOwner>();
                 provider.AddEntity<SourceBucket>();
-                provider.AddEntity<Resource>(); 
+                provider.AddEntity<Resource>();
+                provider.AddEntity<SourceType>();
             });
             //数据库建库建表配置
             Configure<DatabaseSetting>(p =>

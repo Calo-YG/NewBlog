@@ -16,6 +16,8 @@ using Calo.Blog.Common.UserSession;
 using Calo.Blog.Common.Authorization.Authorize;
 using Calo.Blog.Common.Y.EventBus.Y.RabbitMQ;
 using Microsoft.Extensions.Configuration;
+using Calo.Blog.Common.Minio;
+using System.Reflection;
 
 namespace Calo.Blog.Common
 {
@@ -53,17 +55,27 @@ namespace Calo.Blog.Common
 
             context.Services.AddRabbitMQ(configuration);
 
+            context.Services.AddMinio((p) =>
+            {
+                var minioconfigure = configuration.GetSection("App:MinioConfig")
+                .Get<MinioConfig>() ?? throw new NullReferenceException("请设置Minio基础配置");
+
+                p.DefaultBucket = minioconfigure.DefaultBucket;
+                p.Protal = minioconfigure.Protal;
+                p.SecretKey = minioconfigure.SecretKey;
+                p.AccessKey = minioconfigure.AccessKey;
+                p.Host = minioconfigure.Host;
+                p.Password = minioconfigure.Password;
+                p.UserName = minioconfigure.UserName;   
+            });
+
             Configure<ExceptionOptions>(p =>
             {
                 p.UseDataBase = false;
             });
-        }
 
-        public override void InitApplication(InitApplicationContext context)
-        {
-            var app = context.GetApplicationBuilder();
-
-            app.UseMiddleware<ExceptionMiddleware>();
+            ///程序集注入
+            context.Services.AddAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }

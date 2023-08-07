@@ -1,5 +1,4 @@
-﻿
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Reflection;
@@ -145,6 +144,8 @@ namespace Calo.Blog.Host
             var app = context.GetApplicationBuilder();
 
             var env = (IHostEnvironment)context.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseCors("YCores");
 

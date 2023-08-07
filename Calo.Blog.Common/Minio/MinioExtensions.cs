@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Minio;
+using MongoDB.Driver;
 
 namespace Calo.Blog.Common.Minio
 {
@@ -10,7 +11,7 @@ namespace Calo.Blog.Common.Minio
 		/// </summary>
 		/// <param name="services"></param>
 		/// <param name="options"></param>
-		public static void AddMinio(IServiceCollection services,Action<MinioConfig> options)
+		public static async void AddMinio(this IServiceCollection services,Action<MinioConfig> options)
 		{
 			var config = new MinioConfig();
 
@@ -23,6 +24,25 @@ namespace Calo.Blog.Common.Minio
 				.Build();
 
 			services.AddSingleton<MinioClient>(client);
-		}
+
+            var defaultBucket = config.DefaultBucket;
+            ///创建默认存储桶
+            if (string.IsNullOrEmpty(config.DefaultBucket))
+            {
+				return;
+            }
+            var bucketArgs = new BucketExistsArgs();
+            bucketArgs.WithBucket(config.DefaultBucket);
+
+            if (await client.BucketExistsAsync(bucketArgs))
+            {
+				return;
+            }
+
+            var makeArgs = new MakeBucketArgs();
+            makeArgs.WithBucket(config.DefaultBucket);
+
+            await client.MakeBucketAsync(makeArgs);
+        }
 	}
 }

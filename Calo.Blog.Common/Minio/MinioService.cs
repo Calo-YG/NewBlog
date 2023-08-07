@@ -4,6 +4,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Minio.DataModel;
 using System.Security.Cryptography;
+using Nest;
+using MongoDB.Driver;
 
 namespace Calo.Blog.Common.Minio
 {
@@ -61,6 +63,8 @@ namespace Calo.Blog.Common.Minio
         /// <returns></returns>
         public async Task RemoveBucket(string bucketName)
         {
+            SetDefaultPrimaryKey(bucketName);
+
             var bucketArgs = new BucketExistsArgs();
             bucketArgs.WithBucket(bucketName);
 
@@ -81,6 +85,8 @@ namespace Calo.Blog.Common.Minio
         /// <returns></returns>
         public async Task<ObjectOutPut> GetObjectAsync(GetObjectInput input)
         {
+            SetDefaultPrimaryKey(input.BucketName);
+
             StatObjectArgs statObjectArgs = new StatObjectArgs()
                                     .WithBucket(input.BucketName)
                                     .WithObject(input.ObjectName);
@@ -111,6 +117,20 @@ namespace Calo.Blog.Common.Minio
         /// <returns></returns>
         public async Task UploadObjectAsync(UploadObjectInput input)
         {
+            SetDefaultPrimaryKey(input.BucketName);
+
+            try
+            {
+                StatObjectArgs statObjectArgs = new StatObjectArgs()
+                                    .WithBucket(input.BucketName)
+                                    .WithObject(input.ObjectName);
+                await _minioClient.StatObjectAsync(statObjectArgs);
+            }
+            catch (Exception )
+            {
+                ThrowMinioFileExistsException.FileExistsException(input.ObjectName);
+            }
+
             Aes aesEncryption = Aes.Create();
             aesEncryption.KeySize = 256;
             aesEncryption.GenerateKey();
@@ -146,6 +166,33 @@ namespace Calo.Blog.Common.Minio
                     tasks.Clear();
                 }
             }
+        }
+        /// <summary>
+        /// 创建默认存储桶
+        /// </summary>
+        /// <returns></returns>
+        public async Task CreateDefaultBucket()
+        {
+            var config = _minioOptions.Value;
+
+            var defaultBucket = config.DefaultBucket;
+            ///创建默认存储桶
+            if (string.IsNullOrEmpty(config.DefaultBucket))
+            {
+                return;
+            }
+            var bucketArgs = new BucketExistsArgs();
+            bucketArgs.WithBucket(config.DefaultBucket);
+
+            if (await _minioClient.BucketExistsAsync(bucketArgs))
+            {
+                return;
+            }
+
+            var makeArgs = new MakeBucketArgs();
+            makeArgs.WithBucket(config.DefaultBucket);
+
+            await _minioClient.MakeBucketAsync(makeArgs);
         }
     }
 }

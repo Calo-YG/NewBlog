@@ -32,5 +32,10 @@
         /// <param name="uploads"></param>
         /// <returns></returns>
         Task UploadLocalUseDefaultBucket(List<UploadObjectInput> uploads);
+        /// <summary>
+        /// 创建默认存储桶
+        /// </summary>
+        /// <returns></returns>
+        Task CreateDefaultBucket();
     }
 }

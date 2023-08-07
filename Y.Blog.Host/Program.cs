@@ -1,6 +1,5 @@
 using Y.Blog.Host;
 using Y.Module.Extensions;
-using Microsoft.AspNetCore.ResponseCompression;
 using Y.Blog.Host.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,7 +31,5 @@ app.MapHub<QrCodeCheckHubs>("/QrCodehub");
 app.MapBlazorHub();
 
 app.MapFallbackToPage("/_Host");
-
-
 
 app.Run();

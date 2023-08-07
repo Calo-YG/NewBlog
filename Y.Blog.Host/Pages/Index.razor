@@ -1,4 +1,9 @@
 ﻿@page "/"
+
+@using Y.Blog.Host.Models;
+@using Y.Blog.Host.Components;
+@inject IMessageService _message;
+
 @inject NavigationManager NavigationManager;
 
     <div class="section">
@@ -10,11 +15,27 @@
         </div>
        <div class="intention">
         @Sentence<br />
-        <Button Type="@ButtonType.Primary" Size="@ButtonType.Default" style="margin-top: 20px"  @onclick="Author">关于作者</Button>  
+@*        <Button Type="@ButtonType.Primary" Size="@ButtonType.Default" style="margin-top: 20px"  @onclick="Author">关于作者</Button>  
 
         <Button Type="@ButtonType.Primary" Size="@ButtonType.Default" style="margin-top: 20px"  @onclick="Photo">图集</Button>  
 
-        <Button Type="@ButtonType.Primary" Size="@ButtonType.Default" style="margin-top: 20px"  @onclick="GoMusic">网易云入口</Button> 
+        <Button Type="@ButtonType.Primary" Size="@ButtonType.Default" style="margin-top: 20px"  @onclick="GoMusic">网易云入口</Button> *@
+
+        <div class="workbox">
+
+            @if(WorkItems?.Any() ?? false)
+            {
+                foreach(var item in WorkItems)
+                {
+                    <WorkComponent IconUrl="@item.Icon" 
+                    Title="@item.Title" 
+                    Description="@item.Description"
+                    ClickCallBack="@item.CallBack">
+                    </WorkComponent>
+                }
+            }
+            
+        </div>
         </div>   
     </div>
 
@@ -22,9 +43,17 @@
 
     private string Sentence="夏日夜空繁星般的遐想";
 
+    private List<WorkItem> WorkItems;
+
     protected async override Task OnInitializedAsync()
     {
+        InitWorks();
         await base.OnInitializedAsync();
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private void Author()
@@ -40,5 +69,16 @@
     private void GoMusic()
     {
         NavigationManager.NavigateTo("music/login");
+    }
+
+    private void InitWorks()
+    {
+        WorkItems = new List<WorkItem>();
+        WorkItems.Add(new WorkItem("/images/博客园.png", "博客", "尚未开始开发", async () =>
+        {
+            await _message.Success("别点了，点了没用");
+        }));
+        WorkItems.Add(new WorkItem("/images/图片.png", "图集", "开发进度10%",Photo));
+        WorkItems.Add(new WorkItem("/images/播放.png", "简约版网易云", "开发进度10%",GoMusic));
     }
 }

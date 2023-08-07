@@ -1,5 +1,25 @@
-﻿
+﻿<div class="workbox" @onclick="ClickCallBack">
+   <div class="imgbox"> 
+       <img class="img" src="@IconUrl"/>
+   </div>
+   <div class="titlebox">
+       <div class="textbox">@Title</div>
+       <div class="textbox">@Description</div>
+   </div>
+</div>
+
 
 @code {
 
+    [Parameter]
+    public string IconUrl { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string Description { get; set; }
+
+    [Parameter]
+    public EventCallback ClickCallBack  { get; set; }
 }

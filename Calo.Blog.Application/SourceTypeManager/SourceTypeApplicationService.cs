@@ -2,11 +2,12 @@
 using Calo.Blog.Application.SourceTypeManager.Dtos;
 using Calo.Blog.Common.Excetptions;
 using Calo.Blog.Domain.Sqlsugarcore;
+using Y.Module.DependencyInjection;
 using Y.SqlsugarRepository.Repository;
 
 namespace Calo.Blog.Application.SourceTypeManager
 {
-    public class SourceTypeApplicationService:ISourceTypeApplicatonService
+    public class SourceTypeApplicationService:ISourceTypeApplicatonService,ITransientInjection
     {
         private readonly IBaseRepository<SourceType, Guid> _sourceTypeRepository;
         public SourceTypeApplicationService(IBaseRepository<SourceType, Guid> sourceTypeRepository) 

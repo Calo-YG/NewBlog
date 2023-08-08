@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Calo.Blog.EntityCore\Calo.Blog.EntityCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ResourceOwnereServices\Dtos\" />
+  </ItemGroup>
+
 </Project>

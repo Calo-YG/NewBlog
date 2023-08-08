@@ -55,11 +55,11 @@ namespace Calo.Blog.Common
 
             context.Services.AddRabbitMQ(configuration);
 
+            var minioconfigure = configuration.GetSection("App:MinioConfig")
+            .Get<MinioConfig>() ?? throw new NullReferenceException("请设置Minio基础配置");
+
             context.Services.AddMinio((p) =>
             {
-                var minioconfigure = configuration.GetSection("App:MinioConfig")
-                .Get<MinioConfig>() ?? throw new NullReferenceException("请设置Minio基础配置");
-
                 p.DefaultBucket = minioconfigure.DefaultBucket;
                 p.Protal = minioconfigure.Protal;
                 p.SecretKey = minioconfigure.SecretKey;
@@ -67,6 +67,17 @@ namespace Calo.Blog.Common
                 p.Host = minioconfigure.Host;
                 p.Password = minioconfigure.Password;
                 p.UserName = minioconfigure.UserName;   
+            });
+
+            Configure<MinioConfig>(p =>
+            {
+                p.DefaultBucket = minioconfigure.DefaultBucket;
+                p.Protal = minioconfigure.Protal;
+                p.SecretKey = minioconfigure.SecretKey;
+                p.AccessKey = minioconfigure.AccessKey;
+                p.Host = minioconfigure.Host;
+                p.Password = minioconfigure.Password;
+                p.UserName = minioconfigure.UserName;
             });
 
             Configure<ExceptionOptions>(p =>

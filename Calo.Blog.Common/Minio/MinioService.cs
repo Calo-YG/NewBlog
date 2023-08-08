@@ -30,11 +30,11 @@ namespace Calo.Blog.Common.Minio
         /// </summary>
         /// <param name="bucketName"></param>
         /// <exception cref="ArgumentNullException"></exception>
-        private void SetDefaultPrimaryKey(string bucketName)
+        private void SetDefaultBucket(string bucketName)
         {
             if (string.IsNullOrEmpty(bucketName))
             {
-                bucketName = _minioOptions.Value.DefaultBucket ?? throw new ArgumentNullException("Minio基础配置默认存储桶为空");
+                bucketName = _minioOptions.Value?.DefaultBucket ?? throw new ArgumentNullException("Minio基础配置默认存储桶为空");
             }
         }
         /// <summary>
@@ -45,7 +45,7 @@ namespace Calo.Blog.Common.Minio
         public async Task CreateBucketAsync(string bucketName)
         {
             ///设置存储桶
-            SetDefaultPrimaryKey(bucketName);
+            SetDefaultBucket(bucketName);
 
             var bucketArgs = new BucketExistsArgs();
             bucketArgs.WithBucket(bucketName);
@@ -67,7 +67,7 @@ namespace Calo.Blog.Common.Minio
         /// <returns></returns>
         public async Task RemoveBucket(string bucketName)
         {
-            SetDefaultPrimaryKey(bucketName);
+            SetDefaultBucket(bucketName);
 
             var bucketArgs = new BucketExistsArgs();
             bucketArgs.WithBucket(bucketName);
@@ -89,7 +89,7 @@ namespace Calo.Blog.Common.Minio
         /// <returns></returns>
         public async Task<ObjectOutPut> GetObjectAsync(GetObjectInput input)
         {
-            SetDefaultPrimaryKey(input.BucketName);
+            SetDefaultBucket(input.BucketName);
 
             StatObjectArgs statObjectArgs = new StatObjectArgs()
                                     .WithBucket(input.BucketName)
@@ -121,7 +121,7 @@ namespace Calo.Blog.Common.Minio
         /// <returns></returns>
         public async Task UploadObjectAsync(UploadObjectInput input)
         {
-            SetDefaultPrimaryKey(input.BucketName);
+            SetDefaultBucket(input.BucketName);
 
             ObjectStat stat = null;
 
@@ -212,7 +212,7 @@ namespace Calo.Blog.Common.Minio
         /// <returns></returns>
         public async Task RemoveObjectAsync(RemoveObjectInput input)
         {
-            SetDefaultPrimaryKey(input.BucketName);
+            SetDefaultBucket(input.BucketName);
 
             ObjectStat stat = null;
 
@@ -244,7 +244,7 @@ namespace Calo.Blog.Common.Minio
         /// <returns></returns>
         public async Task BatchRemoveObjectAsync(string bucketName,List<string> objectNames)
         {
-            SetDefaultPrimaryKey(bucketName);
+            SetDefaultBucket(bucketName);
 
             RemoveObjectsArgs rmArgs = new RemoveObjectsArgs()
                                 .WithBucket(bucketName)

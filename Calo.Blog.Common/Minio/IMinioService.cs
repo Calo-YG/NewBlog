@@ -37,5 +37,18 @@
         /// </summary>
         /// <returns></returns>
         Task CreateDefaultBucket();
+        /// <summary>
+        /// 删除存储桶文件
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        Task RemoveObjectAsync(RemoveObjectInput input);
+        /// <summary>
+        /// 批量删除存储桶对象
+        /// </summary>
+        /// <param name="bucketName"></param>
+        /// <param name="bucketNames"></param>
+        /// <returns></returns>
+        Task BatchRemoveObjectAsync(string bucketName, List<string> objectNames);
     }
 }

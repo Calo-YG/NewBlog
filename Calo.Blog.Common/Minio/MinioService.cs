@@ -14,11 +14,15 @@ namespace Calo.Blog.Common.Minio
         private readonly MinioClient _minioClient;
 
         private readonly IOptions<MinioConfig> _minioOptions;
+
+        private readonly ILogger _logger;
         public MinioService(MinioClient minioClient
-            , IOptions<MinioConfig> minioOptions)
+            , IOptions<MinioConfig> minioOptions
+            , ILoggerFactory loggerFactory)
         {
             _minioClient = minioClient;
             _minioOptions = minioOptions;
+            _logger = loggerFactory.CreateLogger<IMinioService>();
         }
 
         /// <summary>
@@ -119,14 +123,21 @@ namespace Calo.Blog.Common.Minio
         {
             SetDefaultPrimaryKey(input.BucketName);
 
+            ObjectStat stat = null;
+
             try
             {
                 StatObjectArgs statObjectArgs = new StatObjectArgs()
                                     .WithBucket(input.BucketName)
                                     .WithObject(input.ObjectName);
-                await _minioClient.StatObjectAsync(statObjectArgs);
+                stat = await _minioClient.StatObjectAsync(statObjectArgs);
             }
-            catch (Exception )
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"{DateTime.Now}:{ex.Message}--{ex.ToString()}");
+            }
+
+            if(stat != null )
             {
                 ThrowMinioFileExistsException.FileExistsException(input.ObjectName);
             }
@@ -193,6 +204,64 @@ namespace Calo.Blog.Common.Minio
             makeArgs.WithBucket(config.DefaultBucket);
 
             await _minioClient.MakeBucketAsync(makeArgs);
+        }
+        /// <summary>
+        /// 删除存储桶文件
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task RemoveObjectAsync(RemoveObjectInput input)
+        {
+            SetDefaultPrimaryKey(input.BucketName);
+
+            ObjectStat stat = null;
+
+            try
+            {
+                StatObjectArgs statObjectArgs = new StatObjectArgs()
+                                    .WithBucket(input.BucketName)
+                                    .WithObject(input.ObjectName);
+                stat = await _minioClient.StatObjectAsync(statObjectArgs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"{DateTime.Now}:{ex.Message}--{ex.ToString()}");
+
+                ThrowMinioFileExistsException.FileNotExistsException(input.ObjectName);
+            }
+
+            RemoveObjectArgs rmArgs = new RemoveObjectArgs()
+                              .WithBucket(input.BucketName)
+                              .WithObject(input.ObjectName);
+
+            await _minioClient.RemoveObjectAsync(rmArgs);
+        }
+        /// <summary>
+        /// 批量删除存储桶对象
+        /// </summary>
+        /// <param name="bucketName"></param>
+        /// <param name="bucketNames"></param>
+        /// <returns></returns>
+        public async Task BatchRemoveObjectAsync(string bucketName,List<string> objectNames)
+        {
+            SetDefaultPrimaryKey(bucketName);
+
+            RemoveObjectsArgs rmArgs = new RemoveObjectsArgs()
+                                .WithBucket(bucketName)
+                                .WithObjects(objectNames);
+
+            var observable = await _minioClient.RemoveObjectsAsync(rmArgs);
+
+            observable.Subscribe(item =>
+            {
+                _logger.LogWarning($"{item.Key}文件对象删除失败");
+            }, ex =>
+            {
+                _logger.LogWarning($"{DateTime.Now}:{ex.Message}-{ex.ToString()}");
+            }, () =>
+            {
+                _logger.LogInformation("批量删除文件对象成功");
+            });
         }
     }
 }

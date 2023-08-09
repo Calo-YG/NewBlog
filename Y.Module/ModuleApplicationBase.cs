@@ -100,6 +100,7 @@ namespace Y.Module
         public virtual void InitApplication(IServiceProvider serviceProvider)
         {
             using var scope = serviceProvider.CreateScope();
+           
             scope.ServiceProvider
                 .GetRequiredService<IModuleManager>()
                 .IninAppliaction();
@@ -111,5 +112,13 @@ namespace Y.Module
             return new ModuleLoad().GetYModuleDescritors(StartModuleType, Services);
         }
 
+        public virtual async Task InitApplicationAsync(IServiceProvider serviceProvider)
+        {
+            using var scope = serviceProvider.CreateScope();
+
+            await scope.ServiceProvider
+               .GetRequiredService<IModuleManager>()
+               .InitApplicationAsync();
+        }
     }
 }

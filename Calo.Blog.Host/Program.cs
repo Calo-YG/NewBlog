@@ -10,6 +10,6 @@ builder.Services.AddApplication<CaloBlogHostModule>();
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 
-app.InitApplication();
+await app.InitApplicationAsync();
 
 app.Run();

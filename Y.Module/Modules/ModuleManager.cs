@@ -1,10 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Y.Module.Interfaces;
 
 namespace Y.Module.Modules
@@ -36,13 +31,36 @@ namespace Y.Module.Modules
             {
                 var name = module.Incetance.GetType().Name;
                 _logger.LogInformation($"模块:{name}开始初始化");
+
                 module.Incetance.InitApplication(context);
+
                 if(module.Incetance is ILaterApplication application)
                 {
                     application.LaterInitApplication(context);
                 }
+
                 _logger.LogInformation($"模块:{name}初始化完成");
             }
+        }
+
+        public async Task InitApplicationAsync()
+        {
+            InitApplicationContext? context = _initApplicationAccessor.Value;
+            foreach (var module in _moduleContainer.Modules)
+            {
+                var name = module.Incetance.GetType().Name;
+                _logger.LogInformation($"模块:{name}开始初始化");
+
+                module.Incetance.InitApplication(context);
+                //异步初始化
+                if (module.Incetance is ILaterApplicationAsync applicationAsync)
+                {
+                    await applicationAsync.LaterInitApplicationAsync(context);
+                }
+
+                _logger.LogInformation($"模块:{name}初始化完成");
+            }
+
         }
     }
 }

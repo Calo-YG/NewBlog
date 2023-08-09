@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Y.Module.Modules
 {
-    public class YModule : IYModule, IPreConfigServices, ILaterApplication
+    public class YModule : IYModule, IPreConfigServices, ILaterApplication,ILaterApplicationAsync
     {
         protected internal ConfigerServiceContext ConfigerServiceContext
         {
@@ -54,6 +54,11 @@ namespace Y.Module.Modules
         public virtual void LaterInitApplication(InitApplicationContext context)
         {
 
+        }
+
+        public virtual Task LaterInitApplicationAsync(InitApplicationContext context)
+        {
+            return Task.CompletedTask;
         }
 
         public static bool IsModule(Type type)

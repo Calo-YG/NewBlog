@@ -10,8 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Y.Module;
 using Y.Module.Modules;
 using Y.Module.Extensions;
-using Microsoft.AspNetCore.Builder;
-using Calo.Blog.Common.Middlewares;
 using Calo.Blog.Common.UserSession;
 using Calo.Blog.Common.Authorization.Authorize;
 using Calo.Blog.Common.Y.EventBus.Y.RabbitMQ;
@@ -87,6 +85,18 @@ namespace Calo.Blog.Common
 
             ///程序集注入
             context.Services.AddAssembly(Assembly.GetExecutingAssembly());
+        }
+
+        public override async Task LaterInitApplicationAsync(InitApplicationContext context)
+        {
+            var scope = context.ServiceProvider.CreateAsyncScope();
+
+            //var minioService = scope.ServiceProvider.GetRequiredService<IMinioService>();
+
+            //await scope.ServiceProvider
+            //    .GetRequiredService<IMinioService>()
+            //    .CreateDefaultBucket();
+            await Task.CompletedTask;
         }
     }
 }

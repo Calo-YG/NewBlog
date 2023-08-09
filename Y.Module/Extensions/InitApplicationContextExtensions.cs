@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Y.Module.Interfaces;
 
 namespace Y.Module.Extensions
@@ -23,6 +18,22 @@ namespace Y.Module.Extensions
 
         public static void InitApplication(this IApplicationBuilder app)
         {
+            InitBaseSetting(app);
+
+            var runner = app.ApplicationServices.GetRequiredService<IModuleRunner>();
+            runner.InitApplication(app.ApplicationServices);
+        }
+
+        public static async Task InitApplicationAsync(this IApplicationBuilder app)
+        {
+            InitBaseSetting(app);
+
+            var runner = app.ApplicationServices.GetRequiredService<IModuleRunner>();
+            await runner.InitApplicationAsync(app.ApplicationServices);
+        }
+
+        private static void InitBaseSetting(IApplicationBuilder app)
+        {
             app.CheckNull();
 
             InitApplicationContext context = new InitApplicationContext(app.ApplicationServices);
@@ -32,9 +43,6 @@ namespace Y.Module.Extensions
 
             app.ApplicationServices.GetRequiredService<ObjectAccessor<InitApplicationContext>>().Value = context;
             app.ApplicationServices.GetRequiredService<IObjectAccessor<InitApplicationContext>>().Value = context;
-
-            var runner = app.ApplicationServices.GetRequiredService<IModuleRunner>();
-            runner.InitApplication(app.ApplicationServices);
         }
     }
 }

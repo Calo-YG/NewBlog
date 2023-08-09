@@ -15,5 +15,12 @@ namespace Y.Module
             SetServiceProvider(serviceProvider);
             base.InitApplication(serviceProvider);
         }
+
+        public override async Task InitApplicationAsync(IServiceProvider serviceProvider)
+        {
+            SetServiceProvider(serviceProvider);
+
+            await base.InitApplicationAsync(serviceProvider);
+        }
     }
 }

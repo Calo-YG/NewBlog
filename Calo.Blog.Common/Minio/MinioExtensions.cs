@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Minio;
-using MongoDB.Driver;
 
 namespace Calo.Blog.Common.Minio
 {

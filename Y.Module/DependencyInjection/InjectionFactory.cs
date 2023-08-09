@@ -30,7 +30,8 @@ namespace Y.Module.DependencyInjection
                 }
                 return;
             }
-            if (injectionAttribute != null && !services.IsExists(injectionAttribute.InterfaceType))
+
+            if (injectionAttribute is null && !services.IsExists(injectionAttribute.InterfaceType))
             {
                 AddIoInjectionWithInterface(services, type, injectionAttribute.InterfaceType, injectionAttribute.InjectionEnum);
             }
@@ -79,6 +80,13 @@ namespace Y.Module.DependencyInjection
                 }
                 services.AddTransient(interfaeType, type);
             }
+        }
+        /// <summary>
+        /// 使用接口注入
+        /// </summary>
+        protected virtual void InjectionWithInterface(IServiceCollection services, Type type)
+        {
+
         }
     }
 }

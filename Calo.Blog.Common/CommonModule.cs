@@ -91,11 +91,12 @@ namespace Calo.Blog.Common
         {
             var scope = context.ServiceProvider.CreateAsyncScope();
 
-            //var minioService = scope.ServiceProvider.GetRequiredService<IMinioService>();
+            var minioService = scope.ServiceProvider.GetRequiredService<IMinioService>();
 
             //await scope.ServiceProvider
             //    .GetRequiredService<IMinioService>()
             //    .CreateDefaultBucket();
+
             await Task.CompletedTask;
         }
     }

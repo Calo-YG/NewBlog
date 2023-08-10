@@ -95,6 +95,7 @@ namespace Y.Module.DependencyInjection
         /// </summary>
         protected virtual void InjectionWithInterface(IServiceCollection services, Type type)
         {
+            //获取所有接口
             var interfasces = type.GetInterfaces();
 
             if(interfasces.Length <= 1)
@@ -102,6 +103,7 @@ namespace Y.Module.DependencyInjection
                 return;
             }
 
+            //判断接口是否为依赖注入接口
             var hasInjectionInterface = interfasces.Any(p => InjectionTypes.Any(x => x == p));
 
             if (!hasInjectionInterface)
@@ -109,12 +111,14 @@ namespace Y.Module.DependencyInjection
                 return;
             }
 
+            //获取具体生命周期接口
             var injectionInterface = interfasces.FirstOrDefault(p => InjectionTypes.Contains(p));
 
             Type interfaceImplete = null;
 
             var firstInterface = interfasces[0];
 
+            //获取实现的接口
             if(firstInterface != injectionInterface)
             {
                 interfaceImplete = firstInterface;
@@ -130,6 +134,7 @@ namespace Y.Module.DependencyInjection
                 return;
             }
 
+            //注入接口
             AddServieWithInterface(services, interfaceImplete, type, injectionInterface); ;
         }
 

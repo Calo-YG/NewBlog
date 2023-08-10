@@ -37,6 +37,20 @@ namespace Calo.Blog.Host
     }
 }
 
+//异步初始化
+public override async Task LaterInitApplicationAsync(InitApplicationContext context)
+{
+     var scope = context.ServiceProvider.CreateAsyncScope();
+
+     var minioService = scope.ServiceProvider.GetRequiredService<IMinioService>();
+
+     //await scope.ServiceProvider
+     //    .GetRequiredService<IMinioService>()
+     //    .CreateDefaultBucket();
+
+     await Task.CompletedTask;
+}
+
 ```
 特性批量注入
 
@@ -57,6 +71,17 @@ namespace Calo.Blog.Host
             _logger.LogInformation("注入成功");
         }
     }
+```
+```c#
+//接口自动注入，ISignletonInjection,IScopedInjection,ITrasinInjection
+public class MinioService:IMinioService,IScopedInjection
+{
+
+}
+```
+```c#
+//使用
+context.Services.AddAssembly(Assembly.GetExecutingAssembly());
 ```
 
 ### Y.SqlSugarRepository
@@ -132,7 +157,7 @@ namespace Calo.Blog.Host
 
 - 已实现仓储批量注入（已测试）
 - 建库建表（已测试）
-- 创建种子数据（待测试）
+- 创建种子数据（已测试）
 - 基于领域驱动设计带实现聚合根（待实现）
 - 待完善仓储注入的扩展方法（已测试）
 - 待完善数据库上下文注入扩展方法（已测试）

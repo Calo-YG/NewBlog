@@ -3,7 +3,7 @@ using Y.Module.DependencyInjection;
 
 namespace Calo.Blog.Application.Interfaces
 {
-    public interface ISourceTypeApplicatonService:ITransientInjection
+    public interface ISourceTypeApplicatonService
     {
         Task Create(CreateTypeInput input);
 

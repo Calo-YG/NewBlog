@@ -28,5 +28,29 @@ namespace Calo.Blog.Domain.Sqlsugarcore
         /// </summary>
         [Navigate(NavigateType.OneToMany, nameof(SourceBucket.Id))]//BookA表中的studenId
         public List<SourceBucket> Buckets { get; set; }
+
+        /// <summary>
+        /// sqlsugar 原因必须创建无参构造函数
+        /// </summary>
+        public ResourceOwner() { }
+
+
+        public ResourceOwner(string name, string password,string description,bool secrect=false)
+        {
+            Name = name;
+            PassWord= password;
+            Description = description;
+            Secrect = secrect;
+        }
+
+        public ResourceOwner(Guid id,string name, string password, string description, string? concurrentToken, bool secrect = false)
+        {
+            Id = id;
+            Name = name;
+            PassWord = password;
+            Description = description;
+            Secrect = secrect;
+            ConcurrentToken = concurrentToken;
+        }
     }
 }

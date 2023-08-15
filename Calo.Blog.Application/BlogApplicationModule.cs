@@ -12,6 +12,14 @@ namespace Calo.Blog.Application
     [DependOn(typeof(BlogCoreModule), typeof(SqlSugarEnityCoreModule))]
     public class BlogApplicationModule : YModule
     {
+        /// <summary>
+        /// 预初始化
+        /// </summary>
+        /// <param name="context"></param>
+        public override void PreConfigerService(ConfigerServiceContext context)
+        {
+            base.PreConfigerService(context);
+        }
         public override void ConfigerService(ConfigerServiceContext context)
         {
             context.Services.AddAssembly(Assembly.GetExecutingAssembly());

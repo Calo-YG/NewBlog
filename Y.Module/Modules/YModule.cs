@@ -23,7 +23,7 @@ namespace Y.Module.Modules
         /// </summary>
         /// <param name="context"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public virtual void PreInitApplication(ConfigerServiceContext context)
+        public virtual void PreConfigerService(ConfigerServiceContext context)
         {
 
         }

@@ -1,5 +1,6 @@
 ﻿namespace Y.SqlsugarRepository.EntityAttribute
 {
+    //sqlsugar 支持并发冲突（类似于悲观锁）
     [AttributeUsage(AttributeTargets.Property)]
     public class ConcurrentTokenAttribute:Attribute
     {

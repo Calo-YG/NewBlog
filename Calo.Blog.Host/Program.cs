@@ -1,17 +1,14 @@
-using Calo.Blog.Application.Interfaces;
-using Calo.Blog.Application.SourceTypeManager;
 using Calo.Blog.Host;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using Y.Module.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// 注入服务
 builder.Services.AddApplication<CaloBlogHostModule>();
 
 var app = builder.Build();
-// Configure the HTTP request pipeline.
+// 创建中间件管道
 
 await app.InitApplicationAsync();
 

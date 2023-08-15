@@ -12,5 +12,13 @@ namespace Calo.Blog.Common.Authorization
         public virtual string[]? RoleNames { get; set; }
 
         public virtual Claim[] Claims { get; set; }
+
+
+        public UserTokenModel() { } 
+
+        public UserTokenModel(string username,string userId)
+        {
+
+        }
     }
 }

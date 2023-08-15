@@ -16,7 +16,6 @@ using Calo.Blog.Common.Y.EventBus.Y.RabbitMQ;
 using Microsoft.Extensions.Configuration;
 using Calo.Blog.Common.Minio;
 using System.Reflection;
-using RabbitMQ.Client;
 using Mapster;
 using MapsterMapper;
 
@@ -89,8 +88,6 @@ namespace Calo.Blog.Common
 
             ///程序集注入
             context.Services.AddAssembly(Assembly.GetExecutingAssembly());
-
-
         }
 
         public override async Task LaterInitApplicationAsync(InitApplicationContext context)
@@ -99,6 +96,7 @@ namespace Calo.Blog.Common
 
             var minioService = scope.ServiceProvider.GetRequiredService<IMinioService>();
 
+            //minio需要配置https
             //await scope.ServiceProvider
             //    .GetRequiredService<IMinioService>()
             //    .CreateDefaultBucket();
@@ -109,8 +107,6 @@ namespace Calo.Blog.Common
         private void AddMapter(IServiceCollection services)
         {
             var config = new TypeAdapterConfig();
-            // Or
-            // var config = TypeAdapterConfig.GlobalSettings;
             services.AddSingleton(config);
             services.AddScoped<IMapper, ServiceMapper>();
         }

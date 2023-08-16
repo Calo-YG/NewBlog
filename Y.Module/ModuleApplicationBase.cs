@@ -64,7 +64,7 @@ namespace Y.Module
                     //初始化之前处理
                     if (module.Incetance is IPreConfigServices application)
                     {
-                        application.PreInitApplication(context);
+                        application.PreConfigerService(context);
                     }
 
                 }

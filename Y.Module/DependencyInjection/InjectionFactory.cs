@@ -12,6 +12,11 @@ namespace Y.Module.DependencyInjection
             typeof(IScopedInjection),
             typeof(ITransientInjection)
         };
+        /// <summary>
+        /// 程序集注入
+        /// </summary>
+        /// <param name="service"></param>
+        /// <param name="assembly"></param>
         public void InjectionAssembly(IServiceCollection service, Assembly assembly)
         {
             var types = assembly.GetTypes();
@@ -22,6 +27,11 @@ namespace Y.Module.DependencyInjection
                 InjectionWithInterface(service, type);
             }
         }
+        /// <summary>
+        /// 特性注入
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="type"></param>
         protected virtual void Injection(IServiceCollection services, Type type)
         {
             var attributes = type.GetCustomAttributes().Where(p=>p.GetType()==typeof(InjectionAttribute));

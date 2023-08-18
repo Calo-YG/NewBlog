@@ -35,7 +35,11 @@ namespace Y.Module.Extensions
             }
             return types;
         }
-
+        /// <summary>
+        /// 加载依赖模块
+        /// </summary>
+        /// <param name="moduleType"></param>
+        /// <param name="types"></param>
         private static void AddModuleFrompepend(Type moduleType, List<Type> types)
         {
             YModule.CheckModuleType(moduleType);
@@ -49,7 +53,11 @@ namespace Y.Module.Extensions
                 AddModuleFrompepend(moduleType, types);
             }
         }
-
+        /// <summary>
+        /// 程序集注入
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="assembly"></param>
         public static void AddAssembly(this IServiceCollection services, Assembly assembly)
         {
             services.ChcekNull();

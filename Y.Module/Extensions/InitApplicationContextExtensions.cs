@@ -27,11 +27,14 @@ namespace Y.Module.Extensions
         public static async Task InitApplicationAsync(this IApplicationBuilder app)
         {
             InitBaseSetting(app);
-
             var runner = app.ApplicationServices.GetRequiredService<IModuleRunner>();
             await runner.InitApplicationAsync(app.ApplicationServices);
         }
 
+        /// <summary>
+        /// 初始化基础
+        /// </summary>
+        /// <param name="app"></param>
         private static void InitBaseSetting(IApplicationBuilder app)
         {
             app.CheckNull();

@@ -4,6 +4,9 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<PackageId>Y.SqlsugarRepository</PackageId>
+		<Version>1.0.1</Version>
+		<Authors>YgCalo</Authors>
 	</PropertyGroup>
 
 	<ItemGroup>

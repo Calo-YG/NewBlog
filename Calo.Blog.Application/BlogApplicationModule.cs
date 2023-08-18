@@ -9,7 +9,8 @@ using Y.Module.Modules;
 
 namespace Calo.Blog.Application
 {
-    [DependOn(typeof(BlogCoreModule), typeof(SqlSugarEnityCoreModule))]
+    [DependOn(typeof(BlogCoreModule)
+        , typeof(SqlSugarEnityCoreModule))]
     public class BlogApplicationModule : YModule
     {
         /// <summary>
@@ -20,11 +21,18 @@ namespace Calo.Blog.Application
         {
             base.PreConfigerService(context);
         }
+        /// <summary>
+        /// 服务注入
+        /// </summary>
+        /// <param name="context"></param>
         public override void ConfigerService(ConfigerServiceContext context)
         {
             context.Services.AddAssembly(Assembly.GetExecutingAssembly());
         }
-
+        /// <summary>
+        /// 同步初始化
+        /// </summary>
+        /// <param name="context"></param>
         public override void LaterInitApplication(InitApplicationContext context)
         {
             var scope = context.ServiceProvider.CreateScope();

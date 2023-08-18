@@ -17,12 +17,13 @@ namespace Y.SqlsugarRepository.Entensions
             {
                 var attributes = prop.GetCustomAttributes();
 
+                //主键特性
                 if (attributes.OfType<PrimaryKeyAttribute>().Any())
                 {
                     column.IsPrimarykey = true;
                     column.IsNullable = false;
                 }
-
+                //主键自增特性
                 if (attributes.OfType<KeyWithIncrementAttribute>().Any())
                 {
                     column.IsPrimarykey = true;
@@ -30,6 +31,7 @@ namespace Y.SqlsugarRepository.Entensions
                     column.IsNullable = false;
                 }
 
+                //解决中文乱码问题
                 if(attributes.OfType<StringAtrribute>().Any() && prop.PropertyType== typeof(string))
                 {
                     var strAttribute = attributes.OfType<StringAtrribute>().FirstOrDefault();

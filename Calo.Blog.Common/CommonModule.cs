@@ -12,7 +12,6 @@ using Y.Module.Modules;
 using Y.Module.Extensions;
 using Calo.Blog.Common.UserSession;
 using Calo.Blog.Common.Authorization.Authorize;
-using Calo.Blog.Common.Y.EventBus.Y.RabbitMQ;
 using Microsoft.Extensions.Configuration;
 using Calo.Blog.Common.Minio;
 using System.Reflection;
@@ -53,8 +52,6 @@ namespace Calo.Blog.Common
             {
                 options.Filters.Add<ResultFilter>();
             });
-
-            context.Services.AddRabbitMQ(configuration);
 
             var minioconfigure = configuration.GetSection("App:MinioConfig")
             .Get<MinioConfig>() ?? throw new NullReferenceException("请设置Minio基础配置");

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿  using Microsoft.Extensions.DependencyInjection;
 using Y.Module.Extensions;
 using Y.Module.Interfaces;
 using Y.Module.Modules;

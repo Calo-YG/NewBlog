@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Y.EventBus" Version="3.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Calo.Blog.EntityCore\Calo.Blog.EntityCore.csproj" />
   </ItemGroup>
 

@@ -13,6 +13,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Calo.Blog.Common.Redis;
 using Calo.Blog.Common.UserSession;
+using Y.EventBus;
+using Calo.Blog.Application.ResourceOwnereServices.Etos;
+using System.Threading;
 
 namespace Calo.Blog.Host.Controllers
 {
@@ -25,17 +28,20 @@ namespace Calo.Blog.Host.Controllers
 		private readonly IDistributedCache _cache;
 		private readonly ICacheManager _cacheManager;
 		private readonly IUserSession _usersession;
+		private readonly ILocalEventBus _localEventBus;
 		public TestController(IHttpContextAccessor httpContextAccessor
 			, ITokenProvider tokenProvider
 			, IDistributedCache cache
 			, ICacheManager cacheManager
-			, IUserSession userSession)
+			, IUserSession userSession
+			, ILocalEventBus localEventBus)
 		{
 			_httpContextAccessor = httpContextAccessor;
 			_tokenProvider = tokenProvider;
 			_cache = cache;
 			_cacheManager = cacheManager;
 			_usersession = userSession;
+			_localEventBus = localEventBus;
 		}
 		/// <summary>
 		/// justTestApi
@@ -122,6 +128,21 @@ namespace Calo.Blog.Host.Controllers
 		{
 			_usersession.SetUserInfo();
 			return _usersession.UserId;
+		}
+		[HttpGet]
+		public async Task TestLocalEventBus()
+		{
+			TestEto eto = null;
+
+			for(var i = 0; i < 100; i++)
+			{
+				eto = new TestEto()
+				{
+					Name ="LocalEventBus" + i.ToString(),
+					Description ="wyg"+i.ToString(),
+				};
+				await _localEventBus.PublichAsync(eto,CancellationToken.None);
+			}
 		}
 	}
 }

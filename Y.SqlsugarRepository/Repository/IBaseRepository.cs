@@ -148,8 +148,6 @@ namespace Y.SqlsugarRepository.Repository
 
         Task UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>>? expression = null);
 
-        Task DeleteAsync(TEntity entity, string? logic = null);
-
-        Task BatchDeleteAsync(List<TEntity> entities, Expression<Func<TEntity, bool>>? expression = null, string? logic = "IsDelete");
+        Task BatchDeleteAsync(List<TEntity> entities, Expression<Func<TEntity, bool>>? expression = null);
     }
 }

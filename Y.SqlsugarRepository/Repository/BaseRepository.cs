@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using SqlSugar;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
+using System.Reflection;
 using Y.SqlsugarRepository.DatabaseConext;
 using Y.SqlsugarRepository.EntityBase;
 
@@ -109,26 +110,36 @@ namespace Y.SqlsugarRepository.Repository
             }
         }
 
-        public virtual Task DeleteAsync(TEntity entity, string? logic = "IsDelete")
+        public virtual Task DeleteAsync(TEntity entity)
         {
             var delete = base.Context.Deleteable<TEntity>(entity);
-            if (logic is null)
+
+            var deleteStr = "IsDeleted";
+
+            var hasDelete = typeof(TEntity).GetProperties().Any(p => p.Name.Equals(deleteStr));
+
+            if (!hasDelete)
             {
                 return delete.ExecuteCommandAsync();
             }
-            return delete.IsLogic().ExecuteCommandAsync(logic);
+            return delete.IsLogic().ExecuteCommandAsync(deleteStr);
         }
 
-        public virtual async Task BatchDeleteAsync(List<TEntity> entities,Expression<Func<TEntity,bool>>? expression = null,string? logic = "IsDelete")
+        public virtual async Task BatchDeleteAsync(List<TEntity> entities,Expression<Func<TEntity,bool>>? expression = null)
         {
             var delete = base.Context.Deleteable<TEntity>(entities);
+
+            var deleteStr = "IsDeleted";
+
+            var hasDelete = typeof(TEntity).GetProperties().Any(p => p.Name.Equals(deleteStr));
+
             if (expression != null)
             {
                 delete.Where(expression);
             }
-            if(logic != null)
+            if(hasDelete)
             {
-              await delete.IsLogic().ExecuteCommandAsync(logic);
+              await delete.IsLogic().ExecuteCommandAsync(deleteStr);
               return;
             }
             await delete.ExecuteCommandAsync();

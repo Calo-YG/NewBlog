@@ -23,10 +23,6 @@ namespace Y.SqlsugarRepository.Repository
             , IHttpContextAccessor httpContextAccessor
             , ISqlSugarClient client = null) : base(provider, dbAopProvider, loggerFactory, httpContextAccessor)
         {
-            _servicerProvider = provider;
-            _dbAopProvider = dbAopProvider;
-            _logger = loggerFactory.CreateLogger(this.GetType());
-            base.Context = _servicerProvider.GetRequiredService<ISqlSugarClient>();
         }
     }
 

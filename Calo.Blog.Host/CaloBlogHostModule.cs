@@ -30,121 +30,125 @@ namespace Calo.Blog.Host
         public override void ConfigerService(ConfigerServiceContext context)
         {
             var configuration = context.GetConfiguartion();
-            context.Services.AddMvc()
-                           .AddRazorPagesOptions(options =>
-                           {
-
-                           })
-                           .AddRazorRuntimeCompilation();
-
+            context.Services
+                .AddMvc()
+                .AddRazorPagesOptions(options => { })
+                .AddRazorRuntimeCompilation();
 
             context.Services.AddHttpContextAccessor();
 
             var jwtsetting = configuration.GetSection("App:JWtSetting").Get<JwtSetting>();
 
             //添加cokkie认证和cokkie
-            context.Services.AddAuthentication(context =>
-            {
-                //需要登录进行鉴权认证
-                context.RequireAuthenticatedSignIn = true;
-                context.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                context.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
-            }).AddCookie(options =>
-            {
-                //cokkie名称
-                options.Cookie.Name = "Y.Authorization";
-                //cokkie过期时间
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(jwtsetting.ExpMinutes);
-                //cokkie启用滑动过期时间
-                options.SlidingExpiration = false;
-
-                options.LogoutPath= "/Home/Index";
-
-            }).AddJwtBearer(options =>
-            {
-                
-                options.TokenValidationParameters = new TokenValidationParameters()
+            context.Services
+                .AddAuthentication(context =>
                 {
-                    ValidateIssuer = true, //是否验证Issuer
-                    ValidIssuer = jwtsetting.Issuer, //发行人Issuer
-                    ValidateAudience = true, //是否验证Audience
-                    ValidAudience = jwtsetting.Audience,//
-                    ValidateIssuerSigningKey = true, //是否验证SecurityKey
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtsetting.SecretKey)), //SecurityKey
-                    ValidateLifetime = true, //是否验证失效时间
-                    ClockSkew = TimeSpan.FromSeconds(30), //过期时间容错值，解决服务器端时间不同步问题（秒）
-                    RequireExpirationTime = true,
-                    SaveSigninToken= true,
-                };
-
-                options.Events = new JwtBearerEvents
+                    //需要登录进行鉴权认证
+                    context.RequireAuthenticatedSignIn = true;
+                    context.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    context.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddCookie(options =>
                 {
-                    OnMessageReceived = context =>
+                    //cokkie名称
+                    options.Cookie.Name = "Y.Authorization";
+                    //cokkie过期时间
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(jwtsetting.ExpMinutes);
+                    //cokkie启用滑动过期时间
+                    options.SlidingExpiration = false;
+
+                    options.LogoutPath = "/Home/Index";
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters()
                     {
-                        var accessToken = context.Request.Cookies["x-access-token"];
+                        ValidateIssuer = true, //是否验证Issuer
+                        ValidIssuer = jwtsetting.Issuer, //发行人Issuer
+                        ValidateAudience = true, //是否验证Audience
+                        ValidAudience = jwtsetting.Audience, //
+                        ValidateIssuerSigningKey = true, //是否验证SecurityKey
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(jwtsetting.SecretKey)
+                        ), //SecurityKey
+                        ValidateLifetime = true, //是否验证失效时间
+                        ClockSkew = TimeSpan.FromSeconds(30), //过期时间容错值，解决服务器端时间不同步问题（秒）
+                        RequireExpirationTime = true,
+                        SaveSigninToken = true,
+                    };
 
-                        if (!string.IsNullOrEmpty(accessToken))
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
                         {
-                            context.Token = accessToken;
-                        }
+                            var accessToken = context.Request.Cookies["x-access-token"];
 
-                        return Task.CompletedTask;
-                    },
-            };
-            });
+                            if (!string.IsNullOrEmpty(accessToken))
+                            {
+                                context.Token = accessToken;
+                            }
+
+                            return Task.CompletedTask;
+                        },
+                    };
+                });
 
             context.Services.AddSwaggerGen(options =>
             {
                 options.OperationFilter<AddResponseHeadersFilter>();
                 options.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
                 options.OperationFilter<SecurityRequirementsOperationFilter>();
-                options.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "Calo API v1",
-                    Title = "Calo API",
-                    Description = "Web API for managing By Calo-YG",
-                    TermsOfService = new Uri("https://gitee.com/wen-yaoguang"),
-                    Contact = new OpenApiContact
+                options.SwaggerDoc(
+                    "v1",
+                    new OpenApiInfo
                     {
-                        Name = "Gitee 地址",
-                        Url = new Uri("https://gitee.com/wen-yaoguang/Colo.Blog")
-                    },
-                    License = new OpenApiLicense
-                    {
-                        Name = "个人博客",
-                        Url = new Uri("https://www.se.cnblogs.com/lonely-wen/")
+                        Version = "Calo API v1",
+                        Title = "Calo API",
+                        Description = "Web API for managing By Calo-YG",
+                        TermsOfService = new Uri("https://gitee.com/wen-yaoguang"),
+                        Contact = new OpenApiContact
+                        {
+                            Name = "Gitee 地址",
+                            Url = new Uri("https://gitee.com/wen-yaoguang/Colo.Blog")
+                        },
+                        License = new OpenApiLicense
+                        {
+                            Name = "个人博客",
+                            Url = new Uri("https://www.se.cnblogs.com/lonely-wen/")
+                        }
                     }
-                });
+                );
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
                 options.OrderActionsBy(o => o.RelativePath);
             });
 
             context.Services.AddCors(
-              options => options.AddPolicy(
-              "YCores",
-        builder => builder
-            .WithOrigins(
-                // App:CorsOrigins in appsettings.json can contain more than one address separated by comma.
-                configuration["App:CorsOriginscors"]
-                    .Split(",", StringSplitOptions.RemoveEmptyEntries)
-                    .Select(o => o.RemoteFix("/"))
-                    .ToArray()
-            )
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials()
-    )
-);
+                options =>
+                    options.AddPolicy(
+                        "YCores",
+                        builder =>
+                            builder
+                                .WithOrigins(
+                                    // App:CorsOrigins in appsettings.json can contain more than one address separated by comma.
+                                    configuration["App:CorsOriginscors"]
+                                        .Split(",", StringSplitOptions.RemoveEmptyEntries)
+                                        .Select(o => o.RemoteFix("/"))
+                                        .ToArray()
+                                )
+                                .AllowAnyHeader()
+                                .AllowAnyMethod()
+                                .AllowCredentials()
+                    )
+            );
         }
 
         public override void InitApplication(InitApplicationContext context)
         {
             var app = context.GetApplicationBuilder();
 
-            var env = (IHostEnvironment)context.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
-
+            var env = (IHostEnvironment)
+                context.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
 
             app.UseCors("YCores");
 
@@ -173,7 +177,7 @@ namespace Calo.Blog.Host
                 options.DocExpansion(DocExpansion.None);
                 options.IndexStream = () =>
                 {
-                    var path = Path.Join(env.ContentRootPath,"wwwroot", "pages", "swagger.html");
+                    var path = Path.Join(env.ContentRootPath, "wwwroot", "pages", "swagger.html");
                     return new FileInfo(path).OpenRead();
                 };
             });

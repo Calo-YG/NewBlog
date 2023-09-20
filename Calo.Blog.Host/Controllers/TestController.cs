@@ -141,7 +141,7 @@ namespace Calo.Blog.Host.Controllers
 					Name ="LocalEventBus" + i.ToString(),
 					Description ="wyg"+i.ToString(),
 				};
-				await _localEventBus.PublichAsync(eto,CancellationToken.None);
+				await _localEventBus.PublichAsync(eto);
 			}
 		}
 	}

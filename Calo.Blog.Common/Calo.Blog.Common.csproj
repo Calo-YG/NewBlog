@@ -14,16 +14,11 @@
     <PackageReference Include="CSRedisCore" Version="3.8.670" />
     <PackageReference Include="Cuemon.Extensions.AspNetCore.Mvc.Formatters.Newtonsoft.Json" Version="7.1.0" />
     <PackageReference Include="Elasticsearch.Net" Version="7.17.5" />
-    <PackageReference Include="Mapster" Version="7.3.0" />
-    <PackageReference Include="Mapster.Async" Version="2.0.0" />
-    <PackageReference Include="Mapster.DependencyInjection" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.8.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.8.0" />
     <PackageReference Include="Minio" Version="5.0.0" />
-    <PackageReference Include="MongoDB.Driver" Version="2.20.0" />
-    <PackageReference Include="NEST" Version="7.17.5" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
   </ItemGroup>

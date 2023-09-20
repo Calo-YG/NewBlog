@@ -100,12 +100,5 @@ namespace Calo.Blog.Common
 
             await Task.CompletedTask;
         }
-
-        private void AddMapter(IServiceCollection services)
-        {
-            var config = new TypeAdapterConfig();
-            services.AddSingleton(config);
-            services.AddScoped<IMapper, ServiceMapper>();
-        }
     }
 }

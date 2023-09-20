@@ -4,8 +4,8 @@
 	<TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	<PackageId>WYG.Common</PackageId>
-	<Version>1.0.1</Version>   
+	<PackageId>Y.Tools</PackageId>
+	<Version>1.0.2</Version>   
 	<Authors>YgCalo</Authors>
   </PropertyGroup>
 

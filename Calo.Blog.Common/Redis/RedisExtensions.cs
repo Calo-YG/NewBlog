@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Caching.Redis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Nest;
 
 namespace Calo.Blog.Common.Redis
 {

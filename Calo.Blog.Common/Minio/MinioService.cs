@@ -4,8 +4,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Minio.DataModel;
 using System.Security.Cryptography;
-using Nest;
-using MongoDB.Driver;
 
 namespace Calo.Blog.Common.Minio
 {

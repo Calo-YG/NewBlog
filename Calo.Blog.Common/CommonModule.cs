@@ -40,43 +40,14 @@ namespace Calo.Blog.Common
             //添加权限
             context.Services.AddSingleton<IAuthorizeManager, AuthorizeManager>();
 
-            //使用CsRedis
-            var redisSetting = configuration.GetSection("App:RedisSetting").Get<RedisSetting>();
-            var csredis = new CSRedis.CSRedisClient(redisSetting.Connstr);
-            context.Services.AddSingleton<IDistributedCache>(new CSRedisCache(csredis));
-            RedisHelper.Initialization(csredis);
-
-            context.Services.AddSingleton<ICacheManager, CacheManager>();
-
             context.Services.AddControllers(options =>
             {
                 options.Filters.Add<ResultFilter>();
             });
 
-            var minioconfigure = configuration.GetSection("App:MinioConfig")
-            .Get<MinioConfig>() ?? throw new NullReferenceException("请设置Minio基础配置");
+            context.Services.AddRedis(configuration);
 
-            context.Services.AddMinio((p) =>
-            {
-                p.DefaultBucket = minioconfigure.DefaultBucket;
-                p.Protal = minioconfigure.Protal;
-                p.SecretKey = minioconfigure.SecretKey;
-                p.AccessKey = minioconfigure.AccessKey;
-                p.Host = minioconfigure.Host;
-                p.Password = minioconfigure.Password;
-                p.UserName = minioconfigure.UserName;   
-            });
-
-            Configure<MinioConfig>(p =>
-            {
-                p.DefaultBucket = minioconfigure.DefaultBucket;
-                p.Protal = minioconfigure.Protal;
-                p.SecretKey = minioconfigure.SecretKey;
-                p.AccessKey = minioconfigure.AccessKey;
-                p.Host = minioconfigure.Host;
-                p.Password = minioconfigure.Password;
-                p.UserName = minioconfigure.UserName;
-            });
+            context.Services.AddMinio(configuration);
 
             Configure<ExceptionOptions>(p =>
             {

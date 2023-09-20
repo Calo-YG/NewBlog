@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Minio;
 
 namespace Calo.Blog.Common.Minio
@@ -10,11 +11,26 @@ namespace Calo.Blog.Common.Minio
 		/// </summary>
 		/// <param name="services"></param>
 		/// <param name="options"></param>
-		public static void AddMinio(this IServiceCollection services,Action<MinioConfig> options)
+		public static void AddMinio(this IServiceCollection services,IConfiguration configuration)
 		{
-			var config = new MinioConfig();
+            var config = configuration.GetSection("App:MinioConfig")
+                          .Get<MinioConfig>();
 
-			options.Invoke(config);
+			if(config is null)
+			{
+				return;
+			}
+
+			services.Configure<MinioConfig>(p =>
+			{
+                p.DefaultBucket = config.DefaultBucket;
+                p.Protal = config.Protal;
+                p.SecretKey = config.SecretKey;
+                p.AccessKey = config.AccessKey;
+                p.Host = config.Host;
+                p.Password = config.Password;
+                p.UserName = config.UserName;
+            });
 
 		    var client = new MinioClient()
 				.WithEndpoint(config.Host)

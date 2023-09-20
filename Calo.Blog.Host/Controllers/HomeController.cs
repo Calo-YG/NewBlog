@@ -3,6 +3,7 @@ using Calo.Blog.Extenions.Attributes;
 using Calo.Blog.Host.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Y.SqlsugarRepository.Repository;
@@ -13,9 +14,9 @@ namespace Calo.Blog.Host.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IBaseRepository<User, long> userRespo;
+        private readonly IBaseRepository<User, Guid> userRespo;
 
-        public HomeController(ILogger<HomeController> logger, IBaseRepository<User, long> baseRepository)
+        public HomeController(ILogger<HomeController> logger, IBaseRepository<User, Guid> baseRepository)
         {
             _logger = logger;
             userRespo = baseRepository; 
@@ -23,6 +24,7 @@ namespace Calo.Blog.Host.Controllers
         public async Task<IActionResult> Index()
         {
              var count = await userRespo.AsQueryable().CountAsync();
+             var user = await userRespo.AsQueryable().FirstAsync();
             _logger.LogInformation("用户人数"+count);
             return View();
         }

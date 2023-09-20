@@ -7,16 +7,16 @@ namespace Calo.Blog.Common.UserSession
 {
     public class CurrentUserSession : IUserSession
     {
-        public long? UserId { get; private set; }
+        public string? UserId { get; private set; }
         public string? UserName { get; private set; }
         public IEnumerable<string>? RoleName { get; private set; }
         public IEnumerable<long>? RoleIds { get; private set; }
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private readonly IBaseRepository<User, long> _userRepository;
+        private readonly IBaseRepository<User, Guid> _userRepository;
 
-        public CurrentUserSession(IHttpContextAccessor httpContextAccessor, IBaseRepository<User, long> userRepository)
+        public CurrentUserSession(IHttpContextAccessor httpContextAccessor, IBaseRepository<User, Guid> userRepository)
         {
             _httpContextAccessor = httpContextAccessor;
             _userRepository = userRepository;
@@ -34,7 +34,7 @@ namespace Calo.Blog.Common.UserSession
             {
                 NotLoginExceptionsExtensions.ThrowNotloginExceptions();
             }
-            UserId = long.Parse(userId);
+            UserId = userId;
             UserName = claims?.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value ?? "";
             RoleIds = claims?
                       .Where(p => p?.Type?.Equals("RoleIds") ?? false)

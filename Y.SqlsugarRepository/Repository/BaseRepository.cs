@@ -5,6 +5,7 @@ using SqlSugar;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Security.Claims;
 using Y.SqlsugarRepository.DatabaseConext;
 using Y.SqlsugarRepository.EntityBase;
 
@@ -57,6 +58,18 @@ namespace Y.SqlsugarRepository.Repository
 
         }
 
+        private string GetUserId()
+        {
+            var claims = _httpContextAccessor?.HttpContext?.User?.Claims;
+            return claims?.FirstOrDefault(p => p.Type == "Id")?.Value??"";
+        }
+
+        private string? GetUserName()
+        {
+            var claims = _httpContextAccessor?.HttpContext?.User?.Claims;
+            return claims?.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value ?? "";;
+        }
+
         private void InitDbAop()
         {
             if (_dbAopProvider.DbConfigureOptions.EnableAopLog)
@@ -75,18 +88,44 @@ namespace Y.SqlsugarRepository.Repository
             {
                 var operationType = entityInfo.OperationType;
 
+                //插入时自动插入值
                 if (entityInfo.PropertyName == "CreationTime" && operationType == DataFilterType.InsertByObject)
                 {
                     entityInfo.SetValue(DateTime.Now);
                 }
+                if (entityInfo.PropertyName == "CreatorUserId" && operationType == DataFilterType.InsertByObject)
+                {
+                    entityInfo.SetValue(GetUserId());
+                }
+                if (entityInfo.PropertyName == "CreatorUserName" && operationType == DataFilterType.InsertByObject)
+                {
+                    entityInfo.SetValue(GetUserName());
+                }
+
                 if (entityInfo.PropertyName == "IsDeleted" && operationType == DataFilterType.InsertByObject)
                 {
                     entityInfo.SetValue(false);
                 }
 
+
+                //更新时自动插入值
                 if (entityInfo.PropertyName == "UpdateTime" && operationType == DataFilterType.UpdateByObject)
                 {
                     entityInfo.SetValue(DateTime.Now);
+                }
+                if (entityInfo.PropertyName == "UpdateUserId" && operationType == DataFilterType.UpdateByObject)
+                {
+                    entityInfo.SetValue(GetUserId());
+                }
+
+                //删除时自动插入值
+                if (entityInfo.PropertyName == "DeleteTime" && operationType == DataFilterType.DeleteByObject)
+                {
+                    entityInfo.SetValue(DateTime.Now);
+                }
+                if (entityInfo.PropertyName == "DeleteUserId" && operationType == DataFilterType.DeleteByObject)
+                {
+                    entityInfo.SetValue(GetUserId());
                 }
             };
         }
@@ -98,6 +137,11 @@ namespace Y.SqlsugarRepository.Repository
 
             foreach (var type in entityTypes)
             {
+                if (!type.GetProperties().Any(p => p.Name.Equals("IsDeleted")))
+                {
+                    return;
+                }
+
                 var lambda = DynamicExpressionParser.ParseLambda
                                          (new[] { Expression.Parameter(type, "p") },
                                           typeof(bool), $"IsDeleted ==  @0",

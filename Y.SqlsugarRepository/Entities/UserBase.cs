@@ -1,15 +1,10 @@
-﻿using SqlSugar;
-using System;
-using Y.SqlsugarRepository.EntityAttribute;
+﻿using Y.SqlsugarRepository.EntityAttribute;
 using Y.SqlsugarRepository.EntityBase;
 
 namespace Calo.Blog.EntityCore.DataBase.Entities
 {
-    public class UserBase : FullAutiedEntity<long>
+    public class UserBase : FullAutiedEntity<Guid>
     {
-        [KeyWithIncrement]
-        public new long Id { get; set; }
-
         [StringAtrribute]
         public string UserName { get; set; }
 

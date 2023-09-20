@@ -5,22 +5,19 @@ namespace Y.SqlsugarRepository.EntityBase
 {
     public class Entity<TPrimarykey> : IEntity<TPrimarykey>, IConcurrentToken
     {
+        [PrimaryKey]
         public TPrimarykey Id { get; set; }
 
         [ConcurrentToken]
         public string? ConcurrentToken { get; set; }
+    }
 
-        [SugarColumn(IsNullable = true)]
-        public TPrimarykey? CreatorUserId { get; set; }
+    public class Entity:IEnity
+    {
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [SugarColumn(IsNullable = true)]
-        public string? CreateorUserName { get; set; }
-
-        [SugarColumn(IsNullable = true)]
-        public DateTime? CreationTime { get; set; }
-        public bool IsDeleted { get; set; }
-
-        [SugarColumn(IsNullable = true)]
-        public TPrimarykey? DeleteUserId { get; set; }
+        [ConcurrentToken]
+        public string? ConcurrentToken { get; set; }
     }
 }

@@ -57,6 +57,10 @@ namespace Y.Module.Modules
                 {
                     await applicationAsync.LaterInitApplicationAsync(context);
                 }
+                if (module.Incetance is ILaterApplication application)
+                {
+                    application.LaterInitApplication(context);
+                }
 
                 _logger.LogInformation($"模块:{name}初始化完成");
             }

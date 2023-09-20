@@ -11,7 +11,7 @@ namespace Calo.Blog.Common.UserSession
         public static NullUserSession Instance { get; } = new NullUserSession();
         public string? UserName { get; private set; }
 
-        public long? UserId { get; private set; }
+        public string? UserId { get; private set; }
 
         public IEnumerable<string>? RoleName => null;
 

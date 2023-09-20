@@ -2,7 +2,7 @@
 {
     public interface IUserSession
     {
-        public long? UserId { get; }
+        public string? UserId { get; }
 
         public string? UserName { get; }
 

@@ -67,9 +67,9 @@ namespace Calo.Blog.EntityCore
             //初始化数据库
             entityManager.BuildDataBase();
             //添加种子数据
-            entityManager.DbSeed((client) =>
+            entityManager.DbSeed(async (client) =>
             {
-                new DataBaseSeed(client, context.ServiceProvider).Create();
+               await new DataBaseSeed(client, context.ServiceProvider).Create();
             });
         }
     }

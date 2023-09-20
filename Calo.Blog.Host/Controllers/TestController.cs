@@ -68,7 +68,7 @@ namespace Calo.Blog.Host.Controllers
 		{
 			var context = _httpContextAccessor.HttpContext;
 			var result = await context.AuthenticateAsync("Cookies");
-			return new User { Id = 1, };
+			return new User { };
 		}
 		[HttpGet]
 		public async Task<string> GetToken()
@@ -120,11 +120,10 @@ namespace Calo.Blog.Host.Controllers
 			user.UserName = "test";
 			user.Phone = "1";
 			user.UpdateTime = DateTime.Now;
-			user.Id = 1;
 			return await _cacheManager.GetOrCreateAsync<User>("user1", () => Task.FromResult(user), 200, 150);
 		}
 		[HttpGet]
-		public long? Info()
+		public string? Info()
 		{
 			_usersession.SetUserInfo();
 			return _usersession.UserId;

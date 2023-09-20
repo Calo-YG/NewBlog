@@ -1,33 +1,31 @@
 ﻿using Calo.Blog.EntityCore.DataBase.Entities;
 using SqlSugar;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Y.SqlsugarRepository.Repository;
 
 namespace Calo.Blog.EntityCore.DadaSeed
 {
     public class UserSeed
     {
-        private readonly ISqlSugarClient _client;
+        private readonly IBaseRepository<User,Guid> baseRepository;
 
-        public UserSeed(ISqlSugarClient client)
+        public UserSeed(IBaseRepository<User, Guid> userRepository)
         {
-            _client = client;
+           baseRepository = userRepository;
         }   
 
-        public void Create()
+        public async Task Create()
         {
             var user = new User();
             user.BirthDate = DateTime.Now;
             user.Email = "31645222062@qq.com";
             user.Password = "wyg154511";
             user.UserName = "wyg文";
-            var isExists = _client.Queryable<User>().Any(p => p.UserName.Equals(user.UserName));
+            var isExists = baseRepository.AsQueryable().Any(p => p.UserName.Equals(user.UserName));
             if (!isExists)
             {
-                _client.Insertable<User>(user).ExecuteCommand();
+               await baseRepository.InsertAsync(user);
             } 
         }
     }

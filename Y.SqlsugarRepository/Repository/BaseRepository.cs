@@ -2,9 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SqlSugar;
+using System.Collections.Concurrent;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Security.Claims;
 using Y.SqlsugarRepository.DatabaseConext;
 using Y.SqlsugarRepository.EntityBase;
@@ -36,6 +36,8 @@ namespace Y.SqlsugarRepository.Repository
         private readonly IHttpContextAccessor _httpContextAccessor;
         private long? UserId { get; set; }
         private string? UserName { get; set; }
+
+        public ConcurrentBag<DataExecutingTrigger> DataExecutingTriggers { get;private set; }
         public BaseRepository(IServiceProvider provider
             , IDbAopProvider dbAopProvider
             , ILoggerFactory loggerFactory
@@ -48,6 +50,7 @@ namespace Y.SqlsugarRepository.Repository
             _httpContextAccessor = httpContextAccessor;
             base.Context = _servicerProvider.GetRequiredService<ISqlSugarClient>();
             InitInfo();
+            InitDataExecutingTrigger();
             EntityService();
             InitFilter();
             InitDbAop();
@@ -64,7 +67,7 @@ namespace Y.SqlsugarRepository.Repository
             return claims?.FirstOrDefault(p => p.Type == "Id")?.Value??"";
         }
 
-        private string? GetUserName()
+        private string GetUserName()
         {
             var claims = _httpContextAccessor?.HttpContext?.User?.Claims;
             return claims?.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value ?? "";;
@@ -82,50 +85,41 @@ namespace Y.SqlsugarRepository.Repository
             }
         }
 
+        public virtual void InitDataExecutingTrigger()
+        {
+            if(DataExecutingTriggers is not null)
+            {
+                return;
+            }
+            DataExecutingTriggers = new ConcurrentBag<DataExecutingTrigger>();
+
+            //插入操作
+            DataExecutingTriggers.Add(new DataExecutingTrigger("CreationTime", DataFilterType.InsertByObject, () =>{ return DateTime.Now; }));
+            DataExecutingTriggers.Add(new DataExecutingTrigger("CreatorUserId", DataFilterType.InsertByObject, GetUserId));
+            DataExecutingTriggers.Add(new DataExecutingTrigger("CreatorUserName", DataFilterType.InsertByObject, GetUserName));
+            DataExecutingTriggers.Add(new DataExecutingTrigger("IsDeleted", DataFilterType.InsertByObject, () => { return false; }));
+
+            //更新操作
+            DataExecutingTriggers.Add(new DataExecutingTrigger("UpdateTime", DataFilterType.UpdateByObject, () => { return DateTime.Now; }));
+            DataExecutingTriggers.Add(new DataExecutingTrigger("UpdateUserId", DataFilterType.UpdateByObject, GetUserId));
+
+            //删除操作
+            DataExecutingTriggers.Add(new DataExecutingTrigger("DeleteTime", DataFilterType.DeleteByObject, () => { return DateTime.Now; }));
+            DataExecutingTriggers.Add(new DataExecutingTrigger("DeleteUserId", DataFilterType.DeleteByObject, GetUserId));
+        }
+
         public virtual void EntityService()
         {
             base.Context.Aop.DataExecuting = (oldValue, entityInfo) =>
             {
                 var operationType = entityInfo.OperationType;
 
-                //插入时自动插入值
-                if (entityInfo.PropertyName == "CreationTime" && operationType == DataFilterType.InsertByObject)
+                foreach(var trigger in DataExecutingTriggers)
                 {
-                    entityInfo.SetValue(DateTime.Now);
-                }
-                if (entityInfo.PropertyName == "CreatorUserId" && operationType == DataFilterType.InsertByObject)
-                {
-                    entityInfo.SetValue(GetUserId());
-                }
-                if (entityInfo.PropertyName == "CreatorUserName" && operationType == DataFilterType.InsertByObject)
-                {
-                    entityInfo.SetValue(GetUserName());
-                }
-
-                if (entityInfo.PropertyName == "IsDeleted" && operationType == DataFilterType.InsertByObject)
-                {
-                    entityInfo.SetValue(false);
-                }
-
-
-                //更新时自动插入值
-                if (entityInfo.PropertyName == "UpdateTime" && operationType == DataFilterType.UpdateByObject)
-                {
-                    entityInfo.SetValue(DateTime.Now);
-                }
-                if (entityInfo.PropertyName == "UpdateUserId" && operationType == DataFilterType.UpdateByObject)
-                {
-                    entityInfo.SetValue(GetUserId());
-                }
-
-                //删除时自动插入值
-                if (entityInfo.PropertyName == "DeleteTime" && operationType == DataFilterType.DeleteByObject)
-                {
-                    entityInfo.SetValue(DateTime.Now);
-                }
-                if (entityInfo.PropertyName == "DeleteUserId" && operationType == DataFilterType.DeleteByObject)
-                {
-                    entityInfo.SetValue(GetUserId());
+                    if (entityInfo.PropertyName == trigger.Property && operationType == trigger.FilterType)
+                    {
+                        entityInfo.SetValue(trigger.Func.Invoke());
+                    }
                 }
             };
         }

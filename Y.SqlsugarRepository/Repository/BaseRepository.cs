@@ -215,14 +215,30 @@ namespace Y.SqlsugarRepository.Repository
             return base.Context.Queryable<TEntity>().WhereIF(expression != null, expression).Any();
         }
 
-        public virtual Task UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>>? expression = null)
+        public virtual async Task UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>>? expression = null)
         {
             var update = base.Context.Updateable<TEntity>(entity);
+
+            var deleteStr = "ConcurrentToken";
+
+            var concurrentToke = typeof(TEntity).GetProperties().Any(p => p.Name.Equals(deleteStr));
+
+            if (concurrentToke && expression is not null)
+            {
+                await update.Where(expression).ExecuteCommandWithOptLockAsync();
+                return;
+            }
+            if (concurrentToke)
+            {
+                await update.ExecuteCommandWithOptLockAsync();
+                return;
+            }
             if (expression == null)
             {
-                return update.ExecuteCommandAsync();
+                await update.ExecuteCommandAsync();
+                return;
             }
-            return update.Where(expression).ExecuteCommandAsync();
+            await update.Where(expression).ExecuteCommandAsync();
         }
 
         public virtual Task BatchUpdateAsync(List<TEntity> entityes)
@@ -235,24 +251,52 @@ namespace Y.SqlsugarRepository.Repository
             return base.Context.Fastest<TEntity>().BulkCopyAsync(entities);
         }
 
-        public virtual Task UpdateColumnsAsync(TEntity entity, Expression<Func<TEntity, object>>? columns = null)
+        public virtual async Task UpdateColumnsAsync(TEntity entity, Expression<Func<TEntity, object>>? columns = null)
         {
             var update = base.Context.Updateable(entity);
-            if (columns != null)
+            var deleteStr = "ConcurrentToken";
+
+            var concurrentToke = typeof(TEntity).GetProperties().Any(p => p.Name.Equals(deleteStr));
+            if (concurrentToke && columns is not null)
             {
-                return update.UpdateColumns(columns).ExecuteCommandAsync();
+                await update.UpdateColumns(columns).ExecuteCommandWithOptLockAsync();
+                return;
             }
-            return update.ExecuteCommandAsync();
+            if (concurrentToke)
+            {
+                await update.ExecuteCommandWithOptLockAsync();
+                return;
+            }
+            if (columns == null)
+            {
+                await update.ExecuteCommandAsync();
+                return;
+            }
+            await update.UpdateColumns(columns).ExecuteCommandAsync();
         }
 
-        public virtual Task UpdateColumnsAsync(TEntity entity, params string[]? columns)
+        public virtual async Task UpdateColumnsAsync(TEntity entity, params string[]? columns)
         {
             var update = base.Context.Updateable(entity);
-            if (columns != null)
+            var deleteStr = "ConcurrentToken";
+
+            var concurrentToke = typeof(TEntity).GetProperties().Any(p => p.Name.Equals(deleteStr));
+            if (concurrentToke && columns is not null)
             {
-                return update.UpdateColumns(columns).ExecuteCommandAsync();
+                await update.UpdateColumns(columns).ExecuteCommandWithOptLockAsync();
+                return;
             }
-            return update.ExecuteCommandAsync();
+            if (concurrentToke)
+            {
+                await update.ExecuteCommandWithOptLockAsync();
+                return;
+            }
+            if (columns == null)
+            {
+                await update.ExecuteCommandAsync();
+                return;
+            }
+            await update.UpdateColumns(columns).ExecuteCommandAsync();
         }
     }
 }

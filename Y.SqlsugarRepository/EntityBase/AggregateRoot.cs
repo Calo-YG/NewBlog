@@ -1,6 +1,6 @@
 ﻿namespace Y.SqlsugarRepository.EntityBase
 {
-    public interface IAggregateen
+    public class AggregateRoot:IAggregateRoot
     {
     }
 }

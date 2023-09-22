@@ -21,6 +21,7 @@ using System.Linq;
 using Calo.Blog.Common.Extensions;
 using Calo.Blog.Application;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace Calo.Blog.Host
 {
@@ -152,6 +153,8 @@ namespace Calo.Blog.Host
 
             app.UseCors("YCores");
 
+            app.UseSerilogRequestLogging();
+
             app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseRouting();
@@ -168,19 +171,22 @@ namespace Calo.Blog.Host
                 endOptions.MapRazorPages();
             });
 
-            app.UseSwagger();
-
-            app.UseSwaggerUI(options =>
+            if (env.IsDevelopment())
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Calo API V1");
-                options.EnableDeepLinking();
-                options.DocExpansion(DocExpansion.None);
-                options.IndexStream = () =>
+                app.UseSwagger();
+
+                app.UseSwaggerUI(options =>
                 {
-                    var path = Path.Join(env.ContentRootPath, "wwwroot", "pages", "swagger.html");
-                    return new FileInfo(path).OpenRead();
-                };
-            });
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Calo API V1");
+                    options.EnableDeepLinking();
+                    options.DocExpansion(DocExpansion.None);
+                    options.IndexStream = () =>
+                    {
+                        var path = Path.Join(env.ContentRootPath, "wwwroot", "pages", "swagger.html");
+                        return new FileInfo(path).OpenRead();
+                    };
+                });
+            }
         }
     }
 }

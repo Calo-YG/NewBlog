@@ -1,4 +1,5 @@
 ﻿using Calo.Blog.Application.ResourceOwnereServices.Etos;
+using Calo.Blog.Application.ResourceOwnereServices.Handlers;
 using Calo.Blog.Common.Authorization.Authorize;
 using Calo.Blog.Domain;
 using Calo.Blog.EntityCore;
@@ -33,9 +34,9 @@ namespace Calo.Blog.Application
 
             context.Services.AddEventBus();
 
-            context.Services.AddChannles(p =>
+            context.Services.Subscribes(p =>
             {
-                p.TryAddChannle<TestEto>();
+                p.Subscribe<TestEto,TestEventHandler>();
             });
         }
         /// <summary>
@@ -53,8 +54,6 @@ namespace Calo.Blog.Application
             await authorizeManager.AddAuthorizeRegiester();
 
             await eventhandlerManager.CreateChannles();
-
-            eventhandlerManager.Subscribe<TestEto>();
         }
     }
 }

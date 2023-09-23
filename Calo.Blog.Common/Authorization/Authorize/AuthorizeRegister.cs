@@ -1,5 +1,4 @@
-﻿using Calo.Blog.EntityCore.Entities;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 namespace Calo.Blog.Common.Authorization.Authorize
 {

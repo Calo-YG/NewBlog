@@ -1,7 +1,5 @@
-﻿using Calo.Blog.EntityCore.DataBase.Entities;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
-using Y.SqlsugarRepository.Repository;
 
 namespace Calo.Blog.Common.UserSession
 {
@@ -14,12 +12,9 @@ namespace Calo.Blog.Common.UserSession
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private readonly IBaseRepository<User, Guid> _userRepository;
-
-        public CurrentUserSession(IHttpContextAccessor httpContextAccessor, IBaseRepository<User, Guid> userRepository)
+        public CurrentUserSession(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
-            _userRepository = userRepository;
             //SetUserInfo();
         }
 

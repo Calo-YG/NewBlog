@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Calo.Blog.Common\Calo.Blog.Common.csproj" />
+    <ProjectReference Include="..\Y.SqlsugarRepository\Y.SqlsugarRepository.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,6 @@
 ﻿using Calo.Blog.Common.Authorization;
 using Calo.Blog.Common.CustomOptions;
 using Calo.Blog.Common.Filters;
-using Calo.Blog.Common.Redis;
 using Calo.Blog.Extenions.AjaxResponse;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,8 +8,6 @@ using Y.Module;
 using Y.Module.Modules;
 using Y.Module.Extensions;
 using Calo.Blog.Common.UserSession;
-using Calo.Blog.Common.Authorization.Authorize;
-using Calo.Blog.Common.Minio;
 using System.Reflection;
 
 namespace Calo.Blog.Common
@@ -33,16 +30,12 @@ namespace Calo.Blog.Common
             //注入IUserSession
             context.Services.AddScoped<IUserSession, CurrentUserSession>();
             //添加权限
-            context.Services.AddSingleton<IAuthorizeManager, AuthorizeManager>();
+            //context.Services.AddSingleton<IAuthorizeManager, AuthorizeManager>();
 
             context.Services.AddControllers(options =>
             {
                 options.Filters.Add<ResultFilter>();
             });
-
-            context.Services.AddRedis(configuration);
-
-            context.Services.AddMinio(configuration);
 
             Configure<ExceptionOptions>(p =>
             {
@@ -53,18 +46,9 @@ namespace Calo.Blog.Common
             context.Services.AddAssembly(Assembly.GetExecutingAssembly());
         }
 
-        public override async Task LaterInitApplicationAsync(InitApplicationContext context)
+        public override  Task LaterInitApplicationAsync(InitApplicationContext context)
         {
-            var scope = context.ServiceProvider.CreateAsyncScope();
-
-            var minioService = scope.ServiceProvider.GetRequiredService<IMinioService>();
-
-            //minio需要配置https
-            //await scope.ServiceProvider
-            //    .GetRequiredService<IMinioService>()
-            //    .CreateDefaultBucket();
-
-            await Task.CompletedTask;
+           return  base.LaterInitApplicationAsync(context);
         }
     }
 }

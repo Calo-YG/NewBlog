@@ -1,6 +1,7 @@
 ﻿using Calo.Blog.Application.ResourceOwnereServices.Etos;
 using Calo.Blog.Application.ResourceOwnereServices.Handlers;
-using Calo.Blog.Common.Authorization.Authorize;
+using Calo.Blog.Common.Minio;
+using Calo.Blog.Common.Redis;
 using Calo.Blog.Domain;
 using Calo.Blog.EntityCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +14,9 @@ using Y.Module.Modules;
 namespace Calo.Blog.Application
 {
     [DependOn(typeof(BlogCoreModule)
-        , typeof(SqlSugarEnityCoreModule))]
+        , typeof(SqlSugarEnityCoreModule)
+        ,typeof(RedisModule)
+        ,typeof(MinioModule))]
     public class BlogApplicationModule : YModule
     {
         /// <summary>
@@ -47,11 +50,11 @@ namespace Calo.Blog.Application
         {
             var scope = context.ServiceProvider.CreateScope();
 
-            var authorizeManager = scope.ServiceProvider.GetRequiredService<IAuthorizeManager>();
+            //var authorizeManager = scope.ServiceProvider.GetRequiredService<IAuthorizeManager>();
 
             var eventhandlerManager = scope.ServiceProvider.GetRequiredService<IEventHandlerManager>();
 
-            await authorizeManager.AddAuthorizeRegiester();
+            //await authorizeManager.AddAuthorizeRegiester();
 
             await eventhandlerManager.CreateChannles();
         }

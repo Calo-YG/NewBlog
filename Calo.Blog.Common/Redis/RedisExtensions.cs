@@ -12,11 +12,6 @@ namespace Calo.Blog.Common.Redis
             //使用CsRedis
             var redisSetting = configuration.GetSection("App:RedisSetting").Get<RedisSetting>();
 
-            if(redisSetting is null)
-            {
-                return;
-            }
-
             var csredis = new CSRedis.CSRedisClient(redisSetting.Connstr);
 
             services.AddSingleton<IDistributedCache>(new CSRedisCache(csredis));

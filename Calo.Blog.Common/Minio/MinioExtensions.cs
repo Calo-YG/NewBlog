@@ -16,11 +16,6 @@ namespace Calo.Blog.Common.Minio
             var config = configuration.GetSection("App:MinioConfig")
                           .Get<MinioConfig>();
 
-			if(config is null)
-			{
-				return;
-			}
-
 			services.Configure<MinioConfig>(p =>
 			{
                 p.DefaultBucket = config.DefaultBucket;
@@ -35,7 +30,8 @@ namespace Calo.Blog.Common.Minio
 		    var client = new MinioClient()
 				.WithEndpoint(config.Host)
 				.WithCredentials(config.AccessKey,config.SecretKey)
-				.WithSSL()
+				//取消ssl配置
+				//.WithSSL()
 				.Build();
 
 			services.AddSingleton<MinioClient>(client);

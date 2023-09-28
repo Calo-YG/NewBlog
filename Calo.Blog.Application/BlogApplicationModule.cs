@@ -39,7 +39,7 @@ namespace Calo.Blog.Application
 
             context.Services.Subscribes(p =>
             {
-                p.Subscribe<TestEto,TestEventHandler>();
+                p.Subscribe<TestEto, TestEventHandler>();
             });
         }
         /// <summary>
@@ -56,7 +56,7 @@ namespace Calo.Blog.Application
 
             //await authorizeManager.AddAuthorizeRegiester();
 
-            await eventhandlerManager.CreateChannles();
+            // await eventhandlerManager.CreateChannles();
         }
     }
 }

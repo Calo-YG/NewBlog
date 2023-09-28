@@ -69,7 +69,7 @@ namespace Calo.Blog.EntityCore
             //添加种子数据
             entityManager.DbSeed(async (client) =>
             {
-               await new DataBaseSeed(client, context.ServiceProvider).Create();
+                await new DataBaseSeed(client, context.ServiceProvider).Create();
             });
         }
     }

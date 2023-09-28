@@ -5,7 +5,6 @@ using SqlSugar;
 using System.Collections.Concurrent;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
-using System.Security.Claims;
 using Y.SqlsugarRepository.DatabaseConext;
 using Y.SqlsugarRepository.EntityBase;
 
@@ -22,7 +21,8 @@ namespace Y.SqlsugarRepository.Repository
             , IDbAopProvider dbAopProvider
             , ILoggerFactory loggerFactory
             , IHttpContextAccessor httpContextAccessor
-            , ISqlSugarClient client = null) : base(provider, dbAopProvider, loggerFactory, httpContextAccessor)
+            , IPropriesSetValue propriesSetValue
+            , ISqlSugarClient client = null) : base(provider, dbAopProvider, loggerFactory, httpContextAccessor,propriesSetValue)
         {
         }
     }
@@ -34,6 +34,7 @@ namespace Y.SqlsugarRepository.Repository
         private readonly IDbAopProvider _dbAopProvider;
         private readonly ILogger _logger;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IPropriesSetValue _propriesSetValue;
         private long? UserId { get; set; }
         private string? UserName { get; set; }
 
@@ -42,35 +43,18 @@ namespace Y.SqlsugarRepository.Repository
             , IDbAopProvider dbAopProvider
             , ILoggerFactory loggerFactory
             , IHttpContextAccessor httpContextAccessor
+            , IPropriesSetValue propriesSetValue
             , ISqlSugarClient client = null) : base(client)
         {
             _servicerProvider = provider;
             _dbAopProvider = dbAopProvider;
             _logger = loggerFactory.CreateLogger(this.GetType());
             _httpContextAccessor = httpContextAccessor;
+            _propriesSetValue = propriesSetValue;
             base.Context = _servicerProvider.GetRequiredService<ISqlSugarClient>();
-            InitInfo();
-            InitDataExecutingTrigger();
             EntityService();
             InitFilter();
             InitDbAop();
-        }
-
-        public virtual void InitInfo()
-        {
-
-        }
-
-        private string GetUserId()
-        {
-            var claims = _httpContextAccessor?.HttpContext?.User?.Claims;
-            return claims?.FirstOrDefault(p => p.Type == "Id")?.Value??"";
-        }
-
-        private string GetUserName()
-        {
-            var claims = _httpContextAccessor?.HttpContext?.User?.Claims;
-            return claims?.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value ?? "";;
         }
 
         private void InitDbAop()
@@ -85,28 +69,6 @@ namespace Y.SqlsugarRepository.Repository
             }
         }
 
-        public virtual void InitDataExecutingTrigger()
-        {
-            if(DataExecutingTriggers is not null)
-            {
-                return;
-            }
-            DataExecutingTriggers = new ConcurrentBag<DataExecutingTrigger>();
-
-            //插入操作
-            DataExecutingTriggers.Add(new DataExecutingTrigger("CreationTime", DataFilterType.InsertByObject, () =>{ return DateTime.Now; }));
-            DataExecutingTriggers.Add(new DataExecutingTrigger("CreatorUserId", DataFilterType.InsertByObject, GetUserId));
-            DataExecutingTriggers.Add(new DataExecutingTrigger("CreatorUserName", DataFilterType.InsertByObject, GetUserName));
-            DataExecutingTriggers.Add(new DataExecutingTrigger("IsDeleted", DataFilterType.InsertByObject, () => { return false; }));
-
-            //更新操作
-            DataExecutingTriggers.Add(new DataExecutingTrigger("UpdateTime", DataFilterType.UpdateByObject, () => { return DateTime.Now; }));
-            DataExecutingTriggers.Add(new DataExecutingTrigger("UpdateUserId", DataFilterType.UpdateByObject, GetUserId));
-
-            //删除操作
-            DataExecutingTriggers.Add(new DataExecutingTrigger("DeleteTime", DataFilterType.DeleteByObject, () => { return DateTime.Now; }));
-            DataExecutingTriggers.Add(new DataExecutingTrigger("DeleteUserId", DataFilterType.DeleteByObject, GetUserId));
-        }
 
         public virtual void EntityService()
         {
@@ -114,7 +76,7 @@ namespace Y.SqlsugarRepository.Repository
             {
                 var operationType = entityInfo.OperationType;
 
-                foreach(var trigger in DataExecutingTriggers)
+                foreach(var trigger in _propriesSetValue.DataExecutingTriggers)
                 {
                     if (entityInfo.PropertyName == trigger.Property && operationType == trigger.FilterType)
                     {

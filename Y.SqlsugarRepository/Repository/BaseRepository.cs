@@ -5,7 +5,6 @@ using SqlSugar;
 using System.Collections.Concurrent;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
-using Y.SqlsugarRepository.DatabaseConext;
 using Y.SqlsugarRepository.EntityBase;
 
 namespace Y.SqlsugarRepository.Repository
@@ -88,21 +87,9 @@ namespace Y.SqlsugarRepository.Repository
 
         public virtual void InitFilter()
         {
-            var entityContianer = _servicerProvider.GetRequiredService<IEntityContainer>();
-            var entityTypes = entityContianer.EntityTypes;
-
-            foreach (var type in entityTypes)
+            foreach (var filter in _propriesSetValue.Filters)
             {
-                if (!type.GetProperties().Any(p => p.Name.Equals("IsDeleted")))
-                {
-                    return;
-                }
-
-                var lambda = DynamicExpressionParser.ParseLambda
-                                         (new[] { Expression.Parameter(type, "p") },
-                                          typeof(bool), $"IsDeleted ==  @0",
-                                           false);
-                base.Context.QueryFilter.AddTableFilter(type, lambda);
+                base.Context.QueryFilter.AddTableFilter(filter.EntityType, filter.LambdaExpression);
             }
         }
 

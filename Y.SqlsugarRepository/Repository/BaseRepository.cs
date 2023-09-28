@@ -34,10 +34,6 @@ namespace Y.SqlsugarRepository.Repository
         private readonly ILogger _logger;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IPropriesSetValue _propriesSetValue;
-        private long? UserId { get; set; }
-        private string? UserName { get; set; }
-
-        public ConcurrentBag<DataExecutingTrigger> DataExecutingTriggers { get;private set; }
         public BaseRepository(IServiceProvider provider
             , IDbAopProvider dbAopProvider
             , ILoggerFactory loggerFactory

@@ -39,7 +39,7 @@ namespace Y.SqlsugarRepository.Repository
             DataExecutingTriggers.Add(new DataExecutingTrigger("CreationTime", DataFilterType.InsertByObject, () => { return DateTime.Now; }));
             DataExecutingTriggers.Add(new DataExecutingTrigger("CreatorUserId", DataFilterType.InsertByObject, GetUserId));
             DataExecutingTriggers.Add(new DataExecutingTrigger("CreatorUserName", DataFilterType.InsertByObject, GetUserName));
-            DataExecutingTriggers.Add(new DataExecutingTrigger("IsDeleted", DataFilterType.InsertByObject, () => { return false; }));
+            DataExecutingTriggers.Add(new DataExecutingTrigger("IsDeleted", DataFilterType.InsertByObject, () => false));
 
             //更新操作
             DataExecutingTriggers.Add(new DataExecutingTrigger("UpdateTime", DataFilterType.UpdateByObject, () => { return DateTime.Now; }));

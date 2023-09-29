@@ -182,7 +182,12 @@ namespace Calo.Blog.Host
                     options.DocExpansion(DocExpansion.None);
                     options.IndexStream = () =>
                     {
-                        var path = Path.Join(env.ContentRootPath, "wwwroot", "pages", "swagger.html");
+                        var path = Path.Join(
+                            env.ContentRootPath,
+                            "wwwroot",
+                            "pages",
+                            "swagger.html"
+                        );
                         return new FileInfo(path).OpenRead();
                     };
                 });

@@ -74,12 +74,12 @@ namespace Calo.Blog.Common.Authorization
                 .Select(p => p.Value);
             UserTokenModel tokenModel = new UserTokenModel()
             {
-                UserId = long.Parse(userId ?? "0"),
+                UserId = userId ?? "",
                 UserName = claims?.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value ?? "",
                 RoleNames = roleNames?.ToArray(),
                 RoleIds = roleIds?.ToArray(),
             };
-            if (requirement.AuthorizeName.Any())
+            if (requirement?.AuthorizeName?.Any() ?? false)
             {
                 if (!_permisscheck.IsGranted(tokenModel, requirement.AuthorizeName))
                 {

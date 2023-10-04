@@ -18,7 +18,7 @@ namespace Calo.Blog.Common.Authorization
 
         public Task<AuthorizationPolicy?> GetFallbackPolicyAsync()
         {
-            return Task.FromResult<AuthorizationPolicy>(null);
+            return Task.FromResult<AuthorizationPolicy?>(null);
         }
 
         public Task<AuthorizationPolicy?> GetPolicyAsync(string policyName)
@@ -28,14 +28,14 @@ namespace Calo.Blog.Common.Authorization
             policy.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
             if (policyName is null)
             {
-                return Task.FromResult<AuthorizationPolicy>(null);
+                return Task.FromResult<AuthorizationPolicy?>(null);
             }
             var authorizations = policyName.Split(',');
             if (authorizations.Any())
             {
                 policy.AddRequirements(new AuthorizeRequirement(authorizations));
             }
-            return Task.FromResult(policy.Build());
+            return Task.FromResult<AuthorizationPolicy?>(policy.Build());
         }
     }
 }

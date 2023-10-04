@@ -75,7 +75,7 @@ namespace Calo.Blog.Host.Controllers
 		{
 			UserTokenModel tokenModel = new UserTokenModel();
 			tokenModel.UserName = "test";
-			tokenModel.UserId = 1;
+			tokenModel.UserId = 1.ToString();
 			var token = _tokenProvider.GenerateToken(tokenModel);
 
 			Response.Cookies.Append("x-access-token", token);

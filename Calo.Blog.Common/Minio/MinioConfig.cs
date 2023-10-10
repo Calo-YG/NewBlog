@@ -30,5 +30,9 @@
 		/// 操作面板
 		/// </summary>
 		public string Protal { get; set; }
-	}
+		/// <summary>
+		/// 是否使用加密--必须配置https
+		/// </summary>
+		public bool Encryption { get; set; }
+    }
 }

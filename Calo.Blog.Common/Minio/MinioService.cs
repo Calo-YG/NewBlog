@@ -95,16 +95,22 @@ namespace Calo.Blog.Common.Minio
 
             await _minioClient.StatObjectAsync(statObjectArgs);
 
-            Stream objStream = null;
+            MemoryStream objStream = new MemoryStream();
 
             GetObjectArgs getObjectArgs = new GetObjectArgs()
                       .WithBucket(input.BucketName)
                       .WithObject(input.ObjectName)
-                      .WithCallbackStream((stream) =>
+                      .WithCallbackStream( (stream) =>
                       {
                           //stream.CopyTo(Console.OpenStandardOutput());
-                          objStream=stream ?? throw new ArgumentNullException("Minio文件对象流为空");
+                          if(stream is null)
+                          {
+                              throw new ArgumentNullException("Minio文件对象流为空");
+                          }
+                          stream.CopyTo(objStream);
                       });
+
+            objStream.Position = 0;
 
             var statObj=  await _minioClient.GetObjectAsync(getObjectArgs);
 
@@ -140,18 +146,23 @@ namespace Calo.Blog.Common.Minio
                 ThrowMinioFileExistsException.FileExistsException(input.ObjectName);
             }
 
-            Aes aesEncryption = Aes.Create();
-            aesEncryption.KeySize = 256;
-            aesEncryption.GenerateKey();
-
-            var ssec = new SSEC(aesEncryption.Key);
-
             PutObjectArgs putObjectArgs = new PutObjectArgs()
                                               .WithBucket(input.BucketName)
                                               .WithObject(input.ObjectName)
                                               .WithStreamData(input.Stream)
                                               .WithContentType(input.ContentType)
-                                              .WithServerSideEncryption(ssec);
+                                              .WithObjectSize(input.Stream.Length);
+            //.WithServerSideEncryption(ssec);
+
+            if (_minioOptions.Value.Encryption)
+            {
+                Aes aesEncryption = Aes.Create();
+                aesEncryption.KeySize = 256;
+                aesEncryption.GenerateKey();
+
+                var ssec = new SSEC(aesEncryption.Key);
+                putObjectArgs.WithServerSideEncryption(ssec);   
+            }
 
             await _minioClient.PutObjectAsync(putObjectArgs);
         }

@@ -21,7 +21,7 @@ namespace Calo.Blog.Common.Authorization
                 var isLogin = context?.User?.Identity?.IsAuthenticated ?? false;
                 var path = context?.Request?.Path ?? "";
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                var response = new AjaxResponse();
+                var response = new AjaxResponseResult();
                 response.UnAuthorizedRequest = true;
                 response.StatusCode = "401";
                 var error = new ErrorInfo();

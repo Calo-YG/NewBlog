@@ -29,12 +29,12 @@ namespace Calo.Blog.Extenions.AjaxResponse
 
             if (!(objectResult.Value is AjaxResponseBase))
             {
-                var response = new AjaxResponse();
+                var response = new AjaxResponseResult();
                 response.Result = objectResult.Value;
                 response.StatusCode = "200";
                 response.Success = true;
                 objectResult.Value = response;
-                objectResult.DeclaredType = typeof(AjaxResponse);
+                objectResult.DeclaredType = typeof(AjaxResponseResult);
             }
         }
     }

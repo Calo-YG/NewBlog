@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Calo.Blog.Common.AjaxResponse;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,8 @@ namespace Calo.Blog.Extenions.AjaxResponse
                     return new JsonActionResultWrap();
                 case ResultExecutingContext resultExecutingContext when resultExecutingContext.Result is EmptyResult:
                     return new ActionEmptyResultWrap();
+                case ResultExecutingContext resultExecutedContext when resultExecutedContext.Result is FileStreamResult:
+                    return new FileActionResultWarp();
                 default : return new NullAactionResultWrap();
             }
         }

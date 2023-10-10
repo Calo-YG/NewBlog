@@ -96,20 +96,22 @@ namespace Calo.Blog.Common.Minio
             await _minioClient.StatObjectAsync(statObjectArgs);
 
             MemoryStream objStream = new MemoryStream();
+            
 
             GetObjectArgs getObjectArgs = new GetObjectArgs()
                       .WithBucket(input.BucketName)
                       .WithObject(input.ObjectName)
-                      .WithCallbackStream( (stream) =>
+                      .WithCallbackStream(  (stream) =>
                       {
                           //stream.CopyTo(Console.OpenStandardOutput());
-                          if(stream is null)
+                          if (stream is null)
                           {
                               throw new ArgumentNullException("Minio文件对象流为空");
                           }
+                          //stream.CopyTo(objStream);
                           stream.CopyTo(objStream);
+                          objStream.Position = 0;
                       });
-
             objStream.Position = 0;
 
             var statObj=  await _minioClient.GetObjectAsync(getObjectArgs);

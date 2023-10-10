@@ -7,22 +7,22 @@ using System.Threading.Tasks;
 namespace Calo.Blog.Extenions.AjaxResponse
 {
     [Serializable]
-    public class AjaxResponse<TResult> :AjaxResponseBase
+    public class AjaxResponseResult<TResult> :AjaxResponseBase
     {
         public TResult? Result { get; set; } 
 
-        public AjaxResponse(TResult result)
+        public AjaxResponseResult(TResult result)
         {
             Result = result;
             Success= true;
         }
 
-        public AjaxResponse() 
+        public AjaxResponseResult() 
         { 
             Success= true;
         }
 
-        public AjaxResponse(ErrorInfo error, bool unAuthorizedRequest = false)
+        public AjaxResponseResult(ErrorInfo error, bool unAuthorizedRequest = false)
         {
             Error = error;
             UnAuthorizedRequest = unAuthorizedRequest;
@@ -31,23 +31,23 @@ namespace Calo.Blog.Extenions.AjaxResponse
 
     }
     [Serializable]
-    public class AjaxResponse : AjaxResponse<object>
+    public class AjaxResponseResult : AjaxResponseResult<object>
     {
-        public AjaxResponse(object result) : base(result)
+        public AjaxResponseResult(object result) : base(result)
         {
         }
 
-        public AjaxResponse(ErrorInfo error, bool unAuthorizedRequest) : base(error, unAuthorizedRequest) 
+        public AjaxResponseResult(ErrorInfo error, bool unAuthorizedRequest) : base(error, unAuthorizedRequest) 
         {
 
         }
 
-        public AjaxResponse(object result, bool _unAuthorizedRequest):base(result)
+        public AjaxResponseResult(object result, bool _unAuthorizedRequest):base(result)
         {
             UnAuthorizedRequest = _unAuthorizedRequest;
         }
 
 
-        public AjaxResponse() : base(){ }
+        public AjaxResponseResult() : base(){ }
     }
 }

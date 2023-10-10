@@ -15,7 +15,7 @@ namespace Calo.Blog.Extenions.AjaxResponse
             switch (context)
             {
                 case ResultExecutingContext resultExecutingContext:
-                    resultExecutingContext.Result = new ObjectResult(new AjaxResponse());
+                    resultExecutingContext.Result = new ObjectResult(new AjaxResponseResult());
                     return;
             }
         }

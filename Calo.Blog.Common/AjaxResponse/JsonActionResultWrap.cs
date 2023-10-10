@@ -31,7 +31,7 @@ namespace Calo.Blog.Extenions.AjaxResponse
 
             if (!(jsonResult.Value is AjaxResponseBase))
             {
-                var response = new AjaxResponse();
+                var response = new AjaxResponseResult();
                 response.Result = jsonResult.Value;
                 response.Success = true;
                 response.StatusCode = "200";

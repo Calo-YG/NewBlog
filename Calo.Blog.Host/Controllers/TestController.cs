@@ -16,6 +16,8 @@ using Calo.Blog.Common.UserSession;
 using Y.EventBus;
 using Calo.Blog.Application.ResourceOwnereServices.Etos;
 using System.Threading;
+using Calo.Blog.Common.Minio;
+using Minio;
 
 namespace Calo.Blog.Host.Controllers
 {
@@ -29,12 +31,16 @@ namespace Calo.Blog.Host.Controllers
 		private readonly ICacheManager _cacheManager;
 		private readonly IUserSession _usersession;
 		private readonly ILocalEventBus _localEventBus;
-		public TestController(IHttpContextAccessor httpContextAccessor
+		private readonly IMinioService _minioService;
+        private readonly MinioClient _minioClient;
+        public TestController(IHttpContextAccessor httpContextAccessor
 			, ITokenProvider tokenProvider
 			, IDistributedCache cache
 			, ICacheManager cacheManager
 			, IUserSession userSession
-			, ILocalEventBus localEventBus)
+			, ILocalEventBus localEventBus
+			, IMinioService minioService
+			, MinioClient minioClient)
 		{
 			_httpContextAccessor = httpContextAccessor;
 			_tokenProvider = tokenProvider;
@@ -42,6 +48,8 @@ namespace Calo.Blog.Host.Controllers
 			_cacheManager = cacheManager;
 			_usersession = userSession;
 			_localEventBus = localEventBus;
+			_minioService = minioService;
+			_minioClient = minioClient;
 		}
 		/// <summary>
 		/// justTestApi
@@ -143,5 +151,20 @@ namespace Calo.Blog.Host.Controllers
 				await _localEventBus.PublichAsync(eto);
 			}
 		}
+		[HttpGet]
+		public async Task<IActionResult> GetFile()
+		{
+            var obj = new GetObjectInput()
+            {
+                ObjectName = "YChat_Minio_1989422021_4fcbb43b8b31308f31be02df6bee77ee.jpeg",
+                BucketName = "y.chat"
+            };
+
+			var output= await _minioService.GetObjectAsync(obj);
+
+            //output.Stream.CopyTo(Console.OpenStandardOutput());
+
+            return new FileStreamResult(output.Stream, output.ContentType);
+        }
 	}
 }

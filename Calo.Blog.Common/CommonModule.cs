@@ -34,7 +34,7 @@ namespace Calo.Blog.Common
 
             context.Services.AddControllers(options =>
             {
-                options.Filters.Add<ResultFilter>();
+              options.Filters.Add<ResultFilter>();
             });
 
             Configure<ExceptionOptions>(p =>

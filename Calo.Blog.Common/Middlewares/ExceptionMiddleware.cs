@@ -64,7 +64,7 @@ namespace Calo.Blog.Common.Middlewares
             var exception = edi.SourceException;
             var logMsg = $"SourseRoute {requestPath} {exception.Source} {exception.Message} {exception.StackTrace} ";
             _logger.LogError(logMsg);
-            AjaxResponse response = new AjaxResponse();
+            var response = new AjaxResponseResult();
             response.Success = false;
             response.StatusCode = "500";
             ErrorInfo error = new ErrorInfo();

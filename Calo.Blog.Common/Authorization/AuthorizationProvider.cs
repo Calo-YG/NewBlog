@@ -25,7 +25,7 @@ namespace Calo.Blog.Common.Authorization
         {
             var policy = new AuthorizationPolicyBuilder();
             policy.AddAuthenticationSchemes("Bearer");
-            policy.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
+            //policy.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
             if (policyName is null)
             {
                 return Task.FromResult<AuthorizationPolicy?>(null);

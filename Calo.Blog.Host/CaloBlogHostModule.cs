@@ -22,6 +22,8 @@ using Calo.Blog.Common.Extensions;
 using Calo.Blog.Application;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using System.Collections.Generic;
+using Microsoft.OpenApi.Writers;
 
 namespace Calo.Blog.Host
 {
@@ -78,6 +80,8 @@ namespace Calo.Blog.Host
                         SaveSigninToken = true,
                     };
 
+                    options.SaveToken=true;
+
                     options.Events = new JwtBearerEvents
                     {
                         OnMessageReceived = context =>
@@ -91,6 +95,14 @@ namespace Calo.Blog.Host
 
                             return Task.CompletedTask;
                         },
+                        OnAuthenticationFailed = context =>
+                        {
+                            using var Scope=  context.HttpContext.RequestServices.CreateAsyncScope();
+                            var logger = Scope.ServiceProvider.GetRequiredService<ILogger>();
+                            logger.Warning("JWT-鉴权失败");
+
+                            return Task.CompletedTask;
+                        }
                     };
                 });
 

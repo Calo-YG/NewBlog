@@ -18,6 +18,7 @@ using Calo.Blog.Application.ResourceOwnereServices.Etos;
 using System.Threading;
 using Calo.Blog.Common.Minio;
 using Minio;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Calo.Blog.Host.Controllers
 {
@@ -166,5 +167,10 @@ namespace Calo.Blog.Host.Controllers
 
             return new FileStreamResult(output.Stream, output.ContentType);
         }
+		[HttpGet]
+		public async Task SignOut()
+		{
+			await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+		}
 	}
 }

@@ -8,8 +8,14 @@ namespace Calo.Blog.Common.Authorization
 {
     public class JwtBearerRefreshHandler : JwtBearerHandler
     {
-        public JwtBearerRefreshHandler(IOptionsMonitor<JwtBearerOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
+        private readonly JwtBearerRefreshOptions _options;
+        public JwtBearerRefreshHandler(IOptions<JwtBearerRefreshOptions> refreshOptions
+            , IOptionsMonitor<JwtBearerOptions> options
+            , ILoggerFactory logger
+            , UrlEncoder encoder
+            , ISystemClock clock) : base(options, logger, encoder, clock)
         {
+            _options = refreshOptions.Value;
         }
     }
 }

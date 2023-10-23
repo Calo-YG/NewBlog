@@ -1,6 +1,6 @@
 ﻿namespace Calo.Blog.Common.Authorization
 {
-    public class JwtBearerRefresOptions
+    public class JwtBearerRefreshOptions
     {
     }
 }

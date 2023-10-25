@@ -122,7 +122,7 @@ namespace Calo.Blog.Common.Authorization
                 jwtsetting.Audience,   //Audience
                 claims,                          //Claims,
                 DateTime.Now,                    //notBefore
-                DateTime.Now.AddMinutes(jwtsetting.ExpMinutes),    //expires
+                DateTime.Now.AddMinutes(jwtsetting.ExpMinutes+10),    //expires
                 signingCredentials               //Credentials
             );
 

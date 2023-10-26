@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Calo.Blog.Common.Hubs;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -11,11 +15,18 @@ namespace Calo.Blog.Common.Authorization
     {
         private readonly IConfiguration _configuration;
 
-        public TokenProvider(IConfiguration configuration)
+        private readonly JwtBearerOptions Options;
+
+        private readonly ILogger _logger;
+        public TokenProvider(IConfiguration configuration
+            , IOptionsMonitor<JwtBearerOptions> options
+            , ILoggerFactory factory)
         {
             _configuration = configuration;
+            Options = options.CurrentValue;
+            _logger = factory.CreateLogger<ITokenProvider>();
         }
-        public virtual string GenerateToken(UserTokenModel user)
+        public virtual (string Token,string RefreshToken) GenerateToken(UserTokenModel user)
         {
             var jwtsetting = _configuration.GetSection("App:JwtSetting").Get<JwtSetting>() ?? throw new ArgumentException("请先检查JWT配置");
             // 1. 定义需要使用到的Claims
@@ -59,77 +70,75 @@ namespace Calo.Blog.Common.Authorization
             // 6. 将token变为string
             var token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
 
-            return token;
-        }
-        
-        /// <summary>
-        /// 解析jwt字符串
-        /// </summary>
-        public virtual JwtAnalysis AnalysisJwt(string jwt)
-        {
-            var jwtHandler = new JwtSecurityTokenHandler();
-            var jwtAn = new JwtAnalysis();
-
-            if (!string.IsNullOrEmpty(jwt) && jwtHandler.CanReadToken(jwt))
-            {
-
-                JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(jwt);
-                var expraion  = jwtToken.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Expiration) ?? null;
-
-                DateTime datetime;
-                
-                DateTime.TryParse(expraion?.Value ?? "", out datetime);
-
-                jwtAn.ExprationTime= datetime;
-            }
-            return jwtAn;
-        }
-
-        public virtual string GenerateRefreshToken(UserTokenModel user)
-        {
-            var jwtsetting = _configuration.GetSection("App:JwtSetting").Get<JwtSetting>() ?? throw new ArgumentException("请先检查JWT配置");
-            // 1. 定义需要使用到的Claims
-            var claims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.Name, user.UserName), //HttpContext.User.Identity.Name
-                new Claim("Id", user.UserId.ToString()),
-                new Claim (JwtRegisteredClaimNames.Exp,$"{new DateTimeOffset(DateTime.Now.AddMinutes(jwtsetting.ExpMinutes)).ToUnixTimeSeconds()}"),
-                new Claim(ClaimTypes.Expiration, DateTime.Now.AddMinutes(jwtsetting.ExpMinutes).ToString()),
-            };
-            if (user.RoleIds != null && user.RoleIds.Any())
-            {
-                claims.AddRange(user.RoleIds.Select(p => new Claim("RoleIds", p.ToString())));
-            }
-            if (user.RoleNames != null && user.RoleNames.Any())
-            {
-                claims.AddRange(user.RoleNames.Select(p => new Claim(ClaimTypes.Role, p)));
-            }
-
-            user.Claims = claims.ToArray();
-
-            // 2. 从 appsettings.json 中读取SecretKey
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtsetting.SecretKey));
-
-            // 3. 选择加密算法
-            var algorithm = SecurityAlgorithms.HmacSha256;
-
-            // 4. 生成Credentials
-            var signingCredentials = new SigningCredentials(secretKey, algorithm);
-
-            // 5. 根据以上，生成token
-            var jwtSecurityToken = new JwtSecurityToken(
-                jwtsetting.Issuer,     //Issuer
+            //7.生成refreshtoken
+            jwtSecurityToken = new JwtSecurityToken(jwtsetting.Issuer,     //Issuer
                 jwtsetting.Audience,   //Audience
                 claims,                          //Claims,
                 DateTime.Now,                    //notBefore
                 DateTime.Now.AddMinutes(jwtsetting.ExpMinutes+10),    //expires
-                signingCredentials               //Credentials
-            );
+                signingCredentials);
+            var refreshToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
 
-            // 6. 将token变为string
-            var token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+            return (token,refreshToken);
+        }
 
-            return token;
+        public void CheckToken(MessageReceivedContext context)
+        {
+            var accessToken = context.Request.Headers["Authorization"];
+            var refreshToken = context.Request.Headers["RefreshToken"];
+            _logger.LogInformation($"access-token--{accessToken}");
+            _logger.LogInformation($"refresh-token--{refreshToken}");
+
+            var validationParameters = Options.TokenValidationParameters.Clone();
+            List<Exception>? validationFailures = null;
+            SecurityToken? validatedToken = null;
+            foreach (var validator in Options.SecurityTokenValidators)
+            {
+                if (validator.CanReadToken(accessToken))
+                {
+                    ClaimsPrincipal principal;
+                    try
+                    {
+                        principal = validator.ValidateToken(accessToken, validationParameters, out validatedToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning("Token 验证异常");
+
+                        // Refresh the configuration for exceptions that may be caused by key rollovers. The user can also request a refresh in the event.
+                        if (Options.RefreshOnIssuerKeyNotFound && Options.ConfigurationManager != null
+                            && ex is SecurityTokenSignatureKeyNotFoundException)
+                        {
+                            Options.ConfigurationManager.RequestRefresh();
+                        }
+
+                        if (validationFailures == null)
+                        {
+                            validationFailures = new List<Exception>(1);
+                        }
+                        validationFailures.Add(ex);
+                        continue;
+                    }
+
+                    //_logger.LogInformation("Token 验证成功");
+                    context.Token=accessToken;
+                    context.Success();
+                }
+            }
+
+            if(validationFailures?.Any() ?? false)
+            {
+                if (!string.IsNullOrEmpty(refreshToken))
+                {
+                    _logger.LogWarning("当前token 来源--RefreshToken");
+
+                    context.Token = refreshToken;
+                }
+                else
+                {
+                    context.Token = null;
+                }
+            }
         }
     }
 }

@@ -22,8 +22,7 @@ using Calo.Blog.Common.Extensions;
 using Calo.Blog.Application;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using System.Collections.Generic;
-using Microsoft.OpenApi.Writers;
+using Calo.Blog.Common.Hubs;
 
 namespace Calo.Blog.Host
 {
@@ -86,13 +85,19 @@ namespace Calo.Blog.Host
                     {
                         OnMessageReceived = context =>
                         {
-                            var accessToken = context.Request.Cookies["x-access-token"];
-
-                            if (!string.IsNullOrEmpty(accessToken))
+                            var chatToken = context.Request.Query["access_token"];
+                            //signlir提供token
+                            if (!string.IsNullOrEmpty(chatToken) && context.Request.Path.StartsWithSegments("/token-hub"))
                             {
-                                context.Token = accessToken;
+                                context.Token = chatToken;
                             }
+                            else
+                            {
+                                using var scope = context.HttpContext.RequestServices.CreateAsyncScope();
+                                var tokenprovider = scope.ServiceProvider.GetRequiredService<ITokenProvider>();
 
+                                tokenprovider.CheckToken(context);
+                            }
                             return Task.CompletedTask;
                         },
                         OnAuthenticationFailed = context =>
@@ -105,7 +110,7 @@ namespace Calo.Blog.Host
                         }
                     };
                 });
-
+            context.Services.AddSignalR();
             context.Services.AddSwaggerGen(options =>
             {
                 options.OperationFilter<AddResponseHeadersFilter>();

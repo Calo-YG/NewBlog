@@ -8,6 +8,6 @@ namespace Calo.Blog.Application.Interfaces
 {
     public interface ITokenApplicationService
     {
-        public string GenerateToken(Guid userId);
+        public (string Token, string RefreshToken) GenerateToken(Guid userId);
     }
 }

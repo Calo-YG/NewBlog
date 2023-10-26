@@ -1,10 +1,11 @@
 ﻿
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 namespace Calo.Blog.Common.Authorization
 {
     public interface ITokenProvider
     {
-        string GenerateToken(UserTokenModel user);
-
-        JwtAnalysis AnalysisJwt(string jwt);
+        (string Token, string RefreshToken) GenerateToken(UserTokenModel user);
+        void CheckToken(MessageReceivedContext context);
     }
 }

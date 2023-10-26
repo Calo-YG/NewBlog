@@ -66,18 +66,10 @@ namespace Calo.Blog.Common.Authorization
                 context.Succeed(requirement);
                 return;
             }
-            var roleIds = claims?
-                .Where(p => p?.Type?.Equals("RoleIds") ?? false)
-                .Select(p => long.Parse(p.Value));
-            var roleNames = claims?
-                .Where(p => p?.Type?.Equals(ClaimTypes.Role) ?? false)
-                .Select(p => p.Value);
             UserTokenModel tokenModel = new UserTokenModel()
             {
                 UserId = userId ?? "",
                 UserName = claims?.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value ?? "",
-                RoleNames = roleNames?.ToArray(),
-                RoleIds = roleIds?.ToArray(),
             };
             if (requirement?.AuthorizeName?.Any() ?? false)
             {

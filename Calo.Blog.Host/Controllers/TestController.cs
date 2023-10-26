@@ -15,10 +15,8 @@ using Calo.Blog.Common.Redis;
 using Calo.Blog.Common.UserSession;
 using Y.EventBus;
 using Calo.Blog.Application.ResourceOwnereServices.Etos;
-using System.Threading;
 using Calo.Blog.Common.Minio;
 using Minio;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Calo.Blog.Host.Controllers
 {
@@ -80,14 +78,15 @@ namespace Calo.Blog.Host.Controllers
 			return new User { };
 		}
 		[HttpGet]
-		public async Task<string> GetToken()
+		public async Task<dynamic> GetToken()
 		{
 			UserTokenModel tokenModel = new UserTokenModel();
 			tokenModel.UserName = "test";
 			tokenModel.UserId = 1.ToString();
 			var token = _tokenProvider.GenerateToken(tokenModel);
 
-			Response.Cookies.Append("x-access-token", token);
+			Response.Cookies.Append("x-access-token", token.Token);
+			Response.Cookies.Append("refresh-token",token.RefreshToken);
 			var claimsIdentity = new ClaimsIdentity(tokenModel.Claims, "Login");
 			AuthenticationProperties properties = new AuthenticationProperties();
 			properties.AllowRefresh = false;
@@ -95,7 +94,11 @@ namespace Calo.Blog.Host.Controllers
 			properties.IssuedUtc = DateTimeOffset.UtcNow;
 			properties.ExpiresUtc = DateTimeOffset.Now.AddMinutes(1);
 			await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), properties);
-			return token;
+			return new
+			{
+				Token=token.Token,
+				RefreshToken=token.RefreshToken
+			};
 		}
 		[HttpGet]
 		public async Task<IEnumerable<int>> SetArray()

@@ -12,7 +12,7 @@ namespace Calo.Blog.Application.TokenAppService.Dtos
         {
             _tokenprovider= tokenProvider;
         }
-        public string GenerateToken(Guid userId)
+        public (string Token,string RefreshToken) GenerateToken(Guid userId)
         {
             //throw new NotImplementedException();
 

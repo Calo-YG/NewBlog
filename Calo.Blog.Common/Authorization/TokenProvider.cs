@@ -1,5 +1,4 @@
-﻿using Calo.Blog.Common.Hubs;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -86,20 +85,34 @@ namespace Calo.Blog.Common.Authorization
         {
             var accessToken = context.Request.Headers["Authorization"];
             var refreshToken = context.Request.Headers["RefreshToken"];
-            _logger.LogInformation($"access-token--{accessToken}");
-            _logger.LogInformation($"refresh-token--{refreshToken}");
 
+            var pass = CheckToken(context,accessToken, false);
+            //token验证失败
+            if(!pass)
+            {
+                //验证refreshtoken
+                CheckToken(context,refreshToken, true);
+            }
+
+        }
+
+        public bool CheckToken(MessageReceivedContext context,string? token,bool isrefresh)
+        {
+            if (string.IsNullOrEmpty(token))
+            {
+                context.Fail("No SecurityTokenValidator available for token.");
+            }
             var validationParameters = Options.TokenValidationParameters.Clone();
             List<Exception>? validationFailures = null;
             SecurityToken? validatedToken = null;
             foreach (var validator in Options.SecurityTokenValidators)
             {
-                if (validator.CanReadToken(accessToken))
+                if (validator.CanReadToken(token))
                 {
                     ClaimsPrincipal principal;
                     try
                     {
-                        principal = validator.ValidateToken(accessToken, validationParameters, out validatedToken);
+                        principal = validator.ValidateToken(token, validationParameters, out validatedToken);
                     }
                     catch (Exception ex)
                     {
@@ -119,26 +132,22 @@ namespace Calo.Blog.Common.Authorization
                         validationFailures.Add(ex);
                         continue;
                     }
-
-                    //_logger.LogInformation("Token 验证成功");
-                    context.Token=accessToken;
-                    context.Success();
                 }
             }
 
-            if(validationFailures?.Any() ?? false)
+            if (validationFailures?.Any() ?? false)
             {
-                if (!string.IsNullOrEmpty(refreshToken))
+                if (isrefresh)
                 {
-                    _logger.LogWarning("当前token 来源--RefreshToken");
-
-                    context.Token = refreshToken;
+                    var authenticationFailedContext = new AuthenticationFailedContext(context.HttpContext, context.Scheme, Options)
+                    {
+                        Exception = (validationFailures.Count == 1) ? validationFailures[0] : new AggregateException(validationFailures)
+                    };
+                    context.Fail(authenticationFailedContext.Exception);
                 }
-                else
-                {
-                    context.Token = null;
-                }
+                return false;
             }
+            return true;
         }
     }
 }

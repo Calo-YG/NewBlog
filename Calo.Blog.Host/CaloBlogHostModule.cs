@@ -22,7 +22,6 @@ using Calo.Blog.Common.Extensions;
 using Calo.Blog.Application;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using Calo.Blog.Common.Hubs;
 
 namespace Calo.Blog.Host
 {
@@ -86,26 +85,10 @@ namespace Calo.Blog.Host
                         OnMessageReceived = context =>
                         {
                             var chatToken = context.Request.Query["access_token"];
-                            //signlir提供token
-                            if (!string.IsNullOrEmpty(chatToken) && context.Request.Path.StartsWithSegments("/token-hub"))
-                            {
-                                context.Token = chatToken;
-                            }
-                            else
-                            {
-                                using var scope = context.HttpContext.RequestServices.CreateAsyncScope();
-                                var tokenprovider = scope.ServiceProvider.GetRequiredService<ITokenProvider>();
+                            using var scope = context.HttpContext.RequestServices.CreateAsyncScope();
+                            var tokenprovider = scope.ServiceProvider.GetRequiredService<ITokenProvider>();
 
-                                tokenprovider.CheckToken(context);
-                            }
-                            return Task.CompletedTask;
-                        },
-                        OnAuthenticationFailed = context =>
-                        {
-                            using var Scope=  context.HttpContext.RequestServices.CreateAsyncScope();
-                            var logger = Scope.ServiceProvider.GetRequiredService<ILogger>();
-                            logger.Warning("JWT-鉴权失败");
-
+                            tokenprovider.CheckToken(context);
                             return Task.CompletedTask;
                         }
                     };

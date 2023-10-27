@@ -1,4 +1,3 @@
-using Calo.Blog.Common.Hubs;
 using Calo.Blog.Host;
 using Microsoft.AspNetCore.Builder;
 using Serilog;
@@ -25,7 +24,5 @@ var app = builder.Build();
 // 创建中间件管道
 
 await app.InitApplicationAsync();
-
-app.MapHub<TokenHub>("/token-hub");
 
 app.Run();

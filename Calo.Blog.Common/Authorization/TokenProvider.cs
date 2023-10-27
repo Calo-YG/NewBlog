@@ -93,10 +93,18 @@ namespace Calo.Blog.Common.Authorization
                 //验证refreshtoken
                 CheckToken(context,refreshToken, true);
             }
-
         }
-
-        public bool CheckToken(MessageReceivedContext context,string? token,bool isrefresh)
+        private static DateTime? GetSafeDateTime(DateTime dateTime)
+        {
+            // Assigning DateTime.MinValue or default(DateTime) to a DateTimeOffset when in a UTC+X timezone will throw
+            // Since we don't really care about DateTime.MinValue in this case let's just set the field to null
+            if (dateTime == DateTime.MinValue)
+            {
+                return null;
+            }
+            return dateTime;
+        }
+        private bool CheckToken(MessageReceivedContext context,string? token,bool isrefresh)
         {
             if (string.IsNullOrEmpty(token))
             {
@@ -105,11 +113,12 @@ namespace Calo.Blog.Common.Authorization
             var validationParameters = Options.TokenValidationParameters.Clone();
             List<Exception>? validationFailures = null;
             SecurityToken? validatedToken = null;
+            ClaimsPrincipal principal=null;
             foreach (var validator in Options.SecurityTokenValidators)
             {
                 if (validator.CanReadToken(token))
                 {
-                    ClaimsPrincipal principal;
+                    
                     try
                     {
                         principal = validator.ValidateToken(token, validationParameters, out validatedToken);
@@ -147,6 +156,13 @@ namespace Calo.Blog.Common.Authorization
                 }
                 return false;
             }
+            var tokenValidatedContext = new TokenValidatedContext(context.HttpContext, context.Scheme, Options)
+            {
+                Principal = principal,
+                SecurityToken = validatedToken
+            };
+            tokenValidatedContext.Properties.ExpiresUtc = GetSafeDateTime(validatedToken.ValidTo);
+            tokenValidatedContext.Properties.IssuedUtc = GetSafeDateTime(validatedToken.ValidFrom);
             return true;
         }
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Y.SqlsugarRepository.EntityAttribute
 {
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property,AllowMultiple =false)]
     public class KeyWithIncrementAttribute:Attribute
     {
         public bool IsIncrement { get=>_isIncrement;}

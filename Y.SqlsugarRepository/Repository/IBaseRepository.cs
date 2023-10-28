@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Y.SqlsugarRepository.DatabaseConext;
 using Y.SqlsugarRepository.EntityBase;
 
 namespace Y.SqlsugarRepository.Repository
@@ -112,8 +113,6 @@ namespace Y.SqlsugarRepository.Repository
 
         Task<bool> InsertRangeAsync(List<TEntity> insertObjs);
 
-        Task<bool> UpdateAsync(TEntity updateObj);
-
         Task<bool> UpdateRangeAsync(TEntity[] updateObjs);
 
         Task<bool> UpdateRangeAsync(List<TEntity> updateObjs);
@@ -122,12 +121,13 @@ namespace Y.SqlsugarRepository.Repository
 
         Task<bool> UpdateSetColumnsTrueAsync(Expression<Func<TEntity, TEntity>> columns, Expression<Func<TEntity, bool>> whereExpression);
 
-        Task<bool> DeleteAsync(TEntity deleteObj);
+        //Task<bool> DeleteAsync(TEntity deleteObj);
 
-        Task<bool> DeleteAsync(List<TEntity> deleteObjs);
+        //Task<bool> DeleteAsync(List<TEntity> deleteObjs);
 
-        Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> whereExpression);
+        //Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> whereExpression);
 
+        Task DeleteAsync(TEntity entity);
         Task<TEntity> InsertReturnEnityAsync(TEntity entity);
 
         Task BatchInsertAsync(List<TEntity> entitys);
@@ -149,5 +149,7 @@ namespace Y.SqlsugarRepository.Repository
         Task UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>>? expression = null);
 
         Task BatchDeleteAsync(List<TEntity> entities, Expression<Func<TEntity, bool>>? expression = null);
+
+        SugarContext CreateContext(bool isTran);
     }
 }

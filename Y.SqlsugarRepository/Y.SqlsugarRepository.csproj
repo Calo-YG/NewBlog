@@ -10,7 +10,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="SqlSugarCore" Version="5.1.4.94" />
+		<PackageReference Include="SqlSugarCore" Version="5.1.4.112" />
 		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.3.4" />
 	</ItemGroup>
 

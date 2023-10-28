@@ -21,6 +21,7 @@ namespace Y.SqlsugarRepository.EntityBase
 
         [SugarColumn(IsNullable = true)]
         public string? DeleteUserId { get; set; }
+
         [SugarColumn(IsNullable = true)]
         public DateTime? DeleteTime { get; set; }
     }

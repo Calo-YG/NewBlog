@@ -17,6 +17,11 @@ using Y.EventBus;
 using Calo.Blog.Application.ResourceOwnereServices.Etos;
 using Calo.Blog.Common.Minio;
 using Minio;
+using SqlSugar;
+using Y.SqlsugarRepository.DatabaseConext;
+using Calo.Blog.Common.Excetptions;
+using Y.SqlsugarRepository.Repository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Calo.Blog.Host.Controllers
 {
@@ -32,6 +37,8 @@ namespace Calo.Blog.Host.Controllers
 		private readonly ILocalEventBus _localEventBus;
 		private readonly IMinioService _minioService;
         private readonly MinioClient _minioClient;
+		private readonly ISqlSugarClient Context;
+		private readonly IBaseRepository<User, Guid> _userRepository;
         public TestController(IHttpContextAccessor httpContextAccessor
 			, ITokenProvider tokenProvider
 			, IDistributedCache cache
@@ -39,7 +46,9 @@ namespace Calo.Blog.Host.Controllers
 			, IUserSession userSession
 			, ILocalEventBus localEventBus
 			, IMinioService minioService
-			, MinioClient minioClient)
+			, MinioClient minioClient
+			, ISqlSugarClient context
+			, IBaseRepository<User, Guid> userRepository)
 		{
 			_httpContextAccessor = httpContextAccessor;
 			_tokenProvider = tokenProvider;
@@ -49,6 +58,8 @@ namespace Calo.Blog.Host.Controllers
 			_localEventBus = localEventBus;
 			_minioService = minioService;
 			_minioClient = minioClient;
+			Context = context;
+			_userRepository = userRepository;
 		}
 		/// <summary>
 		/// justTestApi
@@ -80,20 +91,16 @@ namespace Calo.Blog.Host.Controllers
 		[HttpGet]
 		public async Task<dynamic> GetToken()
 		{
+			using var uow = Context.CreateContext<SugarContext>(true);
+			await uow.DbSet<User>().CountAsync(p=>p.CreationTime<=DateTime.Now);
+			
 			UserTokenModel tokenModel = new UserTokenModel();
 			tokenModel.UserName = "test";
-			tokenModel.UserId = 1.ToString();
+			tokenModel.UserId = "a4281793-35c9-4eeb-bdfe-0dcf9524b59f";
 			var token = _tokenProvider.GenerateToken(tokenModel);
 
 			Response.Cookies.Append("x-access-token", token.Token);
 			Response.Cookies.Append("refresh-token",token.RefreshToken);
-			var claimsIdentity = new ClaimsIdentity(tokenModel.Claims, "Login");
-			AuthenticationProperties properties = new AuthenticationProperties();
-			properties.AllowRefresh = false;
-			properties.IsPersistent = true;
-			properties.IssuedUtc = DateTimeOffset.UtcNow;
-			properties.ExpiresUtc = DateTimeOffset.Now.AddMinutes(1);
-			await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), properties);
 			return new
 			{
 				Token=token.Token,
@@ -175,5 +182,41 @@ namespace Calo.Blog.Host.Controllers
 		{
 			await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 		}
+		[HttpGet]
+		public async Task TestUow()
+		{
+            using var uow = Context.CreateContext<SugarContext>();
+            var user = new User();
+            user.BirthDate = DateTime.Now;
+            user.Email = "31645222062@qq.com";
+            user.Password = "wyg154511";
+            user.UserName = "wyg文eee9";
+            var isExists =await _userRepository.AnyAsync(p => p.UserName.Equals(user.UserName));
+            if (!isExists)
+            {
+                await _userRepository.InsertAsync(user);
+            }
+            throw new UserfriednlyException("ddd");
+            uow.Commit();
+        }
+		[Authorize]
+		[HttpPost]
+		public async Task TestUplock()
+		{
+            using var uow = Context.CreateContext<SugarContext>();
+			var user =await uow.DbSet<User>().FirstAsync();
+			user.UserName = "ddd-wyg";
+			await _userRepository.UpdateAsync(user,null);
+			uow.Commit();
+        }
+        [Authorize]
+        [HttpDelete]
+		public async Task TestDelete()
+		{
+            using var uow = Context.CreateContext<SugarContext>();
+            var user = await uow.DbSet<User>().FirstAsync();
+			await _userRepository.DeleteAsync(user);
+			uow.Commit();
+        }
 	}
 }

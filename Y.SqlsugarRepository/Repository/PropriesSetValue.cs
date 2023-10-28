@@ -8,7 +8,7 @@ using Y.SqlsugarRepository.DatabaseConext;
 
 namespace Y.SqlsugarRepository.Repository
 {
-    public class PropriesSetValue : IPropriesSetValue
+    public class PropriesSetValue : IPropriesSetValue,IDisposable
     {
         public ConcurrentBag<DataExecutingTrigger> DataExecutingTriggers {  get;private set; }
 
@@ -40,15 +40,16 @@ namespace Y.SqlsugarRepository.Repository
             DataExecutingTriggers.Add(new DataExecutingTrigger("CreatorUserId", DataFilterType.InsertByObject, GetUserId));
             DataExecutingTriggers.Add(new DataExecutingTrigger("CreatorUserName", DataFilterType.InsertByObject, GetUserName));
             DataExecutingTriggers.Add(new DataExecutingTrigger("IsDeleted", DataFilterType.InsertByObject, () => false));
+            DataExecutingTriggers.Add(new DataExecutingTrigger("ConcurrentToken", DataFilterType.InsertByObject, () => "7e85e989-3d84-43c4-8cc2-32f89c99174b"));
 
             //更新操作
             DataExecutingTriggers.Add(new DataExecutingTrigger("UpdateTime", DataFilterType.UpdateByObject, () => { return DateTime.Now; }));
             DataExecutingTriggers.Add(new DataExecutingTrigger("UpdateUserId", DataFilterType.UpdateByObject, GetUserId));
 
-            //删除操作
-            DataExecutingTriggers.Add(new DataExecutingTrigger("DeleteTime", DataFilterType.DeleteByObject, () => { return DateTime.Now; }));
-            DataExecutingTriggers.Add(new DataExecutingTrigger("DeleteUserId", DataFilterType.DeleteByObject, GetUserId));
-            DataExecutingTriggers.Add(new DataExecutingTrigger("IsDeleted",DataFilterType.DeleteByObject, ()=>true));
+            ////删除操作
+            //DataExecutingTriggers.Add(new DataExecutingTrigger("DeleteTime", DataFilterType.DeleteByObject, () => { return DateTime.Now; }));
+            //DataExecutingTriggers.Add(new DataExecutingTrigger("DeleteUserId", DataFilterType.DeleteByObject, GetUserId));
+            //DataExecutingTriggers.Add(new DataExecutingTrigger("IsDeleted",DataFilterType.DeleteByObject, ()=>true));
         }
 
         public virtual void InitFilter()
@@ -94,5 +95,18 @@ namespace Y.SqlsugarRepository.Repository
             return claims?.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value ?? ""; ;
         }
 
+        public void Dispose()
+        {
+            if(Filters != null)
+            {
+                Filters.Clear();
+                Filters = null;
+            }
+            if(DataExecutingTriggers != null)
+            {
+                DataExecutingTriggers.Clear();
+                DataExecutingTriggers = null;
+            }
+        }
     }
 }

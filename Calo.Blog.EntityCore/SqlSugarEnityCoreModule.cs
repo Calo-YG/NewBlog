@@ -27,6 +27,7 @@ namespace Calo.Blog.EntityCore
                 p.IsAutoCloseConnection = true;
                 p.ConfigureExternalServices = TableAttributeConfig.AddContextColumsConfigure();
             });
+            context.Services.AddUnitOfWorkScoped();
             context.Services.AddSingleton<IEntityManager, EntityManager>();
             //添加数据库上下文AOP配置
             context.Services.AddScoped<IDbAopProvider, DbAopProvider>();

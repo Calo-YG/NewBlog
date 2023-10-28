@@ -1,6 +1,6 @@
 ﻿namespace Y.SqlsugarRepository.EntityAttribute
 {
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property,AllowMultiple =false)]
     public class StringAtrribute:Attribute
     {
         public int _length { get; private set; }

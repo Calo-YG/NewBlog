@@ -22,6 +22,7 @@ using Calo.Blog.Common.Extensions;
 using Calo.Blog.Application;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using SqlSugar;
 
 namespace Calo.Blog.Host
 {
@@ -39,7 +40,6 @@ namespace Calo.Blog.Host
             context.Services.AddHttpContextAccessor();
 
             var jwtsetting = configuration.GetSection("App:JWtSetting").Get<JwtSetting>();
-
             //添加cokkie认证和cokkie
             context.Services
                 .AddAuthentication(context =>
@@ -48,6 +48,7 @@ namespace Calo.Blog.Host
                     context.RequireAuthenticatedSignIn = true;
                     context.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     context.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    context.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
                 .AddCookie(options =>
                 {
@@ -78,17 +79,12 @@ namespace Calo.Blog.Host
                         SaveSigninToken = true,
                     };
 
-                    options.SaveToken=true;
-
                     options.Events = new JwtBearerEvents
                     {
-                        OnMessageReceived = context =>
+                        OnAuthenticationFailed = context =>
                         {
-                            var chatToken = context.Request.Query["access_token"];
-                            using var scope = context.HttpContext.RequestServices.CreateAsyncScope();
-                            var tokenprovider = scope.ServiceProvider.GetRequiredService<ITokenProvider>();
-
-                            tokenprovider.CheckToken(context);
+                            Console.BackgroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("token 验证失败");
                             return Task.CompletedTask;
                         }
                     };
@@ -141,6 +137,13 @@ namespace Calo.Blog.Host
                                 .AllowAnyMethod()
                                 .AllowCredentials()
                     )
+            );
+            var descriptor = context.Services.FirstOrDefault(
+                p => p.ServiceType == typeof(ISqlSugarClient)
+            );
+
+            Console.WriteLine(
+                $"ISqlsugarClient 生命周期--------------------------------------------------------------{descriptor.Lifetime}"
             );
         }
 

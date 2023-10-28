@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.ConstrainedExecution;
 using System.Security.Claims;
 using System.Text;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
@@ -17,6 +18,7 @@ namespace Calo.Blog.Common.Authorization
         private readonly JwtBearerOptions Options;
 
         private readonly ILogger _logger;
+
         public TokenProvider(IConfiguration configuration
             , IOptionsMonitor<JwtBearerOptions> options
             , ILoggerFactory factory)
@@ -28,24 +30,21 @@ namespace Calo.Blog.Common.Authorization
         public virtual (string Token,string RefreshToken) GenerateToken(UserTokenModel user)
         {
             var jwtsetting = _configuration.GetSection("App:JwtSetting").Get<JwtSetting>() ?? throw new ArgumentException("请先检查JWT配置");
+            var now = DateTime.Now;
             // 1. 定义需要使用到的Claims
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Name, user.UserName), //HttpContext.User.Identity.Name
+                new Claim(JwtRegisteredClaimNames.Name, user.UserName), //HttpContext.User.Identity.Name
                 new Claim("Id", user.UserId.ToString()),
-                new Claim (JwtRegisteredClaimNames.Exp,$"{new DateTimeOffset(DateTime.Now.AddMinutes(jwtsetting.ExpMinutes)).ToUnixTimeSeconds()}"),
-                new Claim(ClaimTypes.Expiration, DateTime.Now.AddMinutes(jwtsetting.ExpMinutes).ToString()),
+                new Claim(JwtRegisteredClaimNames.Iss,jwtsetting.Issuer),
+                new Claim(JwtRegisteredClaimNames.Nbf,new DateTimeOffset(now).ToUnixTimeSeconds().ToString()),
+                new Claim (JwtRegisteredClaimNames.Exp,$"{new DateTimeOffset(now.AddMinutes(jwtsetting.ExpMinutes)).ToUnixTimeSeconds().ToString()}"),
             };
-            if (user.RoleIds != null && user.RoleIds.Any())
-            {
-                claims.AddRange(user.RoleIds.Select(p => new Claim("RoleIds", p.ToString())));
-            }
-            if(user.RoleNames!= null && user.RoleNames.Any())
-            {
-                claims.AddRange(user.RoleNames.Select(p=>new Claim(ClaimTypes.Role, p)));
-            }
 
-            user.Claims = claims.ToArray();
+            if(user?.Claims?.Any() ?? false)
+            {
+                claims.AddRange(user.Claims);
+            }
 
             // 2. 从 appsettings.json 中读取SecretKey
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtsetting.SecretKey));
@@ -61,8 +60,8 @@ namespace Calo.Blog.Common.Authorization
                 jwtsetting.Issuer,     //Issuer
                 jwtsetting.Audience,   //Audience
                 claims,                          //Claims,
-                DateTime.Now,                    //notBefore
-                DateTime.Now.AddMinutes(jwtsetting.ExpMinutes),    //expires
+                now,                    //notBefore
+                now.AddMinutes(jwtsetting.ExpMinutes),    //expires
                 signingCredentials               //Credentials
             );
 
@@ -73,8 +72,8 @@ namespace Calo.Blog.Common.Authorization
             jwtSecurityToken = new JwtSecurityToken(jwtsetting.Issuer,     //Issuer
                 jwtsetting.Audience,   //Audience
                 claims,                          //Claims,
-                DateTime.Now,                    //notBefore
-                DateTime.Now.AddMinutes(jwtsetting.ExpMinutes+10),    //expires
+                now,                    //notBefore
+                now.AddMinutes(jwtsetting.ExpMinutes+10),    //expires
                 signingCredentials);
             var refreshToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
 
@@ -114,11 +113,31 @@ namespace Calo.Blog.Common.Authorization
             List<Exception>? validationFailures = null;
             SecurityToken? validatedToken = null;
             ClaimsPrincipal principal=null;
+            if (!string.IsNullOrEmpty(token))
+            {
+                string authorization =context.HttpContext.Request.Headers.Authorization;
+
+                // If no authorization header found, nothing to process further
+                //if (string.IsNullOrEmpty(authorization))
+                //{
+                //    return AuthenticateResult.NoResult();
+                //}
+
+                if (token.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+                {
+                    token = authorization.Substring("Bearer ".Length).Trim();
+                }
+
+                // If no token found, no further work possible
+                //if (string.IsNullOrEmpty(token))
+                //{
+                //    return AuthenticateResult.NoResult();
+                //}
+            }
             foreach (var validator in Options.SecurityTokenValidators)
             {
                 if (validator.CanReadToken(token))
                 {
-                    
                     try
                     {
                         principal = validator.ValidateToken(token, validationParameters, out validatedToken);
@@ -161,8 +180,11 @@ namespace Calo.Blog.Common.Authorization
                 Principal = principal,
                 SecurityToken = validatedToken
             };
-            tokenValidatedContext.Properties.ExpiresUtc = GetSafeDateTime(validatedToken.ValidTo);
-            tokenValidatedContext.Properties.IssuedUtc = GetSafeDateTime(validatedToken.ValidFrom);
+            if(token is not null)
+            {
+                tokenValidatedContext.Properties.ExpiresUtc = GetSafeDateTime(validatedToken.ValidTo);
+                tokenValidatedContext.Properties.IssuedUtc = GetSafeDateTime(validatedToken.ValidFrom);
+            }
             return true;
         }
     }

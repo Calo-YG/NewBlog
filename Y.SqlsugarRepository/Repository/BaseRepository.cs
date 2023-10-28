@@ -4,6 +4,8 @@ using Microsoft.Extensions.Logging;
 using SqlSugar;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
+using System.Security.Claims;
+using Y.SqlsugarRepository.DatabaseConext;
 using Y.SqlsugarRepository.EntityBase;
 
 namespace Y.SqlsugarRepository.Repository
@@ -53,17 +55,21 @@ namespace Y.SqlsugarRepository.Repository
 
         private void InitDbAop()
         {
-            if (_dbAopProvider.DbConfigureOptions.EnableAopLog)
-            {
-                base.Context.Aop.OnLogExecuting = _dbAopProvider.AopLogAction(_logger);
-            }
-            if (_dbAopProvider.DbConfigureOptions.EnableAopError)
-            {
-                base.Context.Aop.OnError = _dbAopProvider.AopErrorAction(_logger);
-            }
+            base.Context.Aop.OnError = _dbAopProvider.AopErrorAction();
+            base.Context.Aop.OnLogExecuted = _dbAopProvider.AopAfterExecutedTime(base.Context);
+            base.Context.Aop.OnLogExecuting=_dbAopProvider.AopBeforeExecutedTime(base.Context);
+        }
+        public virtual string GetUserId()
+        {
+            var claims = _httpContextAccessor?.HttpContext?.User?.Claims;
+            return claims?.FirstOrDefault(p => p.Type == "Id")?.Value ?? "";
         }
 
-
+        public virtual string GetUserName()
+        {
+            var claims = _httpContextAccessor?.HttpContext?.User?.Claims;
+            return claims?.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value ?? ""; ;
+        }
         public virtual void EntityService()
         {
             base.Context.Aop.DataExecuting = (oldValue, entityInfo) =>
@@ -100,7 +106,7 @@ namespace Y.SqlsugarRepository.Repository
             {
                 return delete.ExecuteCommandAsync();
             }
-            return delete.IsLogic().ExecuteCommandAsync(deleteStr);
+            return delete.IsLogic().ExecuteCommandAsync(deleteStr,true, "DeleteTime", "DeleteUserId", GetUserId());
         }
 
         public virtual async Task BatchDeleteAsync(List<TEntity> entities,Expression<Func<TEntity,bool>>? expression = null)
@@ -163,13 +169,28 @@ namespace Y.SqlsugarRepository.Repository
 
             if (concurrentToke && expression is not null)
             {
-                await update.Where(expression).ExecuteCommandWithOptLockAsync();
-                return;
+                try
+                {
+                    await update.Where(expression).ExecuteCommandWithOptLockAsync(true);
+                    return;
+                }
+                catch (VersionExceptions ex)
+                {
+                    throw ex;
+                }
             }
+
             if (concurrentToke)
             {
-                await update.ExecuteCommandWithOptLockAsync();
-                return;
+                try
+                {
+                    await update.ExecuteCommandWithOptLockAsync(true);
+                    return;
+                }
+                catch (VersionExceptions ex)
+                {
+                    throw ex;
+                }
             }
             if (expression == null)
             {
@@ -235,6 +256,11 @@ namespace Y.SqlsugarRepository.Repository
                 return;
             }
             await update.UpdateColumns(columns).ExecuteCommandAsync();
+        }
+
+        public virtual SugarContext CreateContext(bool isTran)
+        {
+            return base.Context.CreateContext<SugarContext>(isTran);
         }
     }
 }

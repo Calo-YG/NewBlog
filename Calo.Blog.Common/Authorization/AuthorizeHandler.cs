@@ -48,16 +48,6 @@ namespace Calo.Blog.Common.Authorization
                 context.Fail(failureReason);
                 return;
             }
-            //判断token是否过期
-            DateTime expire;
-            var expiraton = claims?.FirstOrDefault(p => p.Type == ClaimTypes.Expiration);
-            DateTime.TryParse(expiraton?.Value ?? "",out expire);
-            if(expire < DateTime.Now)
-            {
-                failureReason = new AuthorizationFailureReason(this, "Token过期，请重新登陆");
-                context.Fail(failureReason);
-                return;
-            }
 
             var defaultPolicy = requirement.AuthorizeName?.Any() ?? false;
             //默认授权策略

@@ -1,37 +1,42 @@
 ﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using SqlSugar;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Y.SqlsugarRepository.DatabaseConext;
 
 namespace Y.SqlsugarRepository.Repository
 {
-    public class DbAopProvider:IDbAopProvider
+    public class DbAopProvider : IDbAopProvider
     {
-        private readonly IOptions<DbConfigureOptions> _dboptions;
-        public DbConfigureOptions DbConfigureOptions { get => _dboptions.Value; }
-        public DbAopProvider(IOptions<DbConfigureOptions> dboptions)
+        private readonly ILogger logger;
+        public DbAopProvider(ILoggerFactory factory)
         {
-            _dboptions = dboptions;
+            logger=factory.CreateLogger<IDbAopProvider>();
         }
 
-        public virtual Action<string, SugarParameter[]> AopLogAction(ILogger logger)
+        public virtual Action<string, SugarParameter[]> AopBeforeExecutedTime(ISqlSugarClient db)
         {
-            return (sql, paras) =>
+            return (sql, param) =>
             {
-                logger.LogInformation(sql, paras.Select(p => p.Value));
+                Console.BackgroundColor = ConsoleColor.Green;
+                Console.WriteLine("Before Executed Time:" + db.Ado.SqlExecutionTime.ToString());
             };
         }
 
-        public virtual Action<SqlSugarException> AopErrorAction(ILogger logger)
+        public virtual Action<SqlSugarException> AopErrorAction()
         {
             return (ex) =>
             {
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.Write("After Executed Sql Error");
                 logger.LogError(ex.Message, ex.Sql);
+            };
+        }
+
+        public virtual Action<string, SugarParameter[]> AopAfterExecutedTime (ISqlSugarClient db)
+        {
+            return (sql, param) =>
+            {
+                Console.BackgroundColor= ConsoleColor.Green;
+                Console.Write("After Executed Time:" + db.Ado.SqlExecutionTime.ToString());
+                logger.LogInformation(sql, param.Select(p => p.Value));
             };
         }
 

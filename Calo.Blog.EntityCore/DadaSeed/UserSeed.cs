@@ -21,12 +21,12 @@ namespace Calo.Blog.EntityCore.DadaSeed
             user.BirthDate = DateTime.Now;
             user.Email = "31645222062@qq.com";
             user.Password = "wyg154511";
-            user.UserName = "wyg文eee";
-            var isExists = baseRepository.AsQueryable().Any(p => p.UserName.Equals(user.UserName));
+            user.UserName = "wyg文1";
+            var isExists =await baseRepository.AsQueryable().AnyAsync(p => p.UserName.Equals(user.UserName));
             if (!isExists)
             {
                await baseRepository.InsertAsync(user);
-            } 
+            }
         }
     }
 }

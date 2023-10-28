@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
 using System;
 using System.Threading.Tasks;
+using Y.SqlsugarRepository.DatabaseConext;
 using Y.SqlsugarRepository.Repository;
 
 namespace Calo.Blog.EntityCore.DadaSeed
@@ -23,17 +24,9 @@ namespace Calo.Blog.EntityCore.DadaSeed
 
         public async Task Create()
         {
-            _client.Ado.BeginTran();
-            try
-            {
-              await   new UserSeed(baseRepository).Create();
-            }
-            catch (Exception)
-            {
-                _client.Ado.RollbackTran();
-                throw;
-            }
-            _client.Ado.CommitTran();
+            using var uow = _client.CreateContext<SugarContext>();
+            await new UserSeed(baseRepository).Create();
+            uow.Commit();
         }
     }
 }

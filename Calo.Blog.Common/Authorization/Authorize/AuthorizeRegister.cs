@@ -4,29 +4,32 @@ namespace Calo.Blog.Common.Authorization.Authorize
 {
     public class AuthorizeRegister
     {
-        public static List<AuthorizeProvider> AuthorizeProviders { get; private set; }
+        public static List<AuthorizePermissionProvider> AuthorizeProviders { get; private set; }
 
-        public static List<Permission> Permissions { get; private set; }    
+        public static List<Permission> Permissions { get; private set; }
+
+        private readonly IAuthorizePermissionContext Context;
  
         public AuthorizeRegister() 
         {        
             if(AuthorizeProviders is null) throw new ArgumentNullException(nameof(AuthorizeProviders));
+            Context = new AuthorizePermissionContext();
         }
 
         static AuthorizeRegister()
         {
-            AuthorizeProviders = AuthorizeProviders ?? new List<AuthorizeProvider>();
+            AuthorizeProviders = AuthorizeProviders ?? new List<AuthorizePermissionProvider>();
             Permissions = Permissions?? new List<Permission>(); 
         }
 
         
-        public static void RegisterAuthorizeProvider<T>() where T : AuthorizeProvider
+        public static void RegisterAuthorizeProvider<T>() where T : AuthorizePermissionProvider
         {
             var instance = CreateInstance<T>();
             AuthorizeProviders.Add(instance);
         }
 
-        public virtual void RegisterAuthorize<T>() where T : AuthorizeProvider
+        public virtual void RegisterAuthorize<T>() where T : AuthorizePermissionProvider
         {
             var instance =CreateInstance<T>();
             AuthorizeProviders.Add(instance);
@@ -46,20 +49,24 @@ namespace Calo.Blog.Common.Authorization.Authorize
             List<Permission> permissions = new List<Permission>();  
             foreach(var provider in AuthorizeProviders)
             {
-                GetPermissions(provider.Permissions);
+                //GetPermissions(provider.Permissions);
+                if(provider is AuthorizePermissionProvider permissionProvider)
+                {
+                    provider.PermissionDefined(Context);
+                }
             }
             return permissions;
         }
 
         private void GetPermissions(Permission permission)
         {
-            if(permission is null) throw new ArgumentNullException(nameof(permission));
-            Permissions.Add(permission);
-            if (permission.Children is null) return;
-            foreach(var item in permission.Children)
-            {
-                GetPermissions(item);  
-            }
+            //if(permission is null) throw new ArgumentNullException(nameof(permission));
+            //Permissions.Add(permission);
+            //if (permission.Children is null) return;
+            //foreach(var item in permission.Children)
+            //{
+            //    GetPermissions(item);  
+            //}
         }
     }
 }

@@ -7,17 +7,36 @@
         public string Code { get; set; }
 
         public string? ParentCode { get; set; }
+         List<Permission>  Groups { get; set; }
+         List<Permission> Childrens { get; set; }
 
-        public List<Permission> Children { get; set; }
 
-        public virtual void CreateChildren(string name)
+
+        public Permission AddGroup(string code,string name)
         {
-            Children = Children ?? new List<Permission>();
-            Children.Add(new Permission()
+            var permission= new Permission { Name = name, Code = code,ParentCode = this.ParentCode};
+            Groups.Add(permission);
+            return permission;
+        }
+
+        public virtual Permission AddChild(string name)
+        {
+            var childe = new Permission()
             {
                 Name = name,
                 ParentCode = this.ParentCode
-            });
+            };
+            Childrens.Add(childe);
+            return childe;
+        }
+
+        public virtual void AddPermissin(string code,string name)
+        {
+            var permission = new Permission()
+            {
+                Name = name,
+                ParentCode = this.ParentCode
+            };
         }
     }
 }

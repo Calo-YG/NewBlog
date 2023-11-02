@@ -43,30 +43,18 @@ namespace Calo.Blog.Common.Authorization.Authorize
             return instance.Invoke();
         } 
 
-        public virtual List<Permission> InitAuthorize()
+        public virtual List<Permission> InitAuthorizePermission()
         {
             if (AuthorizeProviders is null) throw new ArgumentNullException(nameof(AuthorizeProviders));
             List<Permission> permissions = new List<Permission>();  
             foreach(var provider in AuthorizeProviders)
             {
-                //GetPermissions(provider.Permissions);
                 if(provider is AuthorizePermissionProvider permissionProvider)
                 {
                     provider.PermissionDefined(Context);
                 }
             }
             return permissions;
-        }
-
-        private void GetPermissions(Permission permission)
-        {
-            //if(permission is null) throw new ArgumentNullException(nameof(permission));
-            //Permissions.Add(permission);
-            //if (permission.Children is null) return;
-            //foreach(var item in permission.Children)
-            //{
-            //    GetPermissions(item);  
-            //}
         }
     }
 }

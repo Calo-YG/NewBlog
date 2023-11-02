@@ -3,7 +3,7 @@ using Y.SqlsugarRepository.EntityBase;
 
 namespace Calo.Blog.EntityCore.Entities
 {
-    public class PermissionsBase:Entity<long>
+    public class PermissionsBase:Entity<Guid>
     {
         [PrimaryKey]
         public Guid Id { get; set; }

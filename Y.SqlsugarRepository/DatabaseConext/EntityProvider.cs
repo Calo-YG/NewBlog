@@ -15,6 +15,14 @@ namespace Y.SqlsugarRepository.DatabaseConext
 
         private List<Type> _entitys { get; set; }
 
+        static Type[] BaseTypes = new Type[] { typeof(IEntity<>),
+            typeof(IEnity),
+            typeof(IAggregateRoot<>),
+            typeof (IAggregateRoot),
+            typeof(IFullAggregateRoot<>),
+            typeof(IFullAggregateRoot)
+        };
+
         public EntityProvider(IServiceCollection services
             , List<Type> entitys)
         {
@@ -70,7 +78,7 @@ namespace Y.SqlsugarRepository.DatabaseConext
         {
             var isEntity = type.GetTypeInfo()
                 .GetInterfaces()
-                .Any(p => p.GetTypeInfo().IsGenericType && p.GetGenericTypeDefinition() == typeof(IEntity<>));
+                .Any(p => p.GetTypeInfo().IsGenericType && BaseTypes.Contains(p.GetGenericTypeDefinition()));
             if (!isEntity)
             {
                 throw new ApplicationException("没有找到实体类型主键: " + type.Name + ". 确认实体是否继承了IEntity接口");

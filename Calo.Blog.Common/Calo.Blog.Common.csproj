@@ -26,4 +26,9 @@
     <ProjectReference Include="..\Y.Module\Y.Module.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="HangFire\" />
+    <Folder Include="Quartz\" />
+  </ItemGroup>
+
 </Project>

@@ -16,6 +16,14 @@ namespace Y.SqlsugarRepository.DatabaseConext
         /// </summary>
         public IReadOnlyList<Type> EntityTypes { get; set; }
 
+        static Type[] BaseTypes = new Type[] { typeof(IEntity<>),
+            typeof(IEnity),
+            typeof(IAggregateRoot<>),
+            typeof (IAggregateRoot),
+            typeof(IFullAggregateRoot<>),
+            typeof(IFullAggregateRoot)
+        };
+
         public EntityRepositoryInjection(IServiceCollection services, IEntityProvider provider)
         {
             Services = services;
@@ -88,7 +96,7 @@ namespace Y.SqlsugarRepository.DatabaseConext
         {
             foreach (var interfaceType in entityType.GetTypeInfo().GetInterfaces())
             {
-                if (interfaceType.GetTypeInfo().IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IEntity<>))
+                if (interfaceType.GetTypeInfo().IsGenericType &&  BaseTypes.Contains(interfaceType.GetGenericTypeDefinition()))
                 {
                     return interfaceType.GenericTypeArguments[0];
                 }

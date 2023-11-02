@@ -5,8 +5,7 @@
            Guid Id { get; }
     }
 
-    public interface IAggregateRoot<TPrimaryKey>:IConcurrentToken
+    public interface IAggregateRoot<TPrimaryKey>:IEntity<TPrimaryKey>,IConcurrentToken
     {
-        TPrimaryKey Id { get; } 
     }
 }

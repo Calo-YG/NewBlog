@@ -11,6 +11,7 @@ using Y.Module.Modules;
 using Y.SqlsugarRepository;
 using Y.SqlsugarRepository.DatabaseConext;
 using Y.SqlsugarRepository.Entensions;
+using Y.SqlsugarRepository.Entities;
 using Y.SqlsugarRepository.Repository;
 
 namespace Calo.Blog.EntityCore
@@ -50,6 +51,11 @@ namespace Calo.Blog.EntityCore
                 provider.AddEntity<SourceBucket>();
                 provider.AddEntity<Resource>();
                 provider.AddEntity<SourceType>();
+                provider.AddEntity<OrganizationUnit>();
+                provider.AddEntity<OrganizationRole>();
+                provider.AddEntity<OrganizationUser>();
+                provider.AddEntity<UserPermission>();
+                provider.AddEntity<RolePermission>();
             });
             //数据库建库建表配置
             Configure<DatabaseSetting>(p =>

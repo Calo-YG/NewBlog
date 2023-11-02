@@ -5,8 +5,7 @@
         Guid Id { get; }    
     }
     
-    public interface IFullAggregateRoot<TPrimaryKey>
+    public interface IFullAggregateRoot<TPrimaryKey>:IEntity<TPrimaryKey>
     {
-        TPrimaryKey Id { get; } 
     }
 }

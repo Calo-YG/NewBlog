@@ -1,5 +1,4 @@
-﻿using SqlSugar;
-using Y.SqlsugarRepository.EntityAttribute;
+﻿using Y.SqlsugarRepository.EntityAttribute;
 
 namespace Y.SqlsugarRepository.EntityBase
 {

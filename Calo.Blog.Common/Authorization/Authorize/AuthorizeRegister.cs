@@ -4,7 +4,7 @@ namespace Calo.Blog.Common.Authorization.Authorize
 {
     public class AuthorizeRegister
     {
-        public static List<AuthorizePermissionProvider> AuthorizeProviders { get; private set; }
+        public static List<IAuthorizePermissionProvider> AuthorizeProviders { get; private set; }
 
         public static List<Permission> Permissions { get; private set; }
 
@@ -18,18 +18,18 @@ namespace Calo.Blog.Common.Authorization.Authorize
 
         static AuthorizeRegister()
         {
-            AuthorizeProviders = AuthorizeProviders ?? new List<AuthorizePermissionProvider>();
+            AuthorizeProviders = AuthorizeProviders ?? new List<IAuthorizePermissionProvider>();
             Permissions = Permissions?? new List<Permission>(); 
         }
 
         
-        public static void RegisterAuthorizeProvider<T>() where T : AuthorizePermissionProvider
+        public static void RegisterAuthorizeProvider<T>() where T : IAuthorizePermissionProvider
         {
             var instance = CreateInstance<T>();
             AuthorizeProviders.Add(instance);
         }
 
-        public virtual void RegisterAuthorize<T>() where T : AuthorizePermissionProvider
+        public virtual void RegisterAuthorize<T>() where T : IAuthorizePermissionProvider
         {
             var instance =CreateInstance<T>();
             AuthorizeProviders.Add(instance);
@@ -49,7 +49,7 @@ namespace Calo.Blog.Common.Authorization.Authorize
             List<Permission> permissions = new List<Permission>();  
             foreach(var provider in AuthorizeProviders)
             {
-                if(provider is AuthorizePermissionProvider permissionProvider)
+                if(provider is IAuthorizePermissionProvider permissionProvider)
                 {
                     provider.PermissionDefined(Context);
                 }

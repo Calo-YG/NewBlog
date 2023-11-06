@@ -52,7 +52,11 @@ namespace Calo.Blog.Common.Authorization.Authorize
                 using var scope = _serviceProvider.CreateAsyncScope();
                 var _db = scope.ServiceProvider.GetRequiredService<ISqlSugarClient>();
                 var context = _db.CreateContext<SugarContext>();
+                //插入前删除数据
+                await _db.Deleteable<Permissions>().Where("1=1").ExecuteCommandAsync();
+                //sqlsuagr 批量插入
                 await _db.Insertable(permissions).ExecuteCommandAsync();
+                context.Commit();
                 var isexists =await RedisHelper.ExistsAsync(key);
                 if (isexists)
                 {

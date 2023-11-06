@@ -8,6 +8,7 @@ namespace Calo.Blog.EntityCore.Entities
         [PrimaryKey]
         public string Id { get; set; }
         public string? ParentCode{ get; set; }
+        [StringAtrribute(length:40)]
         public string Name { get; set; } 
         public string Code { get; set; }
     }

@@ -2,7 +2,7 @@
 {
     public static class AuthorizePermissionExtensions
     {
-        public static SystemPermission AddGroup(this SystemPermission permission,string code, string name)
+        public static SystemPermission AddGroup(this SystemPermission permission,string name, string code)
         {
             var _permission = new SystemPermission { 
                 Name = name, 
@@ -35,7 +35,7 @@
             return child;
         }
 
-        public static void AddPermissin(this SystemPermission permission,string code, string name)
+        public static void AddPermissin(this SystemPermission permission,string name, string code)
         {
             var _permission = new SystemPermission()
             {

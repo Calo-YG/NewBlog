@@ -5,7 +5,7 @@ using Y.Module.DependencyInjection;
 
 namespace Calo.Blog.Application.ResourceOwnereServices.Handlers
 {
-    public class TestEventHandler : IEventHandler<TestEto>,ITransientInjection
+    public class TestEventHandler : IEventHandler<TestEto>,ITransientDependency
     {
         private ILogger _logger;
         public TestEventHandler(ILoggerFactory factory)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Y.Module.DependencyInjection
 {
-    public interface ISingletonInjection
+    public interface IScopedDependency
     {
     }
 }

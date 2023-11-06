@@ -4,7 +4,7 @@ using Y.Module.DependencyInjection;
 
 namespace Calo.Blog.Application.TokenAppService.Dtos
 {
-    public class TokenApplicationService : ITokenApplicationService, ITransientInjection
+    public class TokenApplicationService : ITokenApplicationService, ITransientDependency
     {
         private readonly ITokenProvider _tokenprovider;
 

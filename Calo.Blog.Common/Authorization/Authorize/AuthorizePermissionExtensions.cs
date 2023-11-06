@@ -2,9 +2,9 @@
 {
     public static class AuthorizePermissionExtensions
     {
-        public static Permission AddGroup(this Permission permission,string code, string name)
+        public static SystemPermission AddGroup(this SystemPermission permission,string code, string name)
         {
-            var _permission = new Permission { 
+            var _permission = new SystemPermission { 
                 Name = name, 
                 Code = code, 
                 ParentCode = permission
@@ -12,15 +12,15 @@
             };
             if(permission.Childrens == null)
             {
-                permission.Childrens = new List<Permission>();
+                permission.Childrens = new List<SystemPermission>();
             }
             permission.Childrens.Add(_permission);
             return _permission;
         }
 
-        public static Permission AddChild(this Permission permission, string name,string code)
+        public static SystemPermission AddChild(this SystemPermission permission, string name,string code)
         {
-            var child = new Permission()
+            var child = new SystemPermission()
             {
                 Name = name,
                 Code=code,
@@ -29,15 +29,15 @@
             };
             if (permission.Childrens == null)
             {
-                permission.Childrens = new List<Permission>();
+                permission.Childrens = new List<SystemPermission>();
             }
             permission.Childrens.Add(child);
             return child;
         }
 
-        public static void AddPermissin(this Permission permission,string code, string name)
+        public static void AddPermissin(this SystemPermission permission,string code, string name)
         {
-            var _permission = new Permission()
+            var _permission = new SystemPermission()
             {
                 Name = name,
                 ParentCode = permission.Code,
@@ -45,7 +45,7 @@
             };
             if (permission.Childrens == null)
             {
-                permission.Childrens = new List<Permission>();
+                permission.Childrens = new List<SystemPermission>();
             }
             permission.Childrens.Add(_permission);
         }

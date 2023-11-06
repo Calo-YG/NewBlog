@@ -8,9 +8,9 @@ namespace Y.Module.DependencyInjection
     {
         public readonly Type[] InjectionTypes = new Type[]
         {
-            typeof(ISingletonInjection),
-            typeof(IScopedInjection),
-            typeof(ITransientInjection)
+            typeof(ISingletonDependency),
+            typeof(IScopedDependency),
+            typeof(ITransientDependency)
         };
         /// <summary>
         /// 程序集注入
@@ -150,17 +150,17 @@ namespace Y.Module.DependencyInjection
 
         private void AddServieWithInterface(IServiceCollection services, Type interfaces,Type implete,Type injection) 
         {
-            if(injection == typeof(ISingletonInjection))
+            if(injection == typeof(ISingletonDependency))
             {
                 services.AddSingleton(interfaces,implete);
                 return;
             }
-            if(injection == typeof(IScopedInjection))
+            if(injection == typeof(IScopedDependency))
             {
                 services.AddScoped(interfaces, implete);
                 return;
             }
-            if(injection == typeof(ITransientInjection))
+            if(injection == typeof(ITransientDependency))
             {
                 services.AddTransient(interfaces, implete);
                 return;

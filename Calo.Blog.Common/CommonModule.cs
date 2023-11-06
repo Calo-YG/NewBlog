@@ -9,6 +9,7 @@ using Y.Module.Modules;
 using Y.Module.Extensions;
 using Calo.Blog.Common.UserSession;
 using System.Reflection;
+using Calo.Blog.Common.Authorization.Authorize;
 
 namespace Calo.Blog.Common
 {
@@ -30,7 +31,7 @@ namespace Calo.Blog.Common
             //注入IUserSession
             context.Services.AddScoped<IUserSession, CurrentUserSession>();
             //添加权限
-            //context.Services.AddSingleton<IAuthorizeManager, AuthorizeManager>();
+            context.Services.AddSingleton<IAuthorizeManager, AuthorizeManager>();
 
             context.Services.AddControllers(options =>
             {

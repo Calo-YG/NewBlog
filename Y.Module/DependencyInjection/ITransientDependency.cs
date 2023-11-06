@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Y.Module.DependencyInjection
 {
-    public interface ITransientInjection
+    public interface ITransientDependency
     {
     }
 }

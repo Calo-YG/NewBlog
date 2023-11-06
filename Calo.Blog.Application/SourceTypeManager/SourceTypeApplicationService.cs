@@ -7,7 +7,7 @@ using Y.SqlsugarRepository.Repository;
 
 namespace Calo.Blog.Application.SourceTypeManager
 {
-    public class SourceTypeApplicationService:ISourceTypeApplicatonService,ITransientInjection
+    public class SourceTypeApplicationService:ISourceTypeApplicatonService,ITransientDependency
     {
         private readonly IBaseRepository<SourceType, Guid> _sourceTypeRepository;
         public SourceTypeApplicationService(IBaseRepository<SourceType, Guid> sourceTypeRepository) 

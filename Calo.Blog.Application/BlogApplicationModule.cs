@@ -1,5 +1,7 @@
-﻿using Calo.Blog.Application.ResourceOwnereServices.Etos;
+﻿using Calo.Blog.Application.RegiesterPermissions;
+using Calo.Blog.Application.ResourceOwnereServices.Etos;
 using Calo.Blog.Application.ResourceOwnereServices.Handlers;
+using Calo.Blog.Common.Authorization.Authorize;
 using Calo.Blog.Common.Minio;
 using Calo.Blog.Common.Redis;
 using Calo.Blog.Domain;
@@ -10,6 +12,7 @@ using Y.EventBus;
 using Y.Module;
 using Y.Module.Extensions;
 using Y.Module.Modules;
+using Yitter.IdGenerator;
 
 namespace Calo.Blog.Application
 {
@@ -25,7 +28,12 @@ namespace Calo.Blog.Application
         /// <param name="context"></param>
         public override void PreConfigerService(ConfigerServiceContext context)
         {
-            base.PreConfigerService(context);
+            AuthorizeRegister.Register.RegisterAuthorizeProvider<TestAuthorizePermissionProvider>();
+            var options = new IdGeneratorOptions()
+            {
+                SeqBitLength=10
+            };
+            YitIdHelper.SetIdGenerator(options);
         }
         /// <summary>
         /// 服务注入
@@ -41,6 +49,9 @@ namespace Calo.Blog.Application
             {
                 p.Subscribe<TestEto, TestEventHandler>();
             });
+
+            IAuthorizePermissionContext permissionContext = new AuthorizePermissionContext();
+            AuthorizeRegister.Register.Init(context.Services, permissionContext);
         }
         /// <summary>
         /// 同步初始化
@@ -50,13 +61,11 @@ namespace Calo.Blog.Application
         {
             var scope = context.ServiceProvider.CreateScope();
 
-            //var authorizeManager = scope.ServiceProvider.GetRequiredService<IAuthorizeManager>();
+            var authorizeManager = scope.ServiceProvider.GetRequiredService<IAuthorizeManager>();
 
             var eventhandlerManager = scope.ServiceProvider.GetRequiredService<IEventHandlerManager>();
 
-            //await authorizeManager.AddAuthorizeRegiester();
-
-            // await eventhandlerManager.CreateChannles();
+            await authorizeManager.AddAuthorizeRegiester();
         }
     }
 }

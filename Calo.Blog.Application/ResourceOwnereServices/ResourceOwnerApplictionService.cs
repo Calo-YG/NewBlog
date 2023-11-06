@@ -7,7 +7,7 @@ using Y.SqlsugarRepository.Repository;
 
 namespace Calo.Blog.Application.ResourceOwnereServices
 {
-    public class ResourceOwnerApplictionService:IResourceOwnerApplicationService,ITransientInjection
+    public class ResourceOwnerApplictionService:IResourceOwnerApplicationService,ITransientDependency
     {
         private readonly IBaseRepository<ResourceOwner, Guid> _resourOwnerRepository;
 

@@ -2,6 +2,6 @@
 {
     public interface IAuthorizePermissionContext
     {
-        Permission DefinePermission { get; }
+        SystemPermission DefinePermission { get; }
     }
 }

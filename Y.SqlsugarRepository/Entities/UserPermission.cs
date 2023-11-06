@@ -8,6 +8,6 @@ namespace Y.SqlsugarRepository.Entities
 
         public string PermissonCode {  get; set; }
 
-        public Guid PermissionId { get; set; }
+        public string PermissionId { get; set; }
     }
 }

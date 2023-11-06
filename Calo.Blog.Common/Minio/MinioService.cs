@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 
 namespace Calo.Blog.Common.Minio
 {
-    public class MinioService:IMinioService,IScopedInjection
+    public class MinioService:IMinioService,IScopedDependency
     {
         private readonly MinioClient _minioClient;
 

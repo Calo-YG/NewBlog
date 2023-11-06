@@ -20,10 +20,12 @@
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.10.0" />
     <PackageReference Include="Minio" Version="5.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+    <PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Y.Module\Y.Module.csproj" />
+    <ProjectReference Include="..\Y.SqlsugarRepository\Y.SqlsugarRepository.csproj" />
   </ItemGroup>
 
   <ItemGroup>

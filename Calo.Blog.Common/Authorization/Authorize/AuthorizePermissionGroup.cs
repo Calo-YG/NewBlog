@@ -2,6 +2,6 @@
 {
     public class AuthorizePermissionGroup
     {
-        public Permission GroupPermission { get; set; }
+        public SystemPermission GroupPermission { get; set; }
     }
 }

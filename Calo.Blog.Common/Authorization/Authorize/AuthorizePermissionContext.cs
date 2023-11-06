@@ -2,20 +2,15 @@
 {
     public class AuthorizePermissionContext:IAuthorizePermissionContext
     {
-        public static Permission Permission { get;private set; }
+        public static SystemPermission Permission { get;private set; }
 
-        public Permission DefinePermission { get => Permission; }
+        public SystemPermission DefinePermission { get => Permission; }
         public AuthorizePermissionContext()
         {
             if(Permission == null)
             {
-                Permission = new Permission();  
+                Permission = new SystemPermission();  
             }
-        }
-
-        static AuthorizePermissionContext()
-        {
-            Permission = new Permission();
         }
 
         public void AddGroup(string code,string name) => DefinePermission.AddGroup(code,name);

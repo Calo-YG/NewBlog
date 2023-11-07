@@ -8,8 +8,6 @@ namespace Calo.Blog.Common.Authorization.Authorize
         public List<IAuthorizePermissionProvider> AuthorizeProviders { get; private set; }
         public IServiceCollection Services { get; private set; }
 
-        public IAuthorizePermissionContext Context { get; private set; }
-
         private static object obj = new Object();
 
         public static AuthorizeRegister Register {  get;private set; }
@@ -19,10 +17,9 @@ namespace Calo.Blog.Common.Authorization.Authorize
             AuthorizeProviders=new List<IAuthorizePermissionProvider>();
         }
 
-        public void Init(IServiceCollection service,IAuthorizePermissionContext context) 
+        public void Init(IServiceCollection service) 
         {
             Services = service;
-            Context = context;
             Services.AddSingleton<IAuthorizeRegister>(this);
         }
         static AuthorizeRegister()

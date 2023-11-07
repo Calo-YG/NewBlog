@@ -2,6 +2,6 @@
 {
     public interface IAuthorizeManager
     {
-        Task AddAuthorizeRegiester();
+        Task AddAuthorizeRegiester(IAuthorizePermissionContext AuthorizePermissionContext);
     }
 }

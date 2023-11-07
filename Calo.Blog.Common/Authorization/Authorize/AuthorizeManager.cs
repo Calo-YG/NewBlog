@@ -15,7 +15,6 @@ namespace Calo.Blog.Common.Authorization.Authorize
         private readonly ICacheManager _cacheManager;
         private readonly IConfiguration _configuration;
         private readonly IAuthorizeRegister _authorizeRegister;
-        private readonly IAuthorizePermissionContext Context;
         private readonly ILogger _logger;
         private readonly IServiceProvider _serviceProvider;
 
@@ -30,12 +29,11 @@ namespace Calo.Blog.Common.Authorization.Authorize
             _cacheManager = cacheManager;
             _configuration = configuration;
             _authorizeRegister = authorizeRegister;
-            Context = _authorizeRegister.Context;
             _serviceProvider = serviceProvider;
             _logger = loggerFactory.CreateLogger<IAuthorizeManager>();
         }
 
-        public async Task AddAuthorizeRegiester()
+        public async Task AddAuthorizeRegiester(IAuthorizePermissionContext Context)
         {
             var current = _cacheManager.Current;
             var key = _configuration.GetSection("App:Permission").Get<string>();
@@ -47,6 +45,7 @@ namespace Calo.Blog.Common.Authorization.Authorize
                 provider.PermissionDefined(Context);
             }
             var permissions = InitPermission(Context);
+            Context.Dispose();
             try 
             {
                 using var scope = _serviceProvider.CreateAsyncScope();
@@ -91,6 +90,8 @@ namespace Calo.Blog.Common.Authorization.Authorize
                 permissions.Add(permission);
 
                 InitChilder(permissions, childer.Childrens);
+
+                childer.Dispose();
             }
 
             return permissions;
@@ -115,6 +116,8 @@ namespace Calo.Blog.Common.Authorization.Authorize
                 permissions.Add(permission);
 
                 InitChilder(permissions, item.Childrens);
+
+                item.Dispose();
             }
         }
     }

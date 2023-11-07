@@ -45,11 +45,6 @@ namespace Y.SqlsugarRepository.Repository
             //更新操作
             DataExecutingTriggers.Add(new DataExecutingTrigger("UpdateTime", DataFilterType.UpdateByObject, () => { return DateTime.Now; }));
             DataExecutingTriggers.Add(new DataExecutingTrigger("UpdateUserId", DataFilterType.UpdateByObject, GetUserId));
-
-            ////删除操作
-            //DataExecutingTriggers.Add(new DataExecutingTrigger("DeleteTime", DataFilterType.DeleteByObject, () => { return DateTime.Now; }));
-            //DataExecutingTriggers.Add(new DataExecutingTrigger("DeleteUserId", DataFilterType.DeleteByObject, GetUserId));
-            //DataExecutingTriggers.Add(new DataExecutingTrigger("IsDeleted",DataFilterType.DeleteByObject, ()=>true));
         }
 
         public virtual void InitFilter()

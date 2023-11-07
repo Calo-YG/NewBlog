@@ -22,6 +22,7 @@ namespace Y.SqlsugarRepository.DatabaseConext
             typeof(IFullAggregateRoot<>),
             typeof(IFullAggregateRoot)
         };
+        private bool disposedValue;
 
         public EntityProvider(IServiceCollection services
             , List<Type> entitys)
@@ -83,6 +84,37 @@ namespace Y.SqlsugarRepository.DatabaseConext
             {
                 throw new ApplicationException("没有找到实体类型主键: " + type.Name + ". 确认实体是否继承了IEntity接口");
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposedValue)
+            {
+                return;
+            }
+            if (disposing)
+            {
+                if (_entitys != null)
+                {
+                    _entitys.Clear();
+                    _entitys = null;
+                }
+            }
+            disposedValue = true;   
+        }
+
+        // // TODO: 仅当“Dispose(bool disposing)”拥有用于释放未托管资源的代码时才替代终结器
+        // ~EntityProvider()
+        // {
+        //     // 不要更改此代码。请将清理代码放入“Dispose(bool disposing)”方法中
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // 不要更改此代码。请将清理代码放入“Dispose(bool disposing)”方法中
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Calo.Blog.Common.Authorization.Authorize
 {
-    public interface IAuthorizePermissionContext
+    public interface IAuthorizePermissionContext: IDisposable
     {
         SystemPermission DefinePermission { get; }
     }

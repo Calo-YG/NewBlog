@@ -49,9 +49,7 @@ namespace Calo.Blog.Application
             {
                 p.Subscribe<TestEto, TestEventHandler>();
             });
-
-            IAuthorizePermissionContext permissionContext = new AuthorizePermissionContext();
-            AuthorizeRegister.Register.Init(context.Services, permissionContext);
+            AuthorizeRegister.Register.Init(context.Services);
         }
         /// <summary>
         /// 同步初始化
@@ -65,7 +63,8 @@ namespace Calo.Blog.Application
 
             var eventhandlerManager = scope.ServiceProvider.GetRequiredService<IEventHandlerManager>();
 
-            await authorizeManager.AddAuthorizeRegiester();
+            IAuthorizePermissionContext permissionContext = new AuthorizePermissionContext();
+            await authorizeManager.AddAuthorizeRegiester(permissionContext);
         }
     }
 }

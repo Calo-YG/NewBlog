@@ -167,6 +167,8 @@ namespace Calo.Blog.Common.Minio
             }
 
             await _minioClient.PutObjectAsync(putObjectArgs);
+
+            input.Dispose();
         }
         /// <summary>
         /// 上传本地文件使用默认存储桶

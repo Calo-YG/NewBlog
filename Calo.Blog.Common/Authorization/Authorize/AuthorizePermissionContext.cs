@@ -1,18 +1,47 @@
 ﻿namespace Calo.Blog.Common.Authorization.Authorize
 {
-    public class AuthorizePermissionContext:IAuthorizePermissionContext
+    public class AuthorizePermissionContext : IAuthorizePermissionContext
     {
-        public static SystemPermission Permission { get;private set; }
+        public SystemPermission Permission { get; private set; }
 
         public SystemPermission DefinePermission { get => Permission; }
+
+        private bool Disposed { get; set; }
         public AuthorizePermissionContext()
         {
-            if(Permission == null)
+            if (Permission == null)
             {
-                Permission = new SystemPermission();  
+                Permission = new SystemPermission();
             }
         }
 
-        public void AddGroup(string code,string name) => DefinePermission.AddGroup(code,name);
+        public void AddGroup(string code, string name) => DefinePermission.AddGroup(code, name);
+
+        public void CheckExists(string code)
+        {
+          var has= DefinePermission.Childrens.Any(p=>p.Code == code);  
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (Disposed)
+            {
+                return;
+            }
+            if (disposing)
+            {
+                if(Permission != null)
+                {
+                    Permission = null;
+                }
+            }
+            Disposed = true;    
+        }  
     }
 }

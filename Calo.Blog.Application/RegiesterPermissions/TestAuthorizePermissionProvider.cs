@@ -12,6 +12,7 @@ namespace Calo.Blog.Application.RegiesterPermissions
             var childern = grouppermission.AddChild("组织单元", "Organization");
 
             childern.AddPermissin("添加", "Create");
+            childern.AddPermissin("查询", "Query");
         }
     }
 }

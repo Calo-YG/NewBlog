@@ -3,7 +3,5 @@
     public interface IAuthorizeRegister
     {
         List<IAuthorizePermissionProvider> AuthorizeProviders {  get;}
-
-        IAuthorizePermissionContext Context { get;}
     }
 }

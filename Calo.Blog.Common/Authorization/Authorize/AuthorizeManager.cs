@@ -84,7 +84,10 @@ namespace Calo.Blog.Common.Authorization.Authorize
                     YitIdHelper.NextId().ToString(),
                     childer.Name,
                     childer.Code,
-                    childer.ParentCode
+                    childer.ParentCode,
+                    childer.IsGroup,
+                    childer.Page,
+                    childer.Button
                 );
 
                 permissions.Add(permission);
@@ -110,7 +113,10 @@ namespace Calo.Blog.Common.Authorization.Authorize
                     YitIdHelper.NextId().ToString(),
                     item.Name,
                     item.Code,
-                    item.ParentCode
+                    item.ParentCode,
+                    item.IsGroup,
+                    item.Page,
+                    item.Button
                 );
 
                 permissions.Add(permission);

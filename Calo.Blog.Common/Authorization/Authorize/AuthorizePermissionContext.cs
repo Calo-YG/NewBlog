@@ -11,7 +11,10 @@
         {
             if (Permission == null)
             {
-                Permission = new SystemPermission();
+                Permission = new SystemPermission()
+                {
+                    IsGroup = true,
+                };
             }
         }
 

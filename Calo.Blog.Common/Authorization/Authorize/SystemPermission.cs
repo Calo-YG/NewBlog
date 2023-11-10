@@ -10,6 +10,10 @@
 
         public bool IsGroup { get; set; }
 
+        public bool Page {  get; set; }
+
+        public bool Button {  get; set; }
+
         public List<SystemPermission>? Childrens { get; set; }
 
         private bool Disposed { get; set; }

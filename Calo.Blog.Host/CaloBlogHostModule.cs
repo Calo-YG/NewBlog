@@ -141,7 +141,6 @@ namespace Calo.Blog.Host
             var descriptor = context.Services.FirstOrDefault(
                 p => p.ServiceType == typeof(ISqlSugarClient)
             );
-            Console.BackgroundColor = ConsoleColor.Green;
             Console.WriteLine(
                 $"ISqlsugarClient 生命周期--------------------------------------------------------------{descriptor.Lifetime}"
             );

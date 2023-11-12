@@ -13,6 +13,7 @@ builder.Host.UseSerilog(
             .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
             .ReadFrom.Services(services)
             .Enrich.FromLogContext()
+            
             .WriteTo.Console());
 
 // ×¢Èë·þÎñ

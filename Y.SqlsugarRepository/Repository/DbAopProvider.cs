@@ -15,8 +15,7 @@ namespace Y.SqlsugarRepository.Repository
         {
             return (sql, param) =>
             {
-                Console.BackgroundColor = ConsoleColor.Green;
-                Console.WriteLine("Before Executed Time:" + db.Ado.SqlExecutionTime.ToString());
+               
             };
         }
 
@@ -24,8 +23,6 @@ namespace Y.SqlsugarRepository.Repository
         {
             return (ex) =>
             {
-                Console.BackgroundColor = ConsoleColor.Red;
-                Console.Write("After Executed Sql Error");
                 logger.LogError(ex.Message, ex.Sql);
             };
         }
@@ -34,8 +31,6 @@ namespace Y.SqlsugarRepository.Repository
         {
             return (sql, param) =>
             {
-                Console.BackgroundColor= ConsoleColor.Green;
-                Console.Write("After Executed Time:" + db.Ado.SqlExecutionTime.ToString());
                 logger.LogInformation(sql, param.Select(p => p.Value));
             };
         }

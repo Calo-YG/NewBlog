@@ -69,7 +69,7 @@ namespace Calo.Blog.Common.Middlewares
             response.StatusCode = "500";
             ErrorInfo error = new ErrorInfo();
             response.Error = error;
-            error.Error = logMsg;
+            error.Error = exception.Message;
             await context.Response.WriteAsJsonAsync(response);
         }
 

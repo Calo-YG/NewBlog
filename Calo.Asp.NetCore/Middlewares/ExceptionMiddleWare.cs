@@ -1,0 +1,6 @@
+﻿namespace Calo.Asp.NetCore.Middlewares
+{
+    public class ExceptionMiddleWare
+    {
+    }
+}

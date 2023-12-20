@@ -25,7 +25,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Microsoft.AspNetCore.StaticFiles;
-using System.Text;
 
 namespace Calo.Blog.Host.Controllers
 {
